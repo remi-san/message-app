@@ -48,11 +48,14 @@ trait MessageAppMocker {
     }
 
     /**
+     * @param  ApplicationUser $user
      * @return ApplicationCommand
      */
-    public function getApplicationCommand()
+    public function getApplicationCommand(ApplicationUser $user = null)
     {
-        return \Mockery::mock('\\MessageApp\\Application\\Command\\ApplicationCommand');
+        $command = \Mockery::mock('\\MessageApp\\Application\\Command\\ApplicationCommand');
+        $command->shouldReceive('getUser')->andReturn($user);
+        return $command;
     }
 
     /**
