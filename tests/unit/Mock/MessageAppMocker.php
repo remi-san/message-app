@@ -1,6 +1,7 @@
 <?php
 namespace MessageApp\Test\Mock;
 
+use MessageApp\Application\Command\ApplicationCommand;
 use MessageApp\Application\CommandExecutor;
 use MessageApp\Application\Response\ApplicationResponse;
 use MessageApp\Application\Response\Handler\ApplicationResponseHandler;
@@ -44,6 +45,14 @@ trait MessageAppMocker {
         $appUser->shouldReceive('getId')->andReturn($id);
         $appUser->shouldReceive('getName')->andReturn($name);
         return $appUser;
+    }
+
+    /**
+     * @return ApplicationCommand
+     */
+    public function getApplicationCommand()
+    {
+        return \Mockery::mock('\\MessageApp\\Application\\Command\\ApplicationCommand');
     }
 
     /**
