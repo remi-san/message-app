@@ -15,7 +15,7 @@ interface Message {
     /**
      * Returns the user the message must be sent to
      *
-     * @return \MessageApp\ApplicationUser
+     * @return ApplicationUser
      */
     public function getUser();
 } 

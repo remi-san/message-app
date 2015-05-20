@@ -3,6 +3,7 @@ namespace MessageApp\Test\Mock;
 
 use MessageApp\Application\Command\ApplicationCommand;
 use MessageApp\Application\CommandExecutor;
+use MessageApp\Application\MessageSender;
 use MessageApp\Application\Response\ApplicationResponse;
 use MessageApp\Application\Response\Handler\ApplicationResponseHandler;
 use MessageApp\Application\Response\SendMessageResponse;
@@ -64,5 +65,13 @@ trait MessageAppMocker {
     public function getAppResponseHandler()
     {
         return \Mockery::mock('\\MessageApp\\Application\\Response\\Handler\\ApplicationResponseHandler');
+    }
+
+    /**
+     * @return MessageSender
+     */
+    public function getMessageSender()
+    {
+        return \Mockery::mock('\\MessageApp\\Application\\MessageSender');
     }
 } 
