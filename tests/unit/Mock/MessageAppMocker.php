@@ -3,6 +3,7 @@ namespace MessageApp\Test\Mock;
 
 use MessageApp\Application\Command\ApplicationCommand;
 use MessageApp\Application\CommandExecutor;
+use MessageApp\Application\Message;
 use MessageApp\Application\MessageSender;
 use MessageApp\Application\Response\ApplicationResponse;
 use MessageApp\Application\Response\Handler\ApplicationResponseHandler;
@@ -73,5 +74,19 @@ trait MessageAppMocker {
     public function getMessageSender()
     {
         return \Mockery::mock('\\MessageApp\\Application\\MessageSender');
+    }
+
+    /**
+     * @param  string          $text
+     * @param  ApplicationUser $user
+     * @return Message
+     */
+    public function getMessage($text, ApplicationUser $user)
+    {
+        $message = \Mockery::mock('\\MessageApp\\Application\\Message');
+        $message->shouldReceive('getMessage')->andReturn($text);
+        $message->shouldReceive('getUser')->andReturn($user);
+
+        return $message;
     }
 } 
