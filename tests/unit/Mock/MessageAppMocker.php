@@ -10,6 +10,7 @@ use MessageApp\Application\Response\Handler\ApplicationResponseHandler;
 use MessageApp\Application\Response\SendMessageResponse;
 use MessageApp\ApplicationUser;
 use MessageApp\Parser\MessageParser;
+use MessageApp\User\ApplicationUserManager;
 
 trait MessageAppMocker {
 
@@ -99,5 +100,15 @@ trait MessageAppMocker {
         $parser = \Mockery::mock('\\MessageApp\\Parser\\MessageParser');
         $parser->shouldReceive('parse')->andReturn($command);
         return $parser;
+    }
+
+    /**
+     * @param  ApplicationUser $user
+     * @return ApplicationUserManager
+     */
+    public function getUserManager(ApplicationUser $user) {
+        $manager = \Mockery::mock('\\MessageApp\\User\\ApplicationUserManager');
+        $manager->shouldReceive('getUser')->andReturn($user);
+        return $manager;
     }
 } 
