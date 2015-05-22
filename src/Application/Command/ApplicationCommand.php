@@ -6,7 +6,9 @@ use MessageApp\ApplicationUser;
 interface ApplicationCommand {
 
     /**
-     * @return \MessageApp\ApplicationUser
+     * Returns the user
+     *
+     * @return ApplicationUser
      */
     public function getUser();
 } 

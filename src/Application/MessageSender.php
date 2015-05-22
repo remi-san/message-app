@@ -4,6 +4,8 @@ namespace MessageApp\Application;
 interface MessageSender {
 
     /**
+     * Send a message
+     *
      * @param  Message $message
      * @param  object  $context
      * @return void

@@ -19,12 +19,19 @@ class MessageResponseHandler implements ApplicationResponseHandler, LoggerAwareI
      */
     protected $messageSender;
 
+    /**
+     * Constructor
+     *
+     * @param MessageSender $messageSender
+     */
     public function __construct(MessageSender $messageSender)
     {
         $this->messageSender = $messageSender;
     }
 
     /**
+     * Handle a response
+     *
      * @param  ApplicationResponse $response
      * @param  object $context
      * @return void

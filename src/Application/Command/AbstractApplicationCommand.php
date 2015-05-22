@@ -11,6 +11,8 @@ class AbstractApplicationCommand implements ApplicationCommand {
     protected $user;
 
     /**
+     * Constructor
+     *
      * @param ApplicationUser $user
      */
     public function __construct(ApplicationUser $user)
@@ -19,6 +21,8 @@ class AbstractApplicationCommand implements ApplicationCommand {
     }
 
     /**
+     * Returns the user
+     *
      * @return ApplicationUser
      */
     public function getUser()

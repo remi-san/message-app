@@ -9,7 +9,7 @@ interface CommandExecutor {
     /**
      * Executes a command and returns a response
      *
-     * @param  \MessageApp\Application\Command\ApplicationCommand $command
+     * @param  ApplicationCommand $command
      * @return ApplicationResponse
      */
     public function execute(ApplicationCommand $command);

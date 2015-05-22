@@ -6,6 +6,8 @@ use MessageApp\Application\Response\ApplicationResponse;
 interface ApplicationResponseHandler {
 
     /**
+     * Handle response
+     *
      * @param  ApplicationResponse $response
      * @param  object              $context
      * @return void
