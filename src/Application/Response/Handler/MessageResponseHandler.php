@@ -25,7 +25,7 @@ class MessageResponseHandler implements ApplicationResponseHandler, LoggerAwareI
     }
 
     /**
-     * @param  \MessageApp\Application\Response\ApplicationResponse $response
+     * @param  ApplicationResponse $response
      * @param  object $context
      * @return void
      */
@@ -48,8 +48,8 @@ class MessageResponseHandler implements ApplicationResponseHandler, LoggerAwareI
     /**
      * Sets a logger instance on the object
      *
-     * @param LoggerInterface $logger
-     * @return null
+     * @param  LoggerInterface $logger
+     * @return void
      */
     public function setLogger(LoggerInterface $logger)
     {
