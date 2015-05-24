@@ -108,7 +108,7 @@ trait MessageAppMocker {
      */
     public function getUserManager(ApplicationUser $user) {
         $manager = \Mockery::mock('\\MessageApp\\User\\ApplicationUserManager');
-        $manager->shouldReceive('getUser')->andReturn($user);
+        $manager->shouldReceive('get')->andReturn($user);
         return $manager;
     }
 } 
