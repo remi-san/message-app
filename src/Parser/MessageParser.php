@@ -2,7 +2,7 @@
 namespace MessageApp\Parser;
 
 use MessageApp\Application\Command\ApplicationCommand;
-use MessageApp\Parser\Exception\MessageParserException;
+use MessageApp\MessageAppException;
 
 interface MessageParser {
 
@@ -11,7 +11,7 @@ interface MessageParser {
      *
      * @param  object $object
      * @return ApplicationCommand
-     * @throws MessageParserException
+     * @throws MessageAppException
      */
     public function parse($object);
 } 

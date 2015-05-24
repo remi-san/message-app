@@ -16,6 +16,11 @@ class UserManager extends InMemoryUserManager {
     {
         return $this->getApplicationUser(1, 'user');
     }
+
+    protected function supports($object)
+    {
+        return true;
+    }
 }
 
 class UserManagerTest extends \PHPUnit_Framework_TestCase {

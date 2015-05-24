@@ -2,6 +2,7 @@
 namespace MessageApp\User;
 
 use MessageApp\ApplicationUser;
+use MessageApp\User\Exception\AppUserException;
 
 interface ApplicationUserManager
 {
@@ -10,6 +11,7 @@ interface ApplicationUserManager
      *
      * @param  object $object
      * @return ApplicationUser
+     * @throws AppUserException
      */
     public function getUser($object);
 
@@ -18,6 +20,7 @@ interface ApplicationUserManager
      *
      * @param  object $object
      * @return ApplicationUser
+     * @throws AppUserException
      */
     public function createUser($object);
 

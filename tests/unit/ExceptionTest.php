@@ -1,7 +1,7 @@
 <?php
 namespace MessageApp\Test;
 
-use MessageApp\Parser\Exception\MessageParserException;
+use MessageApp\MessageAppException;
 use MessageApp\Test\Mock\MessageAppMocker;
 
 class ExceptionTest extends \PHPUnit_Framework_TestCase {
@@ -22,7 +22,7 @@ class ExceptionTest extends \PHPUnit_Framework_TestCase {
      */
     public function testConstructor() {
 
-        $exception = new MessageParserException($this->user);
+        $exception = new MessageAppException($this->user);
 
         $this->assertEquals($this->user, $exception->getUser());
     }
