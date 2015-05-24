@@ -1,7 +1,9 @@
 <?php
 namespace MessageApp\User;
 
-class UndefinedApplicationUser {
+use MessageApp\ApplicationUser;
+
+class UndefinedApplicationUser implements ApplicationUser {
 
     /**
      * @var object
@@ -16,6 +18,26 @@ class UndefinedApplicationUser {
     public function __construct($originalUser)
     {
         $this->originalUser = $originalUser;
+    }
+
+    /**
+     * Returns the id
+     *
+     * @return string|int
+     */
+    public function getId()
+    {
+        return null;
+    }
+
+    /**
+     * Returns the name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return null;
     }
 
     /**

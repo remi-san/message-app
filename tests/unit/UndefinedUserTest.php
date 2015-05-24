@@ -14,5 +14,7 @@ class UndefinedUserTest extends \PHPUnit_Framework_TestCase {
         $user = new UndefinedApplicationUser($object);
 
         $this->assertEquals($object, $user->getOriginalUser());
+        $this->assertNull($user->getId());
+        $this->assertNull($user->getName());
     }
 } 
