@@ -12,7 +12,7 @@ class UserManager extends InMemoryUserManager {
         return $object->getId();
     }
 
-    public function createUser($object)
+    public function create($object)
     {
         return $this->getApplicationUser(1, 'user');
     }
@@ -42,9 +42,9 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase {
     public function testSave() {
 
         $manager = new UserManager();
-        $manager->saveUser($this->user);
+        $manager->save($this->user);
 
-        $this->assertEquals($this->user, $manager->getUser($this->user));
+        $this->assertEquals($this->user, $manager->get($this->user));
     }
 
     /**
@@ -53,10 +53,10 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase {
     public function testCreate() {
 
         $manager = new UserManager();
-        $manager->createUser($this->user);
+        $manager->create($this->user);
 
-        $this->assertEquals($this->playerId, $manager->getUser($this->user)->getId());
-        $this->assertEquals($this->playerName, $manager->getUser($this->user)->getName());
+        $this->assertEquals($this->playerId, $manager->get($this->user)->getId());
+        $this->assertEquals($this->playerName, $manager->get($this->user)->getName());
     }
 
     /**
@@ -65,7 +65,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase {
     public function testCreateWhenNotExisting() {
 
         $manager = new UserManager();
-        $user = $manager->getUser($this->user);
+        $user = $manager->get($this->user);
 
         $this->assertEquals($this->playerId, $user->getId());
         $this->assertEquals($this->playerName, $user->getName());

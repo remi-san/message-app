@@ -13,7 +13,7 @@ interface ApplicationUserManager
      * @return ApplicationUser
      * @throws AppUserException
      */
-    public function getUser($object);
+    public function get($object);
 
     /**
      * Creates an application user
@@ -22,7 +22,7 @@ interface ApplicationUserManager
      * @return ApplicationUser
      * @throws AppUserException
      */
-    public function createUser($object);
+    public function create($object);
 
     /**
      * Saves a user
@@ -30,5 +30,5 @@ interface ApplicationUserManager
      * @param  ApplicationUser $user
      * @return void
      */
-    public function saveUser(ApplicationUser $user);
+    public function save(ApplicationUser $user);
 } 

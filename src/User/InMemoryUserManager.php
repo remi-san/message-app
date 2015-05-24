@@ -37,7 +37,7 @@ abstract class InMemoryUserManager implements ApplicationUserManager {
      * @return ApplicationUser
      * @throws AppUserException
      */
-    public function getUser($object)
+    public function get($object)
     {
         if (!$this->supports($object)) {
             throw new UnsupportedUserException(new UndefinedApplicationUser($object));
@@ -45,7 +45,7 @@ abstract class InMemoryUserManager implements ApplicationUserManager {
 
         $userId = $this->getUserId($object);
         if (!array_key_exists($userId, $this->users)) {
-            $this->saveUser($this->createUser($object));
+            $this->save($this->create($object));
         }
         return $this->users[$userId];
     }
@@ -57,7 +57,7 @@ abstract class InMemoryUserManager implements ApplicationUserManager {
      * @return ApplicationUser
      * @throws AppUserException
      */
-    public abstract function createUser($object);
+    public abstract function create($object);
 
     /**
      * Saves a user
@@ -65,7 +65,7 @@ abstract class InMemoryUserManager implements ApplicationUserManager {
      * @param  ApplicationUser $user
      * @return void
      */
-    public function saveUser(ApplicationUser $user)
+    public function save(ApplicationUser $user)
     {
         $this->users[$user->getId()] = $user;
     }
