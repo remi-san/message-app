@@ -86,7 +86,6 @@ abstract class MessageApplication implements LoggerAwareInterface {
             }
             $response = $this->executor->execute($command);
         } catch (MessageAppException $e) {
-            // TODO add an error handler?
             $response = new SendMessageResponse($e->getUser(), $e->getMessage());
         }
 
@@ -113,6 +112,4 @@ abstract class MessageApplication implements LoggerAwareInterface {
     {
         $this->logger = $logger;
     }
-
-
 }
