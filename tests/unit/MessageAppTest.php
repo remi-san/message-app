@@ -107,21 +107,6 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function testHandleWithMessageForIgnoredUser()
-    {
-        $this->logger->shouldReceive('info')->twice();
-
-        $message = new \stdClass();
-
-        $hangmanApp = new ConcreteMessageApp($this->appResponseHandler, $this->getParser(), $this->getExecutor());
-        $hangmanApp->setUsersToIgnore(array(42));
-        $hangmanApp->setLogger($this->logger);
-        $hangmanApp->handle($message);
-    }
-
-    /**
-     * @test
-     */
     public function testHandleWithMessage()
     {
         $userId = 42;

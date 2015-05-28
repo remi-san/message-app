@@ -1,9 +1,10 @@
 <?php
 namespace MessageApp\Application\Response;
 
+use Command\Response;
 use MessageApp\ApplicationUser;
 
-interface ApplicationResponse {
+interface ApplicationResponse extends Response {
 
     /**
      * Returns the user the message must be sent to

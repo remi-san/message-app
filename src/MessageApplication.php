@@ -1,11 +1,9 @@
 <?php
 namespace MessageApp;
 
-use MessageApp\Application\Command\ApplicationCommand;
-use MessageApp\Application\CommandExecutor;
+use Command\CommandExecutor;
 use MessageApp\Application\Response\Handler\ApplicationResponseHandler;
 use MessageApp\Application\Response\SendMessageResponse;
-use MessageApp\Parser\Exception\MessageParserException;
 use MessageApp\Parser\MessageParser;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
@@ -32,13 +30,6 @@ abstract class MessageApplication implements LoggerAwareInterface {
      */
     protected $executor;
 
-    /**
-     * An array of player ids to ignore
-     *
-     * @var int[]
-     */
-    protected $ignoreUsers;
-
 
     /**
      * Constructor
@@ -51,18 +42,6 @@ abstract class MessageApplication implements LoggerAwareInterface {
         $this->responseHandler = $responseHandler;
         $this->messageParser = $messageParser;
         $this->executor = $executor;
-        $this->ignoreUsers = array();
-    }
-
-    /**
-     * Sets the list of player ids to ignore
-     *
-     * @param  int[] $ids
-     * @return void
-     */
-    public function setUsersToIgnore(array $ids)
-    {
-        $this->ignoreUsers = $ids;
     }
 
     /**
@@ -80,7 +59,7 @@ abstract class MessageApplication implements LoggerAwareInterface {
         $response = null;
         try {
             $command = $this->messageParser->parse($object);
-            if ($this->isCommandIgnored($command)) {
+            if ($command === null) {
                 $this->logger->info('Message ignored');
                 return null;
             }
@@ -90,16 +69,6 @@ abstract class MessageApplication implements LoggerAwareInterface {
         }
 
         $this->responseHandler->handle($response, $object);
-    }
-
-    /**
-     * Must we ignore the command?
-     *
-     * @param  ApplicationCommand $command
-     * @return bool
-     */
-    protected function isCommandIgnored(ApplicationCommand $command = null) {
-        return (!$command || in_array($command->getUser()->getId(), $this->ignoreUsers));
     }
 
     /**

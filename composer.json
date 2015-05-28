@@ -13,8 +13,15 @@
             "role": "Developer"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:remi-san/command"
+        }
+    ],
     "require": {
-        "psr/log": "~1.0"
+        "psr/log": "~1.0",
+        "remi-san/command": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.5",

@@ -1,8 +1,8 @@
 <?php
 namespace MessageApp\Test\Mock;
 
+use Command\CommandExecutor;
 use MessageApp\Application\Command\ApplicationCommand;
-use MessageApp\Application\CommandExecutor;
 use MessageApp\Application\Message;
 use MessageApp\Application\MessageSender;
 use MessageApp\Application\Response\ApplicationResponse;
@@ -16,10 +16,10 @@ trait MessageAppMocker {
 
     /**
      * @param  ApplicationResponse $response
-     * @return CommandExecutor
+     * @return \Command\CommandExecutor
      */
     public function getExecutor(ApplicationResponse $response = null) {
-        $executor = \Mockery::mock('\\MessageApp\\Application\\CommandExecutor');
+        $executor = \Mockery::mock('\\Command\\CommandExecutor');
         if ($response) {
             $executor->shouldReceive('execute')->andReturn($response);
         }
