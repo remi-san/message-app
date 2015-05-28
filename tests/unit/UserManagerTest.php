@@ -14,7 +14,7 @@ class UserManager extends InMemoryUserManager {
 
     public function create($object)
     {
-        return $this->getApplicationUser(1, 'user');
+        return $this->getApplicationUser(1, 'player');
     }
 
     protected function supports($object)
@@ -27,7 +27,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase {
     use MessageAppMocker;
 
     private $playerId = 1;
-    private $playerName = 'user';
+    private $playerName = 'player';
 
     private $user;
 

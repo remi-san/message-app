@@ -8,7 +8,7 @@ class ExceptionTest extends \PHPUnit_Framework_TestCase {
     use MessageAppMocker;
 
     private $playerId = 1;
-    private $playerName = 'user';
+    private $playerName = 'player';
 
     private $user;
 
