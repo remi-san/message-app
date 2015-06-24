@@ -4,7 +4,6 @@ namespace MessageApp\Application\Response\Handler;
 use MessageApp\Application\Message;
 use MessageApp\Application\MessageSender;
 use MessageApp\Application\Response\ApplicationResponse;
-use MessageApp\Application\Response\HandshakeResponse;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -41,20 +40,15 @@ class MessageResponseHandler implements ApplicationResponseHandler, LoggerAwareI
      */
     public function handle(ApplicationResponse $response = null, $context = null)
     {
-        if (!$response || !($response instanceof Message) || !($response instanceof HandshakeResponse)) {
+        if (!$response || !($response instanceof Message)) {
             if ($this->logger) {
                 $this->logger->info('Cannot handle response!');
             }
             return;
         }
 
-        if ($response instanceof HandshakeResponse) {
-            $this->logger->info('Registering user', $response->getUser()->getName());
-            $this->messageSender->register($response->getUser());
-        } elseif ($response instanceof Message) {
-            $this->logger->info('Sending message', $response->getMessage());
-            $this->messageSender->send($response, $context);
-        }
+        $this->logger->info('Sending message', $response->getMessage());
+        $this->messageSender->send($response, $context);
     }
 
     /**
