@@ -7,6 +7,7 @@ use MessageApp\Application\Response\SendMessageResponse;
 use MessageApp\Parser\MessageParser;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 abstract class MessageApplication implements LoggerAwareInterface {
 
@@ -42,6 +43,7 @@ abstract class MessageApplication implements LoggerAwareInterface {
         $this->responseHandler = $responseHandler;
         $this->messageParser = $messageParser;
         $this->executor = $executor;
+        $this->logger = new NullLogger();
     }
 
     /**
@@ -52,9 +54,7 @@ abstract class MessageApplication implements LoggerAwareInterface {
      */
     protected function handleMessage($object)
     {
-        if ($this->logger) {
-            $this->logger->info($object);
-        }
+        $this->logger->info($object);
 
         $response = null;
         try {
@@ -65,6 +65,7 @@ abstract class MessageApplication implements LoggerAwareInterface {
             }
             $response = $this->executor->execute($command);
         } catch (MessageAppException $e) {
+            $this->logger->error('Error parsing or executing command', array('exception' => $e->getMessage()));
             $response = new SendMessageResponse($e->getUser(), $e->getMessage());
         }
 

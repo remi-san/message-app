@@ -47,7 +47,7 @@ class MessageResponseHandler implements ApplicationResponseHandler, LoggerAwareI
             return;
         }
 
-        $this->logger->info('Sending message', $response->getMessage());
+        $this->logger->info('Sending message', array('message' => $response->getMessage()));
         $this->messageSender->send($response, $context);
     }
 
