@@ -33,4 +33,4 @@ class ApplicationResponseTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertEquals($user, $response->getUser());
     }
-} 
+}
