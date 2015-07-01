@@ -61,7 +61,7 @@ abstract class MessageApplication implements LoggerAwareInterface {
             $command = $this->messageParser->parse($object);
             if ($command === null) {
                 $this->logger->info('Message ignored');
-                return null;
+                return;
             }
             $response = $this->executor->execute($command);
         } catch (MessageAppException $e) {

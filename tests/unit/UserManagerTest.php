@@ -19,7 +19,7 @@ class UserManager extends InMemoryUserManager {
 
     protected function supports($object)
     {
-        return true;
+        return $object !== null;
     }
 }
 
@@ -69,5 +69,16 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertEquals($this->playerId, $user->getId());
         $this->assertEquals($this->playerName, $user->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function testGetUserWithIllegalObject()
+    {
+        $this->setExpectedException('\\MessageApp\\User\\Exception\\UnsupportedUserException');
+
+        $manager = new UserManager();
+        $manager->get(null);
     }
 } 

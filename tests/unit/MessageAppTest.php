@@ -130,6 +130,21 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
+    public function testHandleWithNonCommandMessage()
+    {
+        $message = new \stdClass();
+
+        $this->logger->shouldReceive('info')->twice();
+
+        $hangmanApp = new ConcreteMessageApp($this->appResponseHandler, $this->getParser(null), $this->getExecutor());
+        $hangmanApp->setLogger($this->logger);
+
+        $hangmanApp->handle($message);
+    }
+
+    /**
+     * @test
+     */
     public function testHandleWithParsingError()
     {
         $userId = 42;
@@ -146,6 +161,7 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase {
         $parser->shouldReceive('parse')->andThrow($exception);
 
         $this->logger->shouldReceive('info')->once();
+        $this->logger->shouldReceive('error')->once();
         $this->appResponseHandler->shouldReceive('handle')->once();
 
         $hangmanApp = new ConcreteMessageApp($this->appResponseHandler, $parser, $this->getExecutor());
