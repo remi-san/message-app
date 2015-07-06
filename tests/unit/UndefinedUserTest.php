@@ -5,6 +5,11 @@ use MessageApp\User\UndefinedApplicationUser;
 
 class UndefinedUserTest extends \PHPUnit_Framework_TestCase {
 
+    public function tearDown()
+    {
+        \Mockery::close();
+    }
+
     /**
      * @test
      */

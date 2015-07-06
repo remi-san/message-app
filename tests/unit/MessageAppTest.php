@@ -104,6 +104,11 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase {
         $this->logger = \Mockery::mock('\\Psr\\Log\\LoggerInterface');
     }
 
+    public function tearDown()
+    {
+        \Mockery::close();
+    }
+
     /**
      * @test
      */

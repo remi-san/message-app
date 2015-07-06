@@ -14,6 +14,11 @@ class MessageResponse implements ApplicationResponse, Message {
 class MessageResponseHandlerTest extends \PHPUnit_Framework_TestCase {
     use MessageAppMocker;
 
+    public function tearDown()
+    {
+        \Mockery::close();
+    }
+
     /**
      * @test
      */

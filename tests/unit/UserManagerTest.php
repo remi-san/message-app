@@ -36,6 +36,11 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase {
         $this->user = $this->getApplicationUser($this->playerId, $this->playerName);
     }
 
+    public function tearDown()
+    {
+        \Mockery::close();
+    }
+
     /**
      * @test
      */
