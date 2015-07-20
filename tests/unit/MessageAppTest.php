@@ -8,12 +8,6 @@ use MessageApp\Test\Mock\MessageAppMocker;
 use MiniGame\Player;
 use Psr\Log\LoggerInterface;
 
-class ConcreteMessageApp extends MessageApplication {
-    public function handle($object) {
-        $this->handleMessage($object);
-    }
-}
-
 class MessageAppTest extends \PHPUnit_Framework_TestCase {
     use MessageAppMocker;
 
@@ -126,7 +120,7 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase {
         $this->logger->shouldReceive('info')->once();
         $this->appResponseHandler->shouldReceive('handle')->with($response, $message)->once();
 
-        $hangmanApp = new ConcreteMessageApp($this->appResponseHandler, $this->getParser($command), $this->getExecutor($response));
+        $hangmanApp = new MessageApplication($this->appResponseHandler, $this->getParser($command), $this->getExecutor($response));
         $hangmanApp->setLogger($this->logger);
 
         $hangmanApp->handle($message);
@@ -141,7 +135,7 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase {
 
         $this->logger->shouldReceive('info')->twice();
 
-        $hangmanApp = new ConcreteMessageApp($this->appResponseHandler, $this->getParser(null), $this->getExecutor());
+        $hangmanApp = new MessageApplication($this->appResponseHandler, $this->getParser(null), $this->getExecutor());
         $hangmanApp->setLogger($this->logger);
 
         $hangmanApp->handle($message);
@@ -169,7 +163,7 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase {
         $this->logger->shouldReceive('error')->once();
         $this->appResponseHandler->shouldReceive('handle')->once();
 
-        $hangmanApp = new ConcreteMessageApp($this->appResponseHandler, $parser, $this->getExecutor());
+        $hangmanApp = new MessageApplication($this->appResponseHandler, $parser, $this->getExecutor());
         $hangmanApp->setLogger($this->logger);
 
         $hangmanApp->handle($message);

@@ -9,7 +9,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-abstract class MessageApplication implements LoggerAwareInterface {
+class MessageApplication implements LoggerAwareInterface {
 
     /**
      * @var LoggerInterface
@@ -52,7 +52,7 @@ abstract class MessageApplication implements LoggerAwareInterface {
      * @param  object $object
      * @return void
      */
-    protected function handleMessage($object)
+    public function handle($object)
     {
         $this->logger->info($object);
 
