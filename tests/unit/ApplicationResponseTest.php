@@ -5,7 +5,8 @@ use MessageApp\Application\Response\HandshakeResponse;
 use MessageApp\Application\Response\SendMessageResponse;
 use MessageApp\Test\Mock\MessageAppMocker;
 
-class ApplicationResponseTest extends \PHPUnit_Framework_TestCase {
+class ApplicationResponseTest extends \PHPUnit_Framework_TestCase
+{
     use MessageAppMocker;
 
     public function tearDown()

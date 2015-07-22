@@ -1,7 +1,6 @@
 <?php
 namespace MessageApp\Test\Mock;
 
-use Command\CommandExecutor;
 use MessageApp\Application\Command\ApplicationCommand;
 use MessageApp\Application\Message;
 use MessageApp\Application\MessageSender;
@@ -12,14 +11,16 @@ use MessageApp\ApplicationUser;
 use MessageApp\Parser\MessageParser;
 use MessageApp\User\ApplicationUserManager;
 
-trait MessageAppMocker {
+trait MessageAppMocker
+{
 
     /**
      * @param  ApplicationResponse $response
-     * @return \Command\CommandExecutor
+     * @return \Command\CommandBus
      */
-    public function getExecutor(ApplicationResponse $response = null) {
-        $executor = \Mockery::mock('\\Command\\CommandExecutor');
+    public function getExecutor(ApplicationResponse $response = null)
+    {
+        $executor = \Mockery::mock('\\Command\\CommandBus');
         if ($response) {
             $executor->shouldReceive('execute')->andReturn($response);
         }
@@ -28,10 +29,11 @@ trait MessageAppMocker {
 
     /**
      * @param  ApplicationUser $user
-     * @param  string $message
+     * @param  string          $message
      * @return SendMessageResponse
      */
-    public function getSendMessageResponse(ApplicationUser $user = null, $message = null) {
+    public function getSendMessageResponse(ApplicationUser $user = null, $message = null)
+    {
         $response = \Mockery::mock('\\MessageApp\\Application\\Response\\SendMessageResponse');
         $response->shouldReceive('getUser')->andReturn($user);
         $response->shouldReceive('getMessage')->andReturn($message);
@@ -96,7 +98,8 @@ trait MessageAppMocker {
      * @param  ApplicationCommand $command
      * @return MessageParser
      */
-    public function getParser(ApplicationCommand $command = null){
+    public function getParser(ApplicationCommand $command = null)
+    {
         $parser = \Mockery::mock('\\MessageApp\\Parser\\MessageParser');
         $parser->shouldReceive('parse')->andReturn($command);
         return $parser;
@@ -106,7 +109,8 @@ trait MessageAppMocker {
      * @param  ApplicationUser $user
      * @return ApplicationUserManager
      */
-    public function getUserManager(ApplicationUser $user) {
+    public function getUserManager(ApplicationUser $user)
+    {
         $manager = \Mockery::mock('\\MessageApp\\User\\ApplicationUserManager');
         $manager->shouldReceive('get')->andReturn($user);
         return $manager;

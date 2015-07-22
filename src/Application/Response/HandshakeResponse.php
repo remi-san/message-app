@@ -3,7 +3,8 @@ namespace MessageApp\Application\Response;
 
 use MessageApp\ApplicationUser;
 
-class HandshakeResponse implements ApplicationResponse {
+class HandshakeResponse implements ApplicationResponse
+{
 
     /**
      * @var ApplicationUser
@@ -15,7 +16,8 @@ class HandshakeResponse implements ApplicationResponse {
      *
      * @param ApplicationUser $user
      */
-    public function __construct(ApplicationUser $user) {
+    public function __construct(ApplicationUser $user)
+    {
         $this->user = $user;
     }
 
@@ -24,7 +26,8 @@ class HandshakeResponse implements ApplicationResponse {
      *
      * @return ApplicationUser
      */
-    public function getUser() {
+    public function getUser()
+    {
         return $this->user;
     }
 } 

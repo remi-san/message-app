@@ -1,4 +1,6 @@
 <?php
 namespace MessageApp\User\Exception;
 
-class UserNotFoundException extends AppUserException { }
+class UserNotFoundException extends AppUserException
+{
+}

@@ -1,7 +1,8 @@
 <?php
 namespace MessageApp;
 
-interface ApplicationUser {
+interface ApplicationUser
+{
 
     /**
      * Returns the id

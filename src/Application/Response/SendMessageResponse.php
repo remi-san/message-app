@@ -4,7 +4,8 @@ namespace MessageApp\Application\Response;
 use MessageApp\Application\Message;
 use MessageApp\ApplicationUser;
 
-class SendMessageResponse implements ApplicationResponse, Message {
+class SendMessageResponse implements ApplicationResponse, Message
+{
 
     /**
      * @var string
@@ -20,9 +21,10 @@ class SendMessageResponse implements ApplicationResponse, Message {
      * Construct
      *
      * @param ApplicationUser $user
-     * @param $message
+     * @param string          $message
      */
-    public function __construct(ApplicationUser $user, $message) {
+    public function __construct(ApplicationUser $user, $message)
+    {
         $this->user = $user;
         $this->message = $message;
     }
@@ -32,7 +34,8 @@ class SendMessageResponse implements ApplicationResponse, Message {
      *
      * @return string
      */
-    public function getMessage() {
+    public function getMessage()
+    {
         return $this->message;
     }
 
@@ -41,7 +44,8 @@ class SendMessageResponse implements ApplicationResponse, Message {
      *
      * @return ApplicationUser
      */
-    public function getUser() {
+    public function getUser()
+    {
         return $this->user;
     }
 } 

@@ -4,7 +4,8 @@ namespace MessageApp\Test;
 use MessageApp\MessageAppException;
 use MessageApp\Test\Mock\MessageAppMocker;
 
-class ExceptionTest extends \PHPUnit_Framework_TestCase {
+class ExceptionTest extends \PHPUnit_Framework_TestCase
+{
     use MessageAppMocker;
 
     private $playerId = 1;
@@ -25,7 +26,8 @@ class ExceptionTest extends \PHPUnit_Framework_TestCase {
     /**
      * @test
      */
-    public function testConstructor() {
+    public function testConstructor()
+    {
 
         $exception = new MessageAppException($this->user);
 

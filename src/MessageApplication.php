@@ -1,7 +1,7 @@
 <?php
 namespace MessageApp;
 
-use Command\CommandExecutor;
+use Command\CommandBus;
 use MessageApp\Application\Response\Handler\ApplicationResponseHandler;
 use MessageApp\Application\Response\SendMessageResponse;
 use MessageApp\Parser\MessageParser;
@@ -9,7 +9,8 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-class MessageApplication implements LoggerAwareInterface {
+class MessageApplication implements LoggerAwareInterface
+{
 
     /**
      * @var LoggerInterface
@@ -27,7 +28,7 @@ class MessageApplication implements LoggerAwareInterface {
     protected $messageParser;
 
     /**
-     * @var CommandExecutor
+     * @var CommandBus
      */
     protected $executor;
 
@@ -37,9 +38,13 @@ class MessageApplication implements LoggerAwareInterface {
      *
      * @param ApplicationResponseHandler $responseHandler
      * @param MessageParser              $messageParser
-     * @param CommandExecutor            $executor
+     * @param CommandBus                 $executor
      */
-    public function __construct(ApplicationResponseHandler $responseHandler, MessageParser $messageParser, CommandExecutor $executor) {
+    public function __construct(
+        ApplicationResponseHandler $responseHandler,
+        MessageParser $messageParser,
+        CommandBus $executor
+    ) {
         $this->responseHandler = $responseHandler;
         $this->messageParser = $messageParser;
         $this->executor = $executor;

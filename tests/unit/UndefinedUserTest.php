@@ -3,7 +3,8 @@ namespace MessageApp\Test;
 
 use MessageApp\User\UndefinedApplicationUser;
 
-class UndefinedUserTest extends \PHPUnit_Framework_TestCase {
+class UndefinedUserTest extends \PHPUnit_Framework_TestCase
+{
 
     public function tearDown()
     {

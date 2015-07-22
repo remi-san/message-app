@@ -3,7 +3,8 @@ namespace MessageApp\Application\Response\Handler;
 
 use MessageApp\Application\Response\ApplicationResponse;
 
-interface ApplicationResponseHandler {
+interface ApplicationResponseHandler
+{
 
     /**
      * Handle response

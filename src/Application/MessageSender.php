@@ -1,7 +1,8 @@
 <?php
 namespace MessageApp\Application;
 
-interface MessageSender {
+interface MessageSender
+{
 
     /**
      * Send a message

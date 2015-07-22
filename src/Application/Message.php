@@ -3,7 +3,8 @@ namespace MessageApp\Application;
 
 use MessageApp\ApplicationUser;
 
-interface Message {
+interface Message
+{
 
     /**
      * Returns the message

@@ -5,7 +5,8 @@ use MessageApp\ApplicationUser;
 use MessageApp\User\Exception\AppUserException;
 use MessageApp\User\Exception\UnsupportedUserException;
 
-abstract class InMemoryUserManager implements ApplicationUserManager {
+abstract class InMemoryUserManager implements ApplicationUserManager
+{
 
     /**
      * @var ApplicationUser[]
@@ -21,14 +22,6 @@ abstract class InMemoryUserManager implements ApplicationUserManager {
     {
         $this->users = $users;
     }
-
-    /**
-     * Gets the user id from the user object
-     *
-     * @param  object $object
-     * @return string
-     */
-    protected abstract function getUserId($object);
 
     /**
      * Retrieves an application user
@@ -51,13 +44,20 @@ abstract class InMemoryUserManager implements ApplicationUserManager {
     }
 
     /**
-     * Creates an application user
+     * Can the user manager deal with that object?
      *
      * @param  object $object
-     * @return ApplicationUser
-     * @throws AppUserException
+     * @return boolean
      */
-    public abstract function create($object);
+    protected abstract function supports($object);
+
+    /**
+     * Gets the user id from the user object
+     *
+     * @param  object $object
+     * @return string
+     */
+    protected abstract function getUserId($object);
 
     /**
      * Saves a user
@@ -71,10 +71,11 @@ abstract class InMemoryUserManager implements ApplicationUserManager {
     }
 
     /**
-     * Can the user manager deal with that object?
+     * Creates an application user
      *
      * @param  object $object
-     * @return boolean
+     * @return ApplicationUser
+     * @throws AppUserException
      */
-    protected abstract function supports($object);
+    public abstract function create($object);
 }

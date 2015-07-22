@@ -1,7 +1,8 @@
 <?php
 namespace MessageApp;
 
-class MessageAppException extends \Exception {
+class MessageAppException extends \Exception
+{
 
     /**
      * @var ApplicationUser

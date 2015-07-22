@@ -6,12 +6,21 @@ use MessageApp\Application\Response\ApplicationResponse;
 use MessageApp\Application\Response\Handler\MessageResponseHandler;
 use MessageApp\Test\Mock\MessageAppMocker;
 
-class MessageResponse implements ApplicationResponse, Message {
-    public function getUser() { return null; }
-    public function getMessage() { return null;}
+class MessageResponse implements ApplicationResponse, Message
+{
+    public function getUser()
+    {
+        return null;
+    }
+
+    public function getMessage()
+    {
+        return null;
+    }
 }
 
-class MessageResponseHandlerTest extends \PHPUnit_Framework_TestCase {
+class MessageResponseHandlerTest extends \PHPUnit_Framework_TestCase
+{
     use MessageAppMocker;
 
     public function tearDown()

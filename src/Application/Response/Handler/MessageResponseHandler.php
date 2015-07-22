@@ -8,7 +8,8 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-class MessageResponseHandler implements ApplicationResponseHandler, LoggerAwareInterface {
+class MessageResponseHandler implements ApplicationResponseHandler, LoggerAwareInterface
+{
 
     /**
      * @var LoggerInterface
@@ -35,7 +36,7 @@ class MessageResponseHandler implements ApplicationResponseHandler, LoggerAwareI
      * Handle a response
      *
      * @param  ApplicationResponse $response
-     * @param  object $context
+     * @param  object              $context
      * @return void
      */
     public function handle(ApplicationResponse $response = null, $context = null)
