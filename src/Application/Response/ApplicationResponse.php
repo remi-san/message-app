@@ -1,7 +1,7 @@
 <?php
 namespace MessageApp\Application\Response;
 
-use Command\Response;
+use MessageApp\Application\Response;
 use MessageApp\ApplicationUser;
 
 interface ApplicationResponse extends Response
