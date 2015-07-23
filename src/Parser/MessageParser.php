@@ -1,7 +1,7 @@
 <?php
 namespace MessageApp\Parser;
 
-use Command\Command;
+use League\Tactician\Plugins\NamedCommand\NamedCommand;
 use MessageApp\MessageAppException;
 
 interface MessageParser
@@ -11,7 +11,7 @@ interface MessageParser
      * Parse a message object to retrieve the matching command
      *
      * @param  object $object
-     * @return Command
+     * @return NamedCommand
      * @throws MessageAppException
      */
     public function parse($object);
