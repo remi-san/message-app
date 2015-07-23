@@ -64,8 +64,11 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
         $this->logger->shouldReceive('info')->once();
         $this->appResponseHandler->shouldReceive('handle')->with($response, $message)->once();
 
-        $hangmanApp = new MessageApplication($this->appResponseHandler, $this->getParser($command),
-            $this->getExecutor($response));
+        $hangmanApp = new MessageApplication(
+            $this->appResponseHandler,
+            $this->getParser($command),
+            $this->getCommandBus($response)
+        );
         $hangmanApp->setLogger($this->logger);
 
         $hangmanApp->handle($message);
@@ -80,7 +83,7 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
 
         $this->logger->shouldReceive('info')->twice();
 
-        $hangmanApp = new MessageApplication($this->appResponseHandler, $this->getParser(null), $this->getExecutor());
+        $hangmanApp = new MessageApplication($this->appResponseHandler, $this->getParser(null), $this->getCommandBus());
         $hangmanApp->setLogger($this->logger);
 
         $hangmanApp->handle($message);
@@ -108,7 +111,7 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
         $this->logger->shouldReceive('error')->once();
         $this->appResponseHandler->shouldReceive('handle')->once();
 
-        $hangmanApp = new MessageApplication($this->appResponseHandler, $parser, $this->getExecutor());
+        $hangmanApp = new MessageApplication($this->appResponseHandler, $parser, $this->getCommandBus());
         $hangmanApp->setLogger($this->logger);
 
         $hangmanApp->handle($message);

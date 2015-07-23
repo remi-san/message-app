@@ -1,7 +1,7 @@
 <?php
 namespace MessageApp;
 
-use Command\CommandBus;
+use League\Tactician\CommandBus;
 use MessageApp\Application\Response\Handler\ApplicationResponseHandler;
 use MessageApp\Application\Response\SendMessageResponse;
 use MessageApp\Parser\MessageParser;
@@ -68,7 +68,7 @@ class MessageApplication implements LoggerAwareInterface
                 $this->logger->info('Message ignored');
                 return;
             }
-            $response = $this->executor->execute($command);
+            $response = $this->executor->handle($command);
         } catch (MessageAppException $e) {
             $this->logger->error('Error parsing or executing command', array('exception' => $e->getMessage()));
             $response = new SendMessageResponse($e->getUser(), $e->getMessage());

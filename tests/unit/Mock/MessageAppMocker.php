@@ -1,6 +1,7 @@
 <?php
 namespace MessageApp\Test\Mock;
 
+use League\Tactician\CommandBus;
 use MessageApp\Application\Command\ApplicationCommand;
 use MessageApp\Application\Message;
 use MessageApp\Application\MessageSender;
@@ -16,13 +17,13 @@ trait MessageAppMocker
 
     /**
      * @param  ApplicationResponse $response
-     * @return \Command\CommandBus
+     * @return CommandBus
      */
-    public function getExecutor(ApplicationResponse $response = null)
+    public function getCommandBus(ApplicationResponse $response = null)
     {
-        $executor = \Mockery::mock('\\Command\\CommandBus');
+        $executor = \Mockery::mock('\\League\\Tactician\\CommandBus');
         if ($response) {
-            $executor->shouldReceive('execute')->andReturn($response);
+            $executor->shouldReceive('handle')->andReturn($response);
         }
         return $executor;
     }
