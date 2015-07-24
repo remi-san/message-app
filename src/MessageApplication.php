@@ -30,7 +30,7 @@ class MessageApplication implements LoggerAwareInterface
     /**
      * @var CommandBus
      */
-    protected $executor;
+    protected $commandBus;
 
 
     /**
@@ -38,16 +38,16 @@ class MessageApplication implements LoggerAwareInterface
      *
      * @param ApplicationResponseHandler $responseHandler
      * @param MessageParser              $messageParser
-     * @param CommandBus                 $executor
+     * @param CommandBus                 $commandBus
      */
     public function __construct(
         ApplicationResponseHandler $responseHandler,
         MessageParser $messageParser,
-        CommandBus $executor
+        CommandBus $commandBus
     ) {
         $this->responseHandler = $responseHandler;
         $this->messageParser = $messageParser;
-        $this->executor = $executor;
+        $this->commandBus = $commandBus;
         $this->logger = new NullLogger();
     }
 
@@ -68,7 +68,7 @@ class MessageApplication implements LoggerAwareInterface
                 $this->logger->info('Message ignored');
                 return;
             }
-            $response = $this->executor->handle($command);
+            $response = $this->commandBus->handle($command);
         } catch (MessageAppException $e) {
             $this->logger->error('Error parsing or executing command', array('exception' => $e->getMessage()));
             $response = new SendMessageResponse($e->getUser(), $e->getMessage());
