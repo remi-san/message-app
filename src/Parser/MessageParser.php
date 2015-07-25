@@ -6,7 +6,6 @@ use MessageApp\MessageAppException;
 
 interface MessageParser
 {
-
     /**
      * Parse a message object to retrieve the matching command
      *

@@ -31,7 +31,6 @@ class MessageApplication implements LoggerAwareInterface
      */
     protected $commandBus;
 
-
     /**
      * Constructor
      *
