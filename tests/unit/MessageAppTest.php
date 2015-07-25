@@ -174,4 +174,4 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
         $method->setAccessible(true);
         return $method->invokeArgs($obj, $params);
     }
-} 
+}

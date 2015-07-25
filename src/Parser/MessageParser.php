@@ -15,4 +15,4 @@ interface MessageParser
      * @throws MessageAppException
      */
     public function parse($object);
-} 
+}

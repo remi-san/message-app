@@ -6,7 +6,6 @@ use MessageApp\ApplicationUser;
 
 class SendMessageResponse implements ApplicationResponse, Message
 {
-
     /**
      * @var string
      */
@@ -48,4 +47,4 @@ class SendMessageResponse implements ApplicationResponse, Message
     {
         return $this->user;
     }
-} 
+}

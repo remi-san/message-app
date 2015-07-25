@@ -14,7 +14,6 @@ use MessageApp\User\ApplicationUserManager;
 
 trait MessageAppMocker
 {
-
     /**
      * @param  ApplicationResponse $response
      * @return CommandBus
@@ -116,4 +115,4 @@ trait MessageAppMocker
         $manager->shouldReceive('get')->andReturn($user);
         return $manager;
     }
-} 
+}

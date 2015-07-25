@@ -2,27 +2,8 @@
 namespace MessageApp\Test;
 
 use MessageApp\Test\Mock\MessageAppMocker;
+use MessageApp\Test\Mock\UserManager;
 use MessageApp\User\InMemoryUserManager;
-
-class UserManager extends InMemoryUserManager
-{
-    use MessageAppMocker;
-
-    public function create($object)
-    {
-        return $this->getApplicationUser(1, 'player');
-    }
-
-    protected function getUserId($object)
-    {
-        return $object->getId();
-    }
-
-    protected function supports($object)
-    {
-        return $object !== null;
-    }
-}
 
 class UserManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -91,4 +72,4 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
         $manager = new UserManager();
         $manager->get(null);
     }
-} 
+}

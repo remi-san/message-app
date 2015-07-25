@@ -5,7 +5,6 @@ use MessageApp\ApplicationUser;
 
 class HandshakeResponse implements ApplicationResponse
 {
-
     /**
      * @var ApplicationUser
      */
@@ -30,4 +29,4 @@ class HandshakeResponse implements ApplicationResponse
     {
         return $this->user;
     }
-} 
+}

@@ -3,7 +3,6 @@ namespace MessageApp;
 
 class MessageAppException extends \Exception
 {
-
     /**
      * @var ApplicationUser
      */

@@ -5,7 +5,6 @@ use MessageApp\ApplicationUser;
 
 interface Message
 {
-
     /**
      * Returns the message
      *
@@ -19,4 +18,4 @@ interface Message
      * @return ApplicationUser
      */
     public function getUser();
-} 
+}

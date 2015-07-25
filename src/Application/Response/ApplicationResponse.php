@@ -6,7 +6,6 @@ use MessageApp\ApplicationUser;
 
 interface ApplicationResponse extends Response
 {
-
     /**
      * Returns the user the message must be sent to
      *

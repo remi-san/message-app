@@ -5,19 +5,7 @@ use MessageApp\Application\Message;
 use MessageApp\Application\Response\ApplicationResponse;
 use MessageApp\Application\Response\Handler\MessageResponseHandler;
 use MessageApp\Test\Mock\MessageAppMocker;
-
-class MessageResponse implements ApplicationResponse, Message
-{
-    public function getUser()
-    {
-        return null;
-    }
-
-    public function getMessage()
-    {
-        return null;
-    }
-}
+use MessageApp\Test\Mock\MessageResponse;
 
 class MessageResponseHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -82,4 +70,4 @@ class MessageResponseHandlerTest extends \PHPUnit_Framework_TestCase
         $handler->setLogger($logger);
         $handler->handle($response, $context);
     }
-} 
+}

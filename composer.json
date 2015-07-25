@@ -13,15 +13,9 @@
             "role": "Developer"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@github.com:remi-san/command"
-        }
-    ],
     "require": {
         "psr/log": "~1.0",
-        "remi-san/command": "dev-master"
+        "league/tactician": "~0.6"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.5",

@@ -33,4 +33,4 @@ class ExceptionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($this->user, $exception->getUser());
     }
-} 
+}

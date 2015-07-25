@@ -10,7 +10,6 @@ use Psr\Log\NullLogger;
 
 class MessageResponseHandler implements ApplicationResponseHandler, LoggerAwareInterface
 {
-
     /**
      * @var LoggerInterface
      */
@@ -62,4 +61,4 @@ class MessageResponseHandler implements ApplicationResponseHandler, LoggerAwareI
     {
         $this->logger = $logger;
     }
-} 
+}

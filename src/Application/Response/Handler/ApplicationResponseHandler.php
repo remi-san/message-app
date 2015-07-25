@@ -5,7 +5,6 @@ use MessageApp\Application\Response\ApplicationResponse;
 
 interface ApplicationResponseHandler
 {
-
     /**
      * Handle response
      *
@@ -14,4 +13,4 @@ interface ApplicationResponseHandler
      * @return void
      */
     public function handle(ApplicationResponse $response = null, $context = null);
-} 
+}

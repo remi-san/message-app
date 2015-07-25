@@ -31,4 +31,4 @@ interface ApplicationUserManager
      * @return void
      */
     public function save(ApplicationUser $user);
-} 
+}

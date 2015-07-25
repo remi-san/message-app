@@ -7,7 +7,6 @@ use MessageApp\User\Exception\UnsupportedUserException;
 
 abstract class InMemoryUserManager implements ApplicationUserManager
 {
-
     /**
      * @var ApplicationUser[]
      */
@@ -49,7 +48,7 @@ abstract class InMemoryUserManager implements ApplicationUserManager
      * @param  object $object
      * @return boolean
      */
-    protected abstract function supports($object);
+    abstract protected function supports($object);
 
     /**
      * Gets the user id from the user object
@@ -57,7 +56,7 @@ abstract class InMemoryUserManager implements ApplicationUserManager
      * @param  object $object
      * @return string
      */
-    protected abstract function getUserId($object);
+    abstract protected function getUserId($object);
 
     /**
      * Saves a user
@@ -77,5 +76,5 @@ abstract class InMemoryUserManager implements ApplicationUserManager
      * @return ApplicationUser
      * @throws AppUserException
      */
-    public abstract function create($object);
+    abstract public function create($object);
 }

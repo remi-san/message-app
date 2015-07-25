@@ -5,7 +5,6 @@ use MessageApp\ApplicationUser;
 
 class UndefinedApplicationUser implements ApplicationUser
 {
-
     /**
      * @var object
      */
@@ -50,4 +49,4 @@ class UndefinedApplicationUser implements ApplicationUser
     {
         return $this->originalUser;
     }
-} 
+}

@@ -11,7 +11,6 @@ use Psr\Log\NullLogger;
 
 class MessageApplication implements LoggerAwareInterface
 {
-
     /**
      * @var LoggerInterface
      */
