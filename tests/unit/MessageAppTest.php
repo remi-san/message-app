@@ -107,7 +107,7 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
         $parser = \Mockery::mock('\\MessageApp\\Parser\\MessageParser');
         $parser->shouldReceive('parse')->andThrow($exception);
 
-        $this->logger->shouldReceive('info')->once();
+        $this->logger->shouldReceive('info')->twice();
         $this->logger->shouldReceive('error')->once();
         $this->appResponseHandler->shouldReceive('handle')->once();
 

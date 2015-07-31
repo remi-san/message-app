@@ -2,8 +2,10 @@
 namespace MessageApp;
 
 use League\Tactician\CommandBus;
+use League\Tactician\Plugins\NamedCommand\NamedCommand;
 use MessageApp\Application\Response\Handler\ApplicationResponseHandler;
 use MessageApp\Application\Response\SendMessageResponse;
+use MessageApp\Parser\Exception\MessageParserException;
 use MessageApp\Parser\MessageParser;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
@@ -50,29 +52,56 @@ class MessageApplication implements LoggerAwareInterface
     }
 
     /**
-     * Handle a message object
+     * Handle a message
      *
-     * @param  object $object
+     * @param  mixed $message
      * @return void
      */
-    public function handle($object)
+    public function handle($message)
     {
-        $this->logger->info($object);
+        $this->logger->info($message);
+        $command = $this->parseMessage($message);
+        $this->handleCommand($command, $message);
+    }
 
-        $response = null;
+    /**
+     * Parse the message
+     *
+     * @param  mixed $message
+     * @return NamedCommand
+     */
+    private function parseMessage($message)
+    {
         try {
-            $command = $this->messageParser->parse($object);
-            if ($command === null) {
-                $this->logger->info('Message ignored');
-                return;
-            }
-            $response = $this->commandBus->handle($command);
-        } catch (MessageAppException $e) {
+            return $this->messageParser->parse($message);
+        } catch (MessageParserException $e) {
             $this->logger->error('Error parsing or executing command', array('exception' => $e->getMessage()));
-            $response = new SendMessageResponse($e->getUser(), $e->getMessage());
+            $this->responseHandler->handle(
+                new SendMessageResponse($e->getUser(), $e->getMessage()),
+                $message
+            );
+            return null;
+        }
+    }
+
+    /**
+     * Handles the command
+     *
+     * @param NamedCommand $command
+     * @param mixed        $message
+     */
+    private function handleCommand(NamedCommand $command = null, $message = null)
+    {
+        if ($command === null) {
+            $this->logger->info('Message ignored');
+            return;
         }
 
-        $this->responseHandler->handle($response, $object);
+        // TODO no response should be returned
+        $response = $this->commandBus->handle($command);
+
+        // TODO handle after event dispatched
+        $this->responseHandler->handle($response, $message);
     }
 
     /**
