@@ -20,7 +20,7 @@ class ApplicationResponseTest extends \PHPUnit_Framework_TestCase
     public function testSendMessage()
     {
         $message = 'message';
-        $user = $this->getApplicationUser(42, 'adam');
+        $user = $this->getApplicationUser($this->getApplicationUserId(42), 'adam');
 
         $response = new SendMessageResponse($user, $message);
 
@@ -33,7 +33,7 @@ class ApplicationResponseTest extends \PHPUnit_Framework_TestCase
      */
     public function testHandshake()
     {
-        $user = $this->getApplicationUser(42, 'adam');
+        $user = $this->getApplicationUser($this->getApplicationUserId(42), 'adam');
 
         $response = new HandshakeResponse($user);
 

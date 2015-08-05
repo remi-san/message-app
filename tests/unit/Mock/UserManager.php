@@ -1,6 +1,8 @@
 <?php
 namespace MessageApp\Test\Mock;
 
+use MessageApp\ApplicationUser;
+use MessageApp\User\Exception\AppUserException;
 use MessageApp\User\InMemoryUserManager;
 
 class UserManager extends InMemoryUserManager
@@ -9,16 +11,18 @@ class UserManager extends InMemoryUserManager
 
     public function create($object)
     {
-        return $this->getApplicationUser(1, 'player');
+        return $this->getApplicationUser($this->getApplicationUserId(1), 'player');
     }
 
-    protected function getUserId($object)
+    /**
+     * Retrieves a player
+     *
+     * @param  object $object
+     * @return ApplicationUser
+     * @throws AppUserException
+     */
+    public function getByObject($object)
     {
-        return $object->getId();
-    }
-
-    protected function supports($object)
-    {
-        return $object !== null;
+        return $object;
     }
 }

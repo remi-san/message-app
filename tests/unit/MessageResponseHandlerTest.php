@@ -1,8 +1,6 @@
 <?php
 namespace MessageApp\Test;
 
-use MessageApp\Application\Message;
-use MessageApp\Application\Response\ApplicationResponse;
 use MessageApp\Application\Response\Handler\MessageResponseHandler;
 use MessageApp\Test\Mock\MessageAppMocker;
 use MessageApp\Test\Mock\MessageResponse;

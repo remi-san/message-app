@@ -4,23 +4,23 @@ namespace MessageApp\User;
 use MessageApp\ApplicationUser;
 use MessageApp\ApplicationUserId;
 use MessageApp\User\Exception\AppUserException;
-use MessageApp\User\Exception\UnsupportedUserException;
+use MessageApp\User\Repository\AppUserRepository;
 
-abstract class InMemoryUserManager implements ApplicationUserManager
+abstract class InDatabaseUserManager implements ApplicationUserManager
 {
     /**
-     * @var ApplicationUser[]
+     * @var AppUserRepository
      */
-    protected $users;
+    protected $userRepository;
 
     /**
      * Constructor
      *
-     * @param ApplicationUser[] $users
+     * @param AppUserRepository $userRepository
      */
-    public function __construct(array $users = array())
+    public function __construct(AppUserRepository $userRepository)
     {
-        $this->users = $users;
+        $this->userRepository = $userRepository;
     }
 
     /**
@@ -28,10 +28,11 @@ abstract class InMemoryUserManager implements ApplicationUserManager
      *
      * @param  ApplicationUserId $id
      * @return ApplicationUser
+     * @throws AppUserException
      */
     public function get(ApplicationUserId $id)
     {
-        return array_key_exists((string)$id, $this->users) ? $this->users[(string)$id] : null;
+        return $this->userRepository->find($id);
     }
 
     /**
@@ -60,6 +61,6 @@ abstract class InMemoryUserManager implements ApplicationUserManager
      */
     public function save(ApplicationUser $user)
     {
-        $this->users[(string)$user->getId()] = $user;
+        $this->userRepository->save($user);
     }
 }

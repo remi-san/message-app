@@ -8,14 +8,15 @@ class ExceptionTest extends \PHPUnit_Framework_TestCase
 {
     use MessageAppMocker;
 
-    private $playerId = 1;
-    private $playerName = 'player';
+    private $userId;
+    private $userName = 'player';
 
     private $user;
 
     public function setUp()
     {
-        $this->user = $this->getApplicationUser($this->playerId, $this->playerName);
+        $this->userId  = $this->getApplicationUserId(1);
+        $this->user = $this->getApplicationUser($this->userId, $this->userName);
     }
 
     public function tearDown()

@@ -16,7 +16,7 @@ class MessageAppException extends \Exception
      * @param int             $code
      * @param \Exception      $previous
      */
-    public function __construct(ApplicationUser $user, $message = '', $code = 0, \Exception $previous = null)
+    public function __construct(ApplicationUser $user = null, $message = '', $code = 0, \Exception $previous = null)
     {
         $this->user = $user;
         $this->originalUser = $user;

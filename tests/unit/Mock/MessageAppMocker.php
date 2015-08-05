@@ -9,6 +9,7 @@ use MessageApp\Application\Response\ApplicationResponse;
 use MessageApp\Application\Response\Handler\ApplicationResponseHandler;
 use MessageApp\Application\Response\SendMessageResponse;
 use MessageApp\ApplicationUser;
+use MessageApp\ApplicationUserId;
 use MessageApp\Parser\MessageParser;
 use MessageApp\User\ApplicationUserManager;
 
@@ -42,10 +43,22 @@ trait MessageAppMocker
 
     /**
      * @param  int    $id
-     * @param  string $name
+     * @return ApplicationUserId
+     */
+    public function getApplicationUserId($id)
+    {
+        $appUser = \Mockery::mock('\\MessageApp\\ApplicationUserId');
+        $appUser->shouldReceive('getId')->andReturn((string)$id);
+        $appUser->shouldReceive('__toString')->andReturn((string)$id);
+        return $appUser;
+    }
+
+    /**
+     * @param  ApplicationUserId $id
+     * @param  string            $name
      * @return ApplicationUser
      */
-    public function getApplicationUser($id, $name)
+    public function getApplicationUser(ApplicationUserId $id, $name)
     {
         $appUser = \Mockery::mock('\\MessageApp\\ApplicationUser');
         $appUser->shouldReceive('getId')->andReturn($id);

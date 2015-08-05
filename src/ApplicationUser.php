@@ -3,11 +3,10 @@ namespace MessageApp;
 
 interface ApplicationUser
 {
-
     /**
      * Returns the id
      *
-     * @return string|int
+     * @return ApplicationUserId
      */
     public function getId();
 

@@ -5,7 +5,7 @@ use Hangman\Hangman;
 use MessageApp\Application\Response\Handler\ApplicationResponseHandler;
 use MessageApp\MessageApplication;
 use MessageApp\Test\Mock\MessageAppMocker;
-use MiniGame\Player;
+use MiniGame\Entity\Player;
 use Psr\Log\LoggerInterface;
 
 class MessageAppTest extends \PHPUnit_Framework_TestCase
@@ -52,7 +52,7 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
      */
     public function testHandleWithMessage()
     {
-        $userId = 42;
+        $userId = $this->getApplicationUserId(42);
         $userName = 'Arthur';
         $appUser = $this->getApplicationUser($userId, $userName);
         $response = $this->getSendMessageResponse($appUser, '');
@@ -94,7 +94,7 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
      */
     public function testHandleWithParsingError()
     {
-        $userId = 42;
+        $userId = $this->getApplicationUserId(42);
         $userName = 'Arthur';
         $user = $this->getApplicationUser($userId, $userName);
 
@@ -151,7 +151,7 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
      * Returns the mini-game for the player
      *
      * @param  MessageApplication $obj
-     * @param  Player             $player
+     * @param  \MiniGame\Entity\Player             $player
      * @return Hangman
      */
     protected function retrievePlayerMiniGame(MessageApplication $obj, Player $player)
