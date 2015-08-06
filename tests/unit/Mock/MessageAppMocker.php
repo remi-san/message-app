@@ -3,6 +3,7 @@ namespace MessageApp\Test\Mock;
 
 use League\Tactician\CommandBus;
 use MessageApp\Application\Command\ApplicationCommand;
+use MessageApp\Application\Command\CreateUserCommand;
 use MessageApp\Application\Message;
 use MessageApp\Application\MessageSender;
 use MessageApp\Application\Response\ApplicationResponse;
@@ -12,6 +13,7 @@ use MessageApp\ApplicationUser;
 use MessageApp\ApplicationUserId;
 use MessageApp\Parser\MessageParser;
 use MessageApp\User\ApplicationUserManager;
+use MessageApp\User\Repository\AppUserRepository;
 
 trait MessageAppMocker
 {
@@ -127,5 +129,24 @@ trait MessageAppMocker
         $manager = \Mockery::mock('\\MessageApp\\User\\ApplicationUserManager');
         $manager->shouldReceive('get')->andReturn($user);
         return $manager;
+    }
+
+    /**
+     * @return AppUserRepository
+     */
+    public function getUserRepository()
+    {
+        return \Mockery::mock('\\MessageApp\\User\\Repository\\AppUserRepository');
+    }
+
+    /**
+     * @param  ApplicationUser $user
+     * @return CreateUserCommand
+     */
+    public function getCreateUserCommand(ApplicationUser $user)
+    {
+        $command = \Mockery::mock('\\MessageApp\\Application\\Command\\CreateUserCommand');
+        $command->shouldReceive('getUser')->andReturn($user);
+        return $command;
     }
 }

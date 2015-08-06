@@ -15,6 +15,7 @@
     ],
     "require": {
         "psr/log": "~1.0",
+        "ramsey/uuid": "~2.8",
         "league/tactician": "~0.6"
     },
     "require-dev": {
