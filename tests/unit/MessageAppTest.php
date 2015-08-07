@@ -1,10 +1,10 @@
 <?php
 namespace MessageApp\Test;
 
-use Hangman\Hangman;
 use MessageApp\Application\Response\Handler\ApplicationResponseHandler;
 use MessageApp\MessageApplication;
 use MessageApp\Test\Mock\MessageAppMocker;
+use MiniGame\Entity\MiniGame;
 use MiniGame\Entity\Player;
 use Psr\Log\LoggerInterface;
 
@@ -151,8 +151,8 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
      * Returns the mini-game for the player
      *
      * @param  MessageApplication $obj
-     * @param  \MiniGame\Entity\Player             $player
-     * @return Hangman
+     * @param  Player             $player
+     * @return MiniGame
      */
     protected function retrievePlayerMiniGame(MessageApplication $obj, Player $player)
     {
