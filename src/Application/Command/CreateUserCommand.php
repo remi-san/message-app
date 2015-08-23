@@ -1,25 +1,23 @@
 <?php
 namespace MessageApp\Application\Command;
 
-use MessageApp\ApplicationUser;
-
 class CreateUserCommand implements ApplicationCommand
 {
     const NAME = 'USER.CREATE';
 
     /**
-     * @var ApplicationUser
+     * @var object
      */
-    private $user;
+    private $originalUser;
 
     /**
      * Constructor
      *
-     * @param ApplicationUser $user
+     * @param object $originalUser
      */
-    public function __construct(ApplicationUser $user)
+    public function __construct($originalUser)
     {
-        $this->user = $user;
+        $this->originalUser = $originalUser;
     }
 
     /**
@@ -35,10 +33,10 @@ class CreateUserCommand implements ApplicationCommand
     /**
      * Returns the user
      *
-     * @return ApplicationUser
+     * @return object
      */
-    public function getUser()
+    public function getOriginalUser()
     {
-        return $this->user;
+        return $this->originalUser;
     }
 }

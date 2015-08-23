@@ -1,10 +1,10 @@
 <?php
 namespace MessageApp\Test;
 
-use MessageApp\Application\Command\CreateUserCommand;
 use MessageApp\Application\Handler\MessageAppCommandHandler;
 use MessageApp\Application\Response\SendMessageResponse;
 use MessageApp\Test\Mock\MessageAppMocker;
+use MessageApp\User\Exception\AppUserException;
 
 class CommandHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -38,9 +38,9 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
     public function testOK()
     {
         $this->userManager->shouldReceive('save')->once();
+        $this->userManager->shouldReceive('create')->andReturn($this->user);
 
         $handler = new MessageAppCommandHandler($this->userManager);
-        $handler->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
 
         $response = $handler->handleCreateUserCommand($this->command);
 
@@ -55,14 +55,23 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
     public function testKO()
     {
         $this->userManager->shouldReceive('save')->andThrow('\\Exception');
+        $this->userManager->shouldReceive('create')->andThrow(new AppUserException($this->user));
 
         $handler = new MessageAppCommandHandler($this->userManager);
-        $handler->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
 
         $response = $handler->handleCreateUserCommand($this->command);
 
         $this->assertTrue($response instanceof SendMessageResponse);
-        $this->assertEquals($this->user, $response->getUser());
+        $this->assertEquals($this->user, $response->getUser()->getOriginalUser());
         $this->assertEquals('Could not create the player!', $response->getMessage());
+    }
+
+    /**
+     * @test
+     */
+    public function testHandler()
+    {
+        $handler = new MessageAppCommandHandler($this->userManager);
+        $handler->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
     }
 }

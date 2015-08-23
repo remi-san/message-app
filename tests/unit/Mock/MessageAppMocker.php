@@ -140,13 +140,13 @@ trait MessageAppMocker
     }
 
     /**
-     * @param  ApplicationUser $user
+     * @param  object $user
      * @return CreateUserCommand
      */
-    public function getCreateUserCommand(ApplicationUser $user)
+    public function getCreateUserCommand($user)
     {
         $command = \Mockery::mock('\\MessageApp\\Application\\Command\\CreateUserCommand');
-        $command->shouldReceive('getUser')->andReturn($user);
+        $command->shouldReceive('getOriginalUser')->andReturn($user);
         return $command;
     }
 }
