@@ -102,7 +102,6 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
 
         $exception = \Mockery::mock('\\MessageApp\\Parser\\Exception\\MessageParserException');
         $exception->shouldReceive('getUser')->andReturn($user);
-        $exception->shouldReceive('getMessage')->andReturn('');
 
         $parser = \Mockery::mock('\\MessageApp\\Parser\\MessageParser');
         $parser->shouldReceive('parse')->andThrow($exception);
