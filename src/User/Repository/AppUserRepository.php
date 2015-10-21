@@ -9,7 +9,7 @@ interface AppUserRepository
     /**
      * Finds an user by its primary key / identifier.
      *
-     * @param ApplicationUserId $id The identifier.
+     * @param  string $id The identifier.
      *
      * @return ApplicationUser The user.
      */
