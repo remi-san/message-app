@@ -50,15 +50,6 @@ interface AppUserRepository
     public function findOneBy(array $criteria);
 
     /**
-     * Get a player by its twitter id
-     *
-     * @param  int $id
-     *
-     * @return ApplicationUser The user.
-     */
-    public function getByTwitterId($id);
-
-    /**
      * Saves a mini game
      *
      * @param  ApplicationUser $game
