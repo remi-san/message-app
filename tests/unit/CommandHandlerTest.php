@@ -5,6 +5,7 @@ use MessageApp\Application\Handler\MessageAppCommandHandler;
 use MessageApp\Application\Response\SendMessageResponse;
 use MessageApp\Test\Mock\MessageAppMocker;
 use MessageApp\User\Exception\AppUserException;
+use Psr\Log\LoggerInterface;
 
 class CommandHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -63,7 +64,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($response instanceof SendMessageResponse);
         $this->assertEquals($this->user, $response->getUser()->getOriginalUser());
-        $this->assertEquals('Could not create the player!', $response->getMessage());
+        $this->assertEquals('Could not create the user!', $response->getMessage());
     }
 
     /**
@@ -72,6 +73,6 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
     public function testHandler()
     {
         $handler = new MessageAppCommandHandler($this->userManager);
-        $handler->setLogger(\Mockery::mock('\\Psr\\Log\\LoggerInterface'));
+        $handler->setLogger(\Mockery::mock(LoggerInterface::class));
     }
 }

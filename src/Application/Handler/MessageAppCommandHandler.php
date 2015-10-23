@@ -51,7 +51,7 @@ class MessageAppCommandHandler implements LoggerAwareInterface
             $messageText = 'Welcome!';
         } catch (\Exception $e) {
             $user = new UndefinedApplicationUser($originalUser);
-            $messageText = 'Could not create the player!';
+            $messageText = 'Could not create the user!';
         }
 
         // TODO do not build response here - send event while saving
