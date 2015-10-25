@@ -17,7 +17,7 @@ class ApplicationUserId
      */
     public function __construct($id = null)
     {
-        $this->id = ($id) ? (string) $id : Uuid::uuid4()->toString();
+        $this->id = (string) (($id) ?  $id : Uuid::uuid4());
     }
 
     /**
