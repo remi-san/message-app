@@ -40,10 +40,12 @@ class MessageResponseHandler implements ApplicationResponseHandler, LoggerAwareI
      */
     public function handle(ApplicationResponse $response = null, $context = null)
     {
-        if (!$response || !($response instanceof Message)) {
-            if ($this->logger) {
-                $this->logger->info('Cannot handle response!');
-            }
+        if ($response === null) {
+            return;
+        }
+
+        if (!($response instanceof Message)) {
+            $this->logger->info('Cannot handle response!');
             return;
         }
 

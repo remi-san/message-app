@@ -23,7 +23,6 @@ class MessageResponseHandlerTest extends \PHPUnit_Framework_TestCase
         $context = "context";
 
         $logger = \Mockery::mock('\\Psr\\Log\\LoggerInterface');
-        $logger->shouldReceive('info')->once();
 
         $sender = $this->getMessageSender();
 
