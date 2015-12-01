@@ -5,10 +5,9 @@ use League\Tactician\CommandBus;
 use League\Tactician\Plugins\NamedCommand\NamedCommand;
 use MessageApp\Application\Command\CreateUserCommand;
 use MessageApp\Application\Message;
+use MessageApp\Application\Message\Handler\MessageHandler;
+use MessageApp\Application\Message\SendMessageResponse;
 use MessageApp\Application\MessageSender;
-use MessageApp\Application\Response\ApplicationResponse;
-use MessageApp\Application\Response\Handler\ApplicationResponseHandler;
-use MessageApp\Application\Response\SendMessageResponse;
 use MessageApp\ApplicationUser;
 use MessageApp\ApplicationUserId;
 use MessageApp\Parser\MessageParser;
@@ -18,14 +17,14 @@ use MessageApp\User\Repository\AppUserRepository;
 trait MessageAppMocker
 {
     /**
-     * @param  ApplicationResponse $response
+     * @param  Message $message
      * @return CommandBus
      */
-    public function getCommandBus(ApplicationResponse $response = null)
+    public function getCommandBus(Message $message = null)
     {
         $executor = \Mockery::mock('\\League\\Tactician\\CommandBus');
-        if ($response) {
-            $executor->shouldReceive('handle')->andReturn($response);
+        if ($message) {
+            $executor->shouldReceive('handle')->andReturn($message);
         }
         return $executor;
     }
@@ -33,11 +32,11 @@ trait MessageAppMocker
     /**
      * @param  ApplicationUser $user
      * @param  string          $message
-     * @return SendMessageResponse
+     * @return \MessageApp\Application\Message\SendMessageResponse
      */
     public function getSendMessageResponse(ApplicationUser $user = null, $message = null)
     {
-        $response = \Mockery::mock('\\MessageApp\\Application\\Response\\SendMessageResponse');
+        $response = \Mockery::mock('\\MessageApp\\Application\\Message\\SendMessageResponse');
         $response->shouldReceive('getUser')->andReturn($user);
         $response->shouldReceive('getMessage')->andReturn($message);
         return $response;
@@ -80,11 +79,11 @@ trait MessageAppMocker
     }
 
     /**
-     * @return ApplicationResponseHandler
+     * @return \MessageApp\Application\Message\Handler\MessageHandler
      */
     public function getAppResponseHandler()
     {
-        return \Mockery::mock('\\MessageApp\\Application\\Response\\Handler\\ApplicationResponseHandler');
+        return \Mockery::mock('\\MessageApp\\Application\\Message\\Handler\\MessageHandler');
     }
 
     /**

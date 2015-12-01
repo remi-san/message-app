@@ -1,7 +1,7 @@
 <?php
 namespace MessageApp\Test;
 
-use MessageApp\Application\Response\Handler\MessageResponseHandler;
+use MessageApp\Application\Message\Handler\MessageSendingHandler;
 use MessageApp\Test\Mock\MessageAppMocker;
 use MessageApp\Test\Mock\MessageResponse;
 
@@ -26,25 +26,7 @@ class MessageResponseHandlerTest extends \PHPUnit_Framework_TestCase
 
         $sender = $this->getMessageSender();
 
-        $handler = new MessageResponseHandler($sender);
-        $handler->setLogger($logger);
-        $handler->handle($response, $context);
-    }
-
-    /**
-     * @test
-     */
-    public function testWithNonMessageResponse()
-    {
-        $response = \Mockery::mock('\\MessageApp\\Application\\Response\\ApplicationResponse');
-        $context = "context";
-
-        $logger = \Mockery::mock('\\Psr\\Log\\LoggerInterface');
-        $logger->shouldReceive('info')->once();
-
-        $sender = $this->getMessageSender();
-
-        $handler = new MessageResponseHandler($sender);
+        $handler = new MessageSendingHandler($sender);
         $handler->setLogger($logger);
         $handler->handle($response, $context);
     }
@@ -63,7 +45,7 @@ class MessageResponseHandlerTest extends \PHPUnit_Framework_TestCase
         $sender = $this->getMessageSender();
         $sender->shouldReceive('send')->with($response, $context);
 
-        $handler = new MessageResponseHandler($sender);
+        $handler = new MessageSendingHandler($sender);
         $handler->setLogger($logger);
         $handler->handle($response, $context);
     }

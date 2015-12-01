@@ -1,7 +1,7 @@
 <?php
 namespace MessageApp\Test;
 
-use MessageApp\Application\Response\Handler\ApplicationResponseHandler;
+use MessageApp\Application\Message\Handler\MessageHandler;
 use MessageApp\MessageApplication;
 use MessageApp\Test\Mock\MessageAppMocker;
 use MiniGame\Entity\MiniGame;
@@ -26,9 +26,9 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
      */
     protected $logger;
     /**
-     * @var ApplicationResponseHandler
+     * @var MessageHandler
      */
-    private $appResponseHandler;
+    private $messageHandler;
 
     /**
      * Init the mocks
@@ -37,7 +37,7 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
     {
         $this->lastMessageId = self::ID_1;
 
-        $this->appResponseHandler = $this->getAppResponseHandler();
+        $this->messageHandler = $this->getAppResponseHandler();
 
         $this->logger = \Mockery::mock('\\Psr\\Log\\LoggerInterface');
     }
@@ -55,23 +55,23 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
         $userId = $this->getApplicationUserId(42);
         $userName = 'Arthur';
         $appUser = $this->getApplicationUser($userId, $userName);
-        $response = $this->getSendMessageResponse($appUser, '');
+        $message = $this->getSendMessageResponse($appUser, '');
 
-        $message = new \stdClass();
+        $contextMessage = new \stdClass();
 
         $command = $this->getApplicationCommand($appUser);
 
         $this->logger->shouldReceive('info')->once();
-        $this->appResponseHandler->shouldReceive('handle')->with($response, $message)->once();
+        $this->messageHandler->shouldReceive('handle')->with($message, $contextMessage)->once();
 
         $hangmanApp = new MessageApplication(
-            $this->appResponseHandler,
+            $this->messageHandler,
             $this->getParser($command),
-            $this->getCommandBus($response)
+            $this->getCommandBus($message)
         );
         $hangmanApp->setLogger($this->logger);
 
-        $hangmanApp->handle($message);
+        $hangmanApp->handle($contextMessage);
     }
 
     /**
@@ -83,7 +83,7 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
 
         $this->logger->shouldReceive('info')->twice();
 
-        $hangmanApp = new MessageApplication($this->appResponseHandler, $this->getParser(null), $this->getCommandBus());
+        $hangmanApp = new MessageApplication($this->messageHandler, $this->getParser(null), $this->getCommandBus());
         $hangmanApp->setLogger($this->logger);
 
         $hangmanApp->handle($message);
@@ -108,9 +108,9 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
 
         $this->logger->shouldReceive('info')->twice();
         $this->logger->shouldReceive('error')->once();
-        $this->appResponseHandler->shouldReceive('handle')->once();
+        $this->messageHandler->shouldReceive('handle')->once();
 
-        $hangmanApp = new MessageApplication($this->appResponseHandler, $parser, $this->getCommandBus());
+        $hangmanApp = new MessageApplication($this->messageHandler, $parser, $this->getCommandBus());
         $hangmanApp->setLogger($this->logger);
 
         $hangmanApp->handle($message);

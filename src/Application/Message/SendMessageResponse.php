@@ -1,10 +1,10 @@
 <?php
-namespace MessageApp\Application\Response;
+namespace MessageApp\Application\Message;
 
 use MessageApp\Application\Message;
 use MessageApp\ApplicationUser;
 
-class SendMessageResponse implements ApplicationResponse, Message
+class SendMessageResponse implements Message
 {
     /**
      * @var string

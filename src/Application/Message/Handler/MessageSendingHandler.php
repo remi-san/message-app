@@ -1,14 +1,13 @@
 <?php
-namespace MessageApp\Application\Response\Handler;
+namespace MessageApp\Application\Message\Handler;
 
 use MessageApp\Application\Message;
 use MessageApp\Application\MessageSender;
-use MessageApp\Application\Response\ApplicationResponse;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-class MessageResponseHandler implements ApplicationResponseHandler, LoggerAwareInterface
+class MessageSendingHandler implements MessageHandler, LoggerAwareInterface
 {
     /**
      * @var LoggerInterface
@@ -34,23 +33,18 @@ class MessageResponseHandler implements ApplicationResponseHandler, LoggerAwareI
     /**
      * Handle a response
      *
-     * @param  ApplicationResponse $response
-     * @param  object              $context
+     * @param  Message $message
+     * @param  object  $context
      * @return void
      */
-    public function handle(ApplicationResponse $response = null, $context = null)
+    public function handle(Message $message = null, $context = null)
     {
-        if ($response === null) {
+        if ($message === null) {
             return;
         }
 
-        if (!($response instanceof Message)) {
-            $this->logger->info('Cannot handle response!');
-            return;
-        }
-
-        $this->logger->info('Sending message', array('message' => $response->getMessage()));
-        $this->messageSender->send($response, $context);
+        $this->logger->info('Sending message', array('message' => $message->getMessage()));
+        $this->messageSender->send($message, $context);
     }
 
     /**

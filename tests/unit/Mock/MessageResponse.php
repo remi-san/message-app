@@ -2,9 +2,8 @@
 namespace MessageApp\Test\Mock;
 
 use MessageApp\Application\Message;
-use MessageApp\Application\Response\ApplicationResponse;
 
-class MessageResponse implements ApplicationResponse, Message
+class MessageResponse implements Message
 {
     public function getUser()
     {

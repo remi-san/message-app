@@ -2,7 +2,7 @@
 namespace MessageApp\Application\Handler;
 
 use MessageApp\Application\Command\CreateUserCommand;
-use MessageApp\Application\Response\SendMessageResponse;
+use MessageApp\Application\Message\SendMessageResponse;
 use MessageApp\ApplicationUser;
 use MessageApp\User\ApplicationUserManager;
 use MessageApp\User\Exception\AppUserException;
