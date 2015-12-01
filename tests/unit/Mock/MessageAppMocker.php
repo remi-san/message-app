@@ -2,7 +2,7 @@
 namespace MessageApp\Test\Mock;
 
 use League\Tactician\CommandBus;
-use MessageApp\Application\Command\ApplicationCommand;
+use League\Tactician\Plugins\NamedCommand\NamedCommand;
 use MessageApp\Application\Command\CreateUserCommand;
 use MessageApp\Application\Message;
 use MessageApp\Application\MessageSender;
@@ -70,11 +70,11 @@ trait MessageAppMocker
 
     /**
      * @param  ApplicationUser $user
-     * @return ApplicationCommand
+     * @return NamedCommand
      */
     public function getApplicationCommand(ApplicationUser $user = null)
     {
-        $command = \Mockery::mock('\\MessageApp\\Application\\Command\\ApplicationCommand');
+        $command = \Mockery::mock('\\League\Tactician\Plugins\NamedCommand\NamedCommand');
         $command->shouldReceive('getUser')->andReturn($user);
         return $command;
     }
@@ -110,10 +110,10 @@ trait MessageAppMocker
     }
 
     /**
-     * @param  ApplicationCommand $command
+     * @param  NamedCommand $command
      * @return MessageParser
      */
-    public function getParser(ApplicationCommand $command = null)
+    public function getParser(NamedCommand $command = null)
     {
         $parser = \Mockery::mock('\\MessageApp\\Parser\\MessageParser');
         $parser->shouldReceive('parse')->andReturn($command);

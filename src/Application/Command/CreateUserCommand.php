@@ -1,7 +1,9 @@
 <?php
 namespace MessageApp\Application\Command;
 
-class CreateUserCommand implements ApplicationCommand
+use League\Tactician\Plugins\NamedCommand\NamedCommand;
+
+class CreateUserCommand implements NamedCommand
 {
     const NAME = 'USER.CREATE';
 
