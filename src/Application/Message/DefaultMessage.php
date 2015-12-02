@@ -4,7 +4,7 @@ namespace MessageApp\Application\Message;
 use MessageApp\Application\Message;
 use MessageApp\ApplicationUser;
 
-class SendMessageResponse implements Message
+class DefaultMessage implements Message
 {
     /**
      * @var string

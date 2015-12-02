@@ -5,8 +5,7 @@ use League\Tactician\CommandBus;
 use League\Tactician\Plugins\NamedCommand\NamedCommand;
 use MessageApp\Application\Command\CreateUserCommand;
 use MessageApp\Application\Message;
-use MessageApp\Application\Message\Handler\MessageHandler;
-use MessageApp\Application\Message\SendMessageResponse;
+use MessageApp\Application\Message\DefaultMessage;
 use MessageApp\Application\MessageSender;
 use MessageApp\ApplicationUser;
 use MessageApp\ApplicationUserId;
@@ -32,11 +31,11 @@ trait MessageAppMocker
     /**
      * @param  ApplicationUser $user
      * @param  string          $message
-     * @return \MessageApp\Application\Message\SendMessageResponse
+     * @return \MessageApp\Application\Message\DefaultMessage
      */
     public function getSendMessageResponse(ApplicationUser $user = null, $message = null)
     {
-        $response = \Mockery::mock('\\MessageApp\\Application\\Message\\SendMessageResponse');
+        $response = \Mockery::mock('\\MessageApp\\Application\\Message\\DefaultMessage');
         $response->shouldReceive('getUser')->andReturn($user);
         $response->shouldReceive('getMessage')->andReturn($message);
         return $response;
@@ -76,14 +75,6 @@ trait MessageAppMocker
         $command = \Mockery::mock('\\League\Tactician\Plugins\NamedCommand\NamedCommand');
         $command->shouldReceive('getUser')->andReturn($user);
         return $command;
-    }
-
-    /**
-     * @return \MessageApp\Application\Message\Handler\MessageHandler
-     */
-    public function getAppResponseHandler()
-    {
-        return \Mockery::mock('\\MessageApp\\Application\\Message\\Handler\\MessageHandler');
     }
 
     /**

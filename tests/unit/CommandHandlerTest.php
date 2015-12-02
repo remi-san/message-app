@@ -2,7 +2,7 @@
 namespace MessageApp\Test;
 
 use MessageApp\Application\Handler\MessageAppCommandHandler;
-use MessageApp\Application\Message\SendMessageResponse;
+use MessageApp\Application\Message\DefaultMessage;
 use MessageApp\Test\Mock\MessageAppMocker;
 use MessageApp\User\Exception\AppUserException;
 use Psr\Log\LoggerInterface;
@@ -45,7 +45,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
 
         $response = $handler->handleCreateUserCommand($this->command);
 
-        $this->assertTrue($response instanceof SendMessageResponse);
+        $this->assertTrue($response instanceof DefaultMessage);
         $this->assertEquals($this->user, $response->getUser());
         $this->assertEquals('Welcome!', $response->getMessage());
     }
@@ -62,7 +62,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
 
         $response = $handler->handleCreateUserCommand($this->command);
 
-        $this->assertTrue($response instanceof SendMessageResponse);
+        $this->assertTrue($response instanceof DefaultMessage);
         $this->assertEquals($this->user, $response->getUser()->getOriginalUser());
         $this->assertEquals('Could not create the user!', $response->getMessage());
     }

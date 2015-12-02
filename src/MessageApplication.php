@@ -3,8 +3,8 @@ namespace MessageApp;
 
 use League\Tactician\CommandBus;
 use League\Tactician\Plugins\NamedCommand\NamedCommand;
-use MessageApp\Application\Message\Handler\MessageHandler;
-use MessageApp\Application\Message\SendMessageResponse;
+use MessageApp\Application\Message\DefaultMessage;
+use MessageApp\Application\MessageSender;
 use MessageApp\Parser\Exception\MessageParserException;
 use MessageApp\Parser\MessageParser;
 use Psr\Log\LoggerAwareInterface;
@@ -19,9 +19,9 @@ class MessageApplication implements LoggerAwareInterface
     protected $logger;
 
     /**
-     * @var \MessageApp\Application\Message\Handler\MessageHandler
+     * @var MessageSender
      */
-    protected $messageHandler;
+    protected $messageSender;
 
     /**
      * @var MessageParser
@@ -36,16 +36,16 @@ class MessageApplication implements LoggerAwareInterface
     /**
      * Constructor
      *
-     * @param MessageHandler $messageHandler
+     * @param MessageSender  $messageSender
      * @param MessageParser  $messageParser
      * @param CommandBus     $commandBus
      */
     public function __construct(
-        MessageHandler $messageHandler,
+        MessageSender $messageSender,
         MessageParser $messageParser,
         CommandBus $commandBus
     ) {
-        $this->messageHandler = $messageHandler;
+        $this->messageSender = $messageSender;
         $this->messageParser = $messageParser;
         $this->commandBus = $commandBus;
         $this->logger = new NullLogger();
@@ -76,8 +76,8 @@ class MessageApplication implements LoggerAwareInterface
             return $this->messageParser->parse($message);
         } catch (MessageParserException $e) {
             $this->logger->error('Error parsing or executing command', array('exception' => $e->getMessage()));
-            $this->messageHandler->handle(
-                new SendMessageResponse($e->getUser(), $e->getMessage()),
+            $this->messageSender->send(
+                new DefaultMessage($e->getUser(), $e->getMessage()),
                 $message
             );
             return null;
@@ -101,7 +101,7 @@ class MessageApplication implements LoggerAwareInterface
         $returnMessage = $this->commandBus->handle($command);
 
         // TODO handle after event dispatched
-        $this->messageHandler->handle($returnMessage, $originalMessage);
+        $this->messageSender->send($returnMessage, $originalMessage);
     }
 
     /**

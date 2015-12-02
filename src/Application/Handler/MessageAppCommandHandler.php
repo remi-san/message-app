@@ -2,7 +2,7 @@
 namespace MessageApp\Application\Handler;
 
 use MessageApp\Application\Command\CreateUserCommand;
-use MessageApp\Application\Message\SendMessageResponse;
+use MessageApp\Application\Message\DefaultMessage;
 use MessageApp\ApplicationUser;
 use MessageApp\User\ApplicationUserManager;
 use MessageApp\User\Exception\AppUserException;
@@ -55,7 +55,7 @@ class MessageAppCommandHandler implements LoggerAwareInterface
         }
 
         // TODO do not build response here - send event while saving
-        return new SendMessageResponse($user, $messageText);
+        return new DefaultMessage($user, $messageText);
     }
 
     /**
