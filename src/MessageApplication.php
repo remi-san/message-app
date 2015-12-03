@@ -101,7 +101,9 @@ class MessageApplication implements LoggerAwareInterface
         $returnMessage = $this->commandBus->handle($command);
 
         // TODO handle after event dispatched
-        $this->messageSender->send($returnMessage, $originalMessage);
+        if ($returnMessage) {
+            $this->messageSender->send($returnMessage, $originalMessage);
+        }
     }
 
     /**
