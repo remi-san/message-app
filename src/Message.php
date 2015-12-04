@@ -1,7 +1,7 @@
 <?php
-namespace MessageApp\Application;
+namespace MessageApp;
 
-use MessageApp\ApplicationUser;
+use MessageApp\User\ApplicationUser;
 
 interface Message
 {

@@ -1,5 +1,8 @@
 <?php
-namespace MessageApp;
+namespace MessageApp\Exception;
+
+use Exception;
+use MessageApp\User\ApplicationUser;
 
 class MessageAppException extends \Exception
 {

@@ -1,7 +1,7 @@
 <?php
 namespace MessageApp\Test;
 
-use MessageApp\MessageAppException;
+use MessageApp\Exception\MessageAppException;
 use MessageApp\Test\Mock\MessageAppMocker;
 use MessageApp\User\Exception\UnsupportedUserException;
 use MessageApp\User\Exception\UserNotFoundException;

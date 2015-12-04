@@ -1,5 +1,5 @@
 <?php
-namespace MessageApp;
+namespace MessageApp\User;
 
 interface ApplicationUser
 {

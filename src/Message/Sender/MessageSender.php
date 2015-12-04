@@ -1,5 +1,7 @@
 <?php
-namespace MessageApp\Application;
+namespace MessageApp\Message\Sender;
+
+use MessageApp\Message;
 
 interface MessageSender
 {

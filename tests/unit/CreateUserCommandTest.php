@@ -1,7 +1,7 @@
 <?php
 namespace MessageApp\Test;
 
-use MessageApp\Application\Command\CreateUserCommand;
+use MessageApp\Command\CreateUserCommand;
 use MessageApp\Test\Mock\MessageAppMocker;
 
 class CreateUserCommandTest extends \PHPUnit_Framework_TestCase

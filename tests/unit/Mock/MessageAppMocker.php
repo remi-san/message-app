@@ -3,14 +3,14 @@ namespace MessageApp\Test\Mock;
 
 use League\Tactician\CommandBus;
 use League\Tactician\Plugins\NamedCommand\NamedCommand;
-use MessageApp\Application\Command\CreateUserCommand;
-use MessageApp\Application\Message;
-use MessageApp\Application\Message\DefaultMessage;
-use MessageApp\Application\MessageSender;
-use MessageApp\ApplicationUser;
-use MessageApp\ApplicationUserId;
+use MessageApp\Command\CreateUserCommand;
+use MessageApp\Message;
+use MessageApp\Message\DefaultMessage;
+use MessageApp\Message\Sender\MessageSender;
 use MessageApp\Parser\MessageParser;
-use MessageApp\User\ApplicationUserManager;
+use MessageApp\User\ApplicationUser;
+use MessageApp\User\ApplicationUserId;
+use MessageApp\User\Manager\ApplicationUserManager;
 use MessageApp\User\Repository\AppUserRepository;
 
 trait MessageAppMocker
@@ -31,11 +31,11 @@ trait MessageAppMocker
     /**
      * @param  ApplicationUser $user
      * @param  string          $message
-     * @return \MessageApp\Application\Message\DefaultMessage
+     * @return DefaultMessage
      */
     public function getSendMessageResponse(ApplicationUser $user = null, $message = null)
     {
-        $response = \Mockery::mock('\\MessageApp\\Application\\Message\\DefaultMessage');
+        $response = \Mockery::mock('\\MessageApp\\Message\\DefaultMessage');
         $response->shouldReceive('getUser')->andReturn($user);
         $response->shouldReceive('getMessage')->andReturn($message);
         return $response;
@@ -43,24 +43,24 @@ trait MessageAppMocker
 
     /**
      * @param  int    $id
-     * @return ApplicationUserId
+     * @return \MessageApp\User\ApplicationUserId
      */
     public function getApplicationUserId($id)
     {
-        $appUser = \Mockery::mock('\\MessageApp\\ApplicationUserId');
+        $appUser = \Mockery::mock('\\MessageApp\\User\\ApplicationUserId');
         $appUser->shouldReceive('getId')->andReturn((string)$id);
         $appUser->shouldReceive('__toString')->andReturn((string)$id);
         return $appUser;
     }
 
     /**
-     * @param  ApplicationUserId $id
+     * @param  \MessageApp\User\ApplicationUserId $id
      * @param  string            $name
      * @return ApplicationUser
      */
     public function getApplicationUser(ApplicationUserId $id, $name)
     {
-        $appUser = \Mockery::mock('\\MessageApp\\ApplicationUser');
+        $appUser = \Mockery::mock('\\MessageApp\\User\\ApplicationUser');
         $appUser->shouldReceive('getId')->andReturn($id);
         $appUser->shouldReceive('getName')->andReturn($name);
         return $appUser;
@@ -82,7 +82,7 @@ trait MessageAppMocker
      */
     public function getMessageSender()
     {
-        return \Mockery::mock('\\MessageApp\\Application\\MessageSender');
+        return \Mockery::mock('\\MessageApp\\Message\\Sender\\MessageSender');
     }
 
     /**
@@ -92,7 +92,7 @@ trait MessageAppMocker
      */
     public function getMessage($text, ApplicationUser $user)
     {
-        $message = \Mockery::mock('\\MessageApp\\Application\\Message');
+        $message = \Mockery::mock('\\MessageApp\\Message');
         $message->shouldReceive('getMessage')->andReturn($text);
         $message->shouldReceive('getUser')->andReturn($user);
 
@@ -116,7 +116,7 @@ trait MessageAppMocker
      */
     public function getUserManager(ApplicationUser $user)
     {
-        $manager = \Mockery::mock('\\MessageApp\\User\\ApplicationUserManager');
+        $manager = \Mockery::mock('\\MessageApp\\User\\Manager\\ApplicationUserManager');
         $manager->shouldReceive('get')->andReturn($user);
         return $manager;
     }
@@ -135,7 +135,7 @@ trait MessageAppMocker
      */
     public function getCreateUserCommand($user)
     {
-        $command = \Mockery::mock('\\MessageApp\\Application\\Command\\CreateUserCommand');
+        $command = \Mockery::mock('\\MessageApp\\Command\\CreateUserCommand');
         $command->shouldReceive('getOriginalUser')->andReturn($user);
         return $command;
     }

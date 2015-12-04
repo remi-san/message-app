@@ -1,7 +1,7 @@
 <?php
 namespace MessageApp\Test;
 
-use MessageApp\Application\Message\DefaultMessage;
+use MessageApp\Message\DefaultMessage;
 use MessageApp\Test\Mock\MessageAppMocker;
 
 class ApplicationResponseTest extends \PHPUnit_Framework_TestCase

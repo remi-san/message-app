@@ -1,5 +1,5 @@
 <?php
-namespace MessageApp;
+namespace MessageApp\User;
 
 use Rhumsaa\Uuid\Uuid;
 

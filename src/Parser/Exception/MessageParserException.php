@@ -1,7 +1,7 @@
 <?php
 namespace MessageApp\Parser\Exception;
 
-use MessageApp\MessageAppException;
+use MessageApp\Exception\MessageAppException;
 
 class MessageParserException extends MessageAppException
 {

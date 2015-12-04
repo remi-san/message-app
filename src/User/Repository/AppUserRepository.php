@@ -1,8 +1,7 @@
 <?php
 namespace MessageApp\User\Repository;
 
-use MessageApp\ApplicationUser;
-use MessageApp\ApplicationUserId;
+use MessageApp\User\ApplicationUser;
 
 interface AppUserRepository
 {

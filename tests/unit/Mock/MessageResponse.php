@@ -1,7 +1,7 @@
 <?php
 namespace MessageApp\Test\Mock;
 
-use MessageApp\Application\Message;
+use MessageApp\Message;
 
 class MessageResponse implements Message
 {

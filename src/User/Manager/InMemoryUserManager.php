@@ -1,26 +1,25 @@
 <?php
-namespace MessageApp\User;
+namespace MessageApp\User\Manager;
 
-use MessageApp\ApplicationUser;
-use MessageApp\ApplicationUserId;
+use MessageApp\User\ApplicationUser;
+use MessageApp\User\ApplicationUserId;
 use MessageApp\User\Exception\AppUserException;
-use MessageApp\User\Repository\AppUserRepository;
 
-abstract class InDatabaseUserManager implements ApplicationUserManager
+abstract class InMemoryUserManager implements ApplicationUserManager
 {
     /**
-     * @var AppUserRepository
+     * @var ApplicationUser[]
      */
-    protected $userRepository;
+    protected $users;
 
     /**
      * Constructor
      *
-     * @param AppUserRepository $userRepository
+     * @param ApplicationUser[] $users
      */
-    public function __construct(AppUserRepository $userRepository)
+    public function __construct(array $users = array())
     {
-        $this->userRepository = $userRepository;
+        $this->users = $users;
     }
 
     /**
@@ -28,11 +27,10 @@ abstract class InDatabaseUserManager implements ApplicationUserManager
      *
      * @param  ApplicationUserId $id
      * @return ApplicationUser
-     * @throws AppUserException
      */
     public function get(ApplicationUserId $id)
     {
-        return $this->userRepository->find($id);
+        return array_key_exists((string)$id, $this->users) ? $this->users[(string)$id] : null;
     }
 
     /**
@@ -61,6 +59,6 @@ abstract class InDatabaseUserManager implements ApplicationUserManager
      */
     public function save(ApplicationUser $user)
     {
-        $this->userRepository->save($user);
+        $this->users[(string)$user->getId()] = $user;
     }
 }

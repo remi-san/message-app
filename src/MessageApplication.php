@@ -3,8 +3,8 @@ namespace MessageApp;
 
 use League\Tactician\CommandBus;
 use League\Tactician\Plugins\NamedCommand\NamedCommand;
-use MessageApp\Application\Message\DefaultMessage;
-use MessageApp\Application\MessageSender;
+use MessageApp\Message\DefaultMessage;
+use MessageApp\Message\Sender\MessageSender;
 use MessageApp\Parser\Exception\MessageParserException;
 use MessageApp\Parser\MessageParser;
 use Psr\Log\LoggerAwareInterface;

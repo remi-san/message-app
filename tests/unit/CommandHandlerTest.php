@@ -1,8 +1,8 @@
 <?php
 namespace MessageApp\Test;
 
-use MessageApp\Application\Handler\MessageAppCommandHandler;
-use MessageApp\Application\Message\DefaultMessage;
+use MessageApp\Handler\MessageAppCommandHandler;
+use MessageApp\Message\DefaultMessage;
 use MessageApp\Test\Mock\MessageAppMocker;
 use MessageApp\User\Exception\AppUserException;
 use Psr\Log\LoggerInterface;

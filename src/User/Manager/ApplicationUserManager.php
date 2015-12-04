@@ -1,8 +1,8 @@
 <?php
-namespace MessageApp\User;
+namespace MessageApp\User\Manager;
 
-use MessageApp\ApplicationUser;
-use MessageApp\ApplicationUserId;
+use MessageApp\User\ApplicationUser;
+use MessageApp\User\ApplicationUserId;
 use MessageApp\User\Exception\AppUserException;
 
 interface ApplicationUserManager

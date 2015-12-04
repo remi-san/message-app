@@ -1,7 +1,7 @@
 <?php
 namespace MessageApp\Test;
 
-use MessageApp\Application\MessageSender;
+use MessageApp\Message\Sender\MessageSender;
 use MessageApp\MessageApplication;
 use MessageApp\Test\Mock\MessageAppMocker;
 use MiniGame\Entity\MiniGame;

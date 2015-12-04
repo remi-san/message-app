@@ -1,8 +1,8 @@
 <?php
-namespace MessageApp\Application\Message;
+namespace MessageApp\Message;
 
-use MessageApp\Application\Message;
-use MessageApp\ApplicationUser;
+use MessageApp\Message;
+use MessageApp\User\ApplicationUser;
 
 class DefaultMessage implements Message
 {

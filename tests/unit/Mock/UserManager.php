@@ -1,9 +1,9 @@
 <?php
 namespace MessageApp\Test\Mock;
 
-use MessageApp\ApplicationUser;
+use MessageApp\User\ApplicationUser;
 use MessageApp\User\Exception\AppUserException;
-use MessageApp\User\InMemoryUserManager;
+use MessageApp\User\Manager\InMemoryUserManager;
 
 class UserManager extends InMemoryUserManager
 {

@@ -1,8 +1,6 @@
 <?php
 namespace MessageApp\User;
 
-use MessageApp\ApplicationUser;
-
 class UndefinedApplicationUser implements ApplicationUser
 {
     /**

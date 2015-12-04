@@ -1,7 +1,7 @@
 <?php
 namespace MessageApp\Test;
 
-use MessageApp\ApplicationUserId;
+use MessageApp\User\ApplicationUserId;
 use Rhumsaa\Uuid\Uuid;
 
 class UserIdTest extends \PHPUnit_Framework_TestCase

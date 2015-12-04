@@ -1,11 +1,11 @@
 <?php
-namespace MessageApp\Application\Handler;
+namespace MessageApp\Handler;
 
-use MessageApp\Application\Command\CreateUserCommand;
-use MessageApp\Application\Message\DefaultMessage;
-use MessageApp\ApplicationUser;
-use MessageApp\User\ApplicationUserManager;
+use MessageApp\Command\CreateUserCommand;
+use MessageApp\Message\DefaultMessage;
+use MessageApp\User\ApplicationUser;
 use MessageApp\User\Exception\AppUserException;
+use MessageApp\User\Manager\ApplicationUserManager;
 use MessageApp\User\UndefinedApplicationUser;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;

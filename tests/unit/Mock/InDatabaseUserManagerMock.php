@@ -1,9 +1,9 @@
 <?php
 namespace MessageApp\Test\Mock;
 
-use MessageApp\ApplicationUser;
+use MessageApp\User\ApplicationUser;
 use MessageApp\User\Exception\AppUserException;
-use MessageApp\User\InDatabaseUserManager;
+use MessageApp\User\Manager\InDatabaseUserManager;
 
 class InDatabaseUserManagerMock extends InDatabaseUserManager
 {
