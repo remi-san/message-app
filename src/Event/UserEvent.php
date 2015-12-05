@@ -3,7 +3,7 @@ namespace MessageApp\Event;
 
 use MessageApp\User\ApplicationUserId;
 
-interface UserdEvent
+interface UserEvent
 {
     /**
      * @return ApplicationUserId
