@@ -43,7 +43,7 @@ trait MessageAppMocker
 
     /**
      * @param  int    $id
-     * @return \MessageApp\User\ApplicationUserId
+     * @return ApplicationUserId
      */
     public function getApplicationUserId($id)
     {
@@ -54,7 +54,7 @@ trait MessageAppMocker
     }
 
     /**
-     * @param  \MessageApp\User\ApplicationUserId $id
+     * @param  ApplicationUserId $id
      * @param  string            $name
      * @return ApplicationUser
      */

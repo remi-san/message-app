@@ -3,7 +3,7 @@ namespace MessageApp\Listener;
 
 use League\Event\AbstractListener;
 use League\Event\EventInterface;
-use MessageApp\Event\UserdEvent;
+use MessageApp\Event\UserEvent;
 use MessageApp\Message\DefaultMessage;
 use MessageApp\Message\Sender\MessageSender;
 use MessageApp\User\Repository\AppUserRepository;
@@ -50,7 +50,7 @@ class UserEventListener extends AbstractListener implements LoggerAwareInterface
      */
     public function handle(EventInterface $event)
     {
-        if (! $event instanceof UserdEvent) {
+        if (! $event instanceof UserEvent) {
             return;
         }
 
