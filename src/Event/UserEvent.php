@@ -1,9 +1,10 @@
 <?php
 namespace MessageApp\Event;
 
+use League\Event\EventInterface;
 use MessageApp\User\ApplicationUserId;
 
-interface UserEvent
+interface UserEvent extends EventInterface
 {
     /**
      * @return ApplicationUserId

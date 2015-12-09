@@ -1,8 +1,9 @@
 <?php
 namespace MessageApp\Handler;
 
+use League\Event\EmitterInterface;
 use MessageApp\Command\CreateUserCommand;
-use MessageApp\Message\DefaultMessage;
+use MessageApp\Event\UnableToCreateUserEvent;
 use MessageApp\User\ApplicationUser;
 use MessageApp\User\Exception\AppUserException;
 use MessageApp\User\Manager\ApplicationUserManager;
@@ -24,13 +25,22 @@ class MessageAppCommandHandler implements LoggerAwareInterface
     private $userManager;
 
     /**
+     * @var EmitterInterface
+     */
+    private $eventEmitter;
+
+    /**
      * Constructor
      *
      * @param ApplicationUserManager $userManager
+     * @param EmitterInterface       $eventEmitter
      */
-    public function __construct(ApplicationUserManager $userManager)
-    {
+    public function __construct(
+        ApplicationUserManager $userManager,
+        EmitterInterface $eventEmitter
+    ) {
         $this->userManager = $userManager;
+        $this->eventEmitter = $eventEmitter;
         $this->logger = new NullLogger();
     }
 
@@ -48,14 +58,14 @@ class MessageAppCommandHandler implements LoggerAwareInterface
         try {
             $user = $this->createUser($originalUser);
             $this->userManager->save($user);
-            $messageText = 'Welcome!';
         } catch (\Exception $e) {
-            $user = new UndefinedApplicationUser($originalUser);
-            $messageText = 'Could not create the user!';
+            $this->eventEmitter->emit(
+                new UnableToCreateUserEvent(
+                    new UndefinedApplicationUser($originalUser),
+                    'Could not create the user!'
+                )
+            );
         }
-
-        // TODO do not build response here - send event while saving
-        return new DefaultMessage($user, $messageText);
     }
 
     /**

@@ -1,6 +1,7 @@
 <?php
 namespace MessageApp\Test;
 
+use MessageApp\Event\UnableToCreateUserEvent;
 use MessageApp\Handler\MessageAppCommandHandler;
 use MessageApp\Message\DefaultMessage;
 use MessageApp\Test\Mock\MessageAppMocker;
@@ -20,12 +21,15 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
 
     private $command;
 
+    private $eventEmitter;
+
     public function setUp()
     {
         $this->userId  = $this->getApplicationUserId(1);
         $this->user = $this->getApplicationUser($this->userId, $this->userName);
         $this->userManager = $this->getUserManager($this->user);
         $this->command = $this->getCreateUserCommand($this->user);
+        $this->eventEmitter = \Mockery::mock('League\Event\EmitterInterface');
     }
 
     public function tearDown()
@@ -41,13 +45,11 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
         $this->userManager->shouldReceive('save')->once();
         $this->userManager->shouldReceive('create')->andReturn($this->user);
 
-        $handler = new MessageAppCommandHandler($this->userManager);
+        $handler = new MessageAppCommandHandler($this->userManager, $this->eventEmitter);
 
         $response = $handler->handleCreateUserCommand($this->command);
 
-        $this->assertTrue($response instanceof DefaultMessage);
-        $this->assertEquals($this->user, $response->getUser());
-        $this->assertEquals('Welcome!', $response->getMessage());
+        $this->assertNull($response);
     }
 
     /**
@@ -58,13 +60,19 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
         $this->userManager->shouldReceive('save')->andThrow('\\Exception');
         $this->userManager->shouldReceive('create')->andThrow(new AppUserException($this->user));
 
-        $handler = new MessageAppCommandHandler($this->userManager);
+        $handler = new MessageAppCommandHandler($this->userManager, $this->eventEmitter);
+
+        $this->eventEmitter
+            ->shouldReceive('emit')
+            ->with(\Mockery::on(function ($event) {
+                return $event instanceof UnableToCreateUserEvent;
+            }))
+            ->once();
+
 
         $response = $handler->handleCreateUserCommand($this->command);
 
-        $this->assertTrue($response instanceof DefaultMessage);
-        $this->assertEquals($this->user, $response->getUser()->getOriginalUser());
-        $this->assertEquals('Could not create the user!', $response->getMessage());
+        $this->assertNull($response);
     }
 
     /**
@@ -72,7 +80,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testHandler()
     {
-        $handler = new MessageAppCommandHandler($this->userManager);
+        $handler = new MessageAppCommandHandler($this->userManager, $this->eventEmitter);
         $handler->setLogger(\Mockery::mock(LoggerInterface::class));
     }
 }

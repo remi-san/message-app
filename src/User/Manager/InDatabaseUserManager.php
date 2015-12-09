@@ -1,6 +1,8 @@
 <?php
 namespace MessageApp\User\Manager;
 
+use Broadway\Domain\DomainMessage;
+use League\Event\EmitterInterface;
 use MessageApp\User\ApplicationUser;
 use MessageApp\User\ApplicationUserId;
 use MessageApp\User\Exception\AppUserException;
@@ -14,13 +16,22 @@ abstract class InDatabaseUserManager implements ApplicationUserManager
     protected $userRepository;
 
     /**
+     * @var EmitterInterface
+     */
+    private $eventEmitter;
+
+    /**
      * Constructor
      *
      * @param AppUserRepository $userRepository
+     * @param EmitterInterface  $eventEmitter
      */
-    public function __construct(AppUserRepository $userRepository)
-    {
+    public function __construct(
+        AppUserRepository $userRepository,
+        EmitterInterface $eventEmitter
+    ) {
         $this->userRepository = $userRepository;
+        $this->eventEmitter = $eventEmitter;
     }
 
     /**
@@ -62,5 +73,11 @@ abstract class InDatabaseUserManager implements ApplicationUserManager
     public function save(ApplicationUser $user)
     {
         $this->userRepository->save($user);
+
+        $eventStream = $user->getUncommittedEvents();
+        foreach ($eventStream as $domainMessage) {
+            /* @var $domainMessage DomainMessage */
+            $this->eventEmitter->emit($domainMessage->getPayload());
+        }
     }
 }

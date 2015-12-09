@@ -16,11 +16,14 @@ class InDatabaseUserManagerTest extends \PHPUnit_Framework_TestCase
 
     private $userRepository;
 
+    private $eventEmitter;
+
     public function setUp()
     {
         $this->userId  = $this->getApplicationUserId(1);
         $this->user = $this->getApplicationUser($this->userId, $this->userName);
         $this->userRepository = $this->getUserRepository();
+        $this->eventEmitter = \Mockery::mock('League\Event\EmitterInterface');
     }
 
     public function tearDown()
@@ -35,7 +38,7 @@ class InDatabaseUserManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->userRepository->shouldReceive('find')->with($this->userId)->andReturn($this->user)->once();
 
-        $manager = new InDatabaseUserManagerMock($this->userRepository);
+        $manager = new InDatabaseUserManagerMock($this->userRepository, $this->eventEmitter);
 
         $this->assertEquals($this->user, $manager->get($this->userId));
     }
@@ -47,7 +50,12 @@ class InDatabaseUserManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->userRepository->shouldReceive('save')->with($this->user)->once();
 
-        $manager = new InDatabaseUserManagerMock($this->userRepository);
+        $this->user
+            ->shouldReceive('getUncommittedEvents')
+            ->andReturn(array())
+            ->once();
+
+        $manager = new InDatabaseUserManagerMock($this->userRepository, $this->eventEmitter);
         $manager->save($this->user);
     }
 }
