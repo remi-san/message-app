@@ -47,15 +47,6 @@ abstract class InDatabaseUserManager implements ApplicationUserManager
     }
 
     /**
-     * Retrieves a player
-     *
-     * @param  object $object
-     * @return ApplicationUser
-     * @throws AppUserException
-     */
-    abstract public function getByObject($object);
-
-    /**
      * Creates an application user
      *
      * @param  object $object
