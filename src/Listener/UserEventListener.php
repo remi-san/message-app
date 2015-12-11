@@ -6,7 +6,7 @@ use League\Event\EventInterface;
 use MessageApp\Event\UserEvent;
 use MessageApp\Message\DefaultMessage;
 use MessageApp\Message\Sender\MessageSender;
-use MessageApp\User\Repository\AppUserRepository;
+use MessageApp\User\Finder\AppUserFinder;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -14,9 +14,9 @@ use Psr\Log\NullLogger;
 class UserEventListener extends AbstractListener implements LoggerAwareInterface
 {
     /**
-     * @var AppUserRepository
+     * @var AppUserFinder
      */
-    private $userRepository;
+    private $userFinder;
 
     /**
      * @var MessageSender
@@ -31,12 +31,12 @@ class UserEventListener extends AbstractListener implements LoggerAwareInterface
     /**
      * Constructor
      *
-     * @param AppUserRepository $userRepository
-     * @param MessageSender     $messageSender
+     * @param AppUserFinder $userFinder
+     * @param MessageSender $messageSender
      */
-    public function __construct(AppUserRepository $userRepository, MessageSender $messageSender)
+    public function __construct(AppUserFinder $userFinder, MessageSender $messageSender)
     {
-        $this->userRepository = $userRepository;
+        $this->userFinder = $userFinder;
         $this->messageSender = $messageSender;
         $this->logger = new NullLogger();
     }
@@ -64,7 +64,7 @@ class UserEventListener extends AbstractListener implements LoggerAwareInterface
         $originalMessage = null;
 
         // Build message
-        $user = $this->userRepository->find($event->getUserId());
+        $user = $this->userFinder->find($event->getUserId());
         $message = new DefaultMessage($user, $event->getAsMessage());
         $this->messageSender->send($message, $originalMessage);
     }
