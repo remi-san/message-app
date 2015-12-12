@@ -1,7 +1,7 @@
 <?php
 namespace MessageApp\Test;
 
-use MessageApp\Test\Mock\InDatabaseUserManagerMock;
+use MessageApp\Test\Mock\AbstractUserManagerMock;
 use MessageApp\Test\Mock\MessageAppMocker;
 use MessageApp\Test\Mock\UserManager;
 
@@ -38,7 +38,7 @@ class InDatabaseUserManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->userRepository->shouldReceive('find')->with($this->userId)->andReturn($this->user)->once();
 
-        $manager = new InDatabaseUserManagerMock($this->userRepository, $this->eventEmitter);
+        $manager = new AbstractUserManagerMock($this->userRepository, $this->eventEmitter);
 
         $this->assertEquals($this->user, $manager->get($this->userId));
     }
@@ -55,7 +55,7 @@ class InDatabaseUserManagerTest extends \PHPUnit_Framework_TestCase
             ->andReturn(array())
             ->once();
 
-        $manager = new InDatabaseUserManagerMock($this->userRepository, $this->eventEmitter);
+        $manager = new AbstractUserManagerMock($this->userRepository, $this->eventEmitter);
         $manager->save($this->user);
     }
 }

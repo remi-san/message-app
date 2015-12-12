@@ -1,9 +1,9 @@
 <?php
 namespace MessageApp\Test\Mock;
 
-use MessageApp\User\Manager\InDatabaseUserManager;
+use MessageApp\User\Manager\AbstractUserManager;
 
-class InDatabaseUserManagerMock extends InDatabaseUserManager
+class AbstractUserManagerMock extends AbstractUserManager
 {
     use MessageAppMocker;
 

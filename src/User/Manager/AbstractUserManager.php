@@ -8,7 +8,7 @@ use MessageApp\User\ApplicationUserId;
 use MessageApp\User\Exception\AppUserException;
 use MessageApp\User\Repository\AppUserRepository;
 
-abstract class InDatabaseUserManager implements ApplicationUserManager
+abstract class AbstractUserManager implements ApplicationUserManager
 {
     /**
      * @var AppUserRepository
