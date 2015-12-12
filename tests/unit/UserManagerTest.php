@@ -5,7 +5,7 @@ use MessageApp\Test\Mock\AbstractUserManagerMock;
 use MessageApp\Test\Mock\MessageAppMocker;
 use MessageApp\Test\Mock\UserManager;
 
-class InDatabaseUserManagerTest extends \PHPUnit_Framework_TestCase
+class UserManagerTest extends \PHPUnit_Framework_TestCase
 {
     use MessageAppMocker;
 
