@@ -8,6 +8,7 @@ use MessageApp\User\ApplicationUser;
 use MessageApp\User\Exception\AppUserException;
 use MessageApp\User\Manager\ApplicationUserManager;
 use MessageApp\User\UndefinedApplicationUser;
+use MessageApp\User\UserBuilder;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -15,9 +16,9 @@ use Psr\Log\NullLogger;
 class MessageAppCommandHandler implements LoggerAwareInterface
 {
     /**
-     * @var LoggerInterface
+     * @var UserBuilder
      */
-    private $logger;
+    private $userBuilder;
 
     /**
      * @var ApplicationUserManager
@@ -30,15 +31,23 @@ class MessageAppCommandHandler implements LoggerAwareInterface
     private $eventEmitter;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * Constructor
      *
+     * @param UserBuilder            $userBuilder
      * @param ApplicationUserManager $userManager
      * @param EmitterInterface       $eventEmitter
      */
     public function __construct(
+        UserBuilder $userBuilder,
         ApplicationUserManager $userManager,
         EmitterInterface $eventEmitter
     ) {
+        $this->userBuilder = $userBuilder;
         $this->userManager = $userManager;
         $this->eventEmitter = $eventEmitter;
         $this->logger = new NullLogger();
@@ -80,7 +89,7 @@ class MessageAppCommandHandler implements LoggerAwareInterface
 
         try {
             $this->logger->debug('Trying to create user');
-            $user = $this->userManager->create($originalUser);
+            $user = $this->userBuilder->create($originalUser);
             $this->logger->info('User Created');
         } catch (AppUserException $e) {
             $this->logger->error('Error creating the user');

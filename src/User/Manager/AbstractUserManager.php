@@ -47,15 +47,6 @@ abstract class AbstractUserManager implements ApplicationUserManager
     }
 
     /**
-     * Creates an application user
-     *
-     * @param  object $object
-     * @return ApplicationUser
-     * @throws AppUserException
-     */
-    abstract public function create($object);
-
-    /**
      * Saves a user
      *
      * @param  ApplicationUser $user

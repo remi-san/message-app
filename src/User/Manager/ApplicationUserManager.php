@@ -17,15 +17,6 @@ interface ApplicationUserManager
     public function get(ApplicationUserId $id);
 
     /**
-     * Creates an application user
-     *
-     * @param  object $object
-     * @return ApplicationUser
-     * @throws AppUserException
-     */
-    public function create($object);
-
-    /**
      * Saves a user
      *
      * @param  ApplicationUser $user
