@@ -1,6 +1,10 @@
 <?php
 namespace MessageApp\Test;
 
+use Broadway\Domain\DateTime;
+use Broadway\Domain\DomainMessage;
+use Broadway\Domain\Metadata;
+use League\Event\EventInterface;
 use MessageApp\Test\Mock\AbstractUserManagerMock;
 use MessageApp\Test\Mock\MessageAppMocker;
 use MessageApp\Test\Mock\UserManager;
@@ -50,10 +54,14 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
     {
         $this->userRepository->shouldReceive('save')->with($this->user)->once();
 
+        $event = \Mockery::mock(EventInterface::class);
+
         $this->user
             ->shouldReceive('getUncommittedEvents')
-            ->andReturn(array())
+            ->andReturn([\Mockery::mock(new DomainMessage(null, null, new Metadata(), $event, DateTime::now()))])
             ->once();
+
+        $this->eventEmitter->shouldReceive('emit')->with($event)->once();
 
         $manager = new AbstractUserManagerMock($this->userRepository, $this->eventEmitter);
         $manager->save($this->user);
