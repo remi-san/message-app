@@ -1,14 +1,20 @@
 <?php
 namespace MessageApp\Test\Mock;
 
+use Broadway\Domain\DomainMessage;
+use League\Event\EventInterface;
 use MessageApp\User\Manager\AbstractUserManager;
 
 class AbstractUserManagerMock extends AbstractUserManager
 {
-    use MessageAppMocker;
-
-    public function create($object)
+    /**
+     * Prepares the event to return a League Event
+     *
+     * @param  DomainMessage $originalEvent
+     * @return EventInterface
+     */
+    protected function prepareEvent($originalEvent)
     {
-        return $this->getApplicationUser($this->getApplicationUserId(1), 'player');
+        return $originalEvent->getPayload();
     }
 }

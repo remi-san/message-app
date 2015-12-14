@@ -3,6 +3,7 @@ namespace MessageApp\User\Manager;
 
 use Broadway\Domain\DomainMessage;
 use League\Event\EmitterInterface;
+use League\Event\EventInterface;
 use MessageApp\User\ApplicationUser;
 use MessageApp\User\ApplicationUserId;
 use MessageApp\User\Exception\AppUserException;
@@ -58,8 +59,15 @@ abstract class AbstractUserManager implements ApplicationUserManager
 
         $eventStream = $user->getUncommittedEvents();
         foreach ($eventStream as $domainMessage) {
-            /* @var $domainMessage DomainMessage */
-            $this->eventEmitter->emit($domainMessage->getPayload());
+            $this->eventEmitter->emit($this->prepareEvent($domainMessage));
         }
     }
+
+    /**
+     * Prepares the event to return a League Event
+     *
+     * @param  mixed $originalEvent
+     * @return EventInterface
+     */
+    abstract protected function prepareEvent($originalEvent);
 }
