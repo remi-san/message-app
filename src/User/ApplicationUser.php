@@ -18,7 +18,7 @@ interface ApplicationUser
     public function getName();
 
     /**
-     * @return \IteratorAggregate
+     * @return array
      */
     public function getUncommittedEvents();
 }

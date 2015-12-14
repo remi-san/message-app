@@ -1,18 +1,17 @@
 <?php
 namespace MessageApp\User\Manager;
 
-use Broadway\Domain\DomainMessage;
 use League\Event\EmitterInterface;
 use League\Event\EventInterface;
 use MessageApp\User\ApplicationUser;
 use MessageApp\User\ApplicationUserId;
 use MessageApp\User\Exception\AppUserException;
-use MessageApp\User\Repository\AppUserRepository;
+use MessageApp\User\Store\ApplicationUserStore;
 
 abstract class AbstractUserManager implements ApplicationUserManager
 {
     /**
-     * @var AppUserRepository
+     * @var ApplicationUserStore
      */
     protected $userRepository;
 
@@ -24,11 +23,11 @@ abstract class AbstractUserManager implements ApplicationUserManager
     /**
      * Constructor
      *
-     * @param AppUserRepository $userRepository
+     * @param ApplicationUserStore $userRepository
      * @param EmitterInterface  $eventEmitter
      */
     public function __construct(
-        AppUserRepository $userRepository,
+        ApplicationUserStore $userRepository,
         EmitterInterface $eventEmitter
     ) {
         $this->userRepository = $userRepository;

@@ -1,9 +1,9 @@
 <?php
-namespace MessageApp\User\Repository;
+namespace MessageApp\User\Store;
 
 use MessageApp\User\ApplicationUser;
 
-interface AppUserRepository
+interface ApplicationUserStore
 {
     /**
      * Finds an user by its primary key / identifier.
