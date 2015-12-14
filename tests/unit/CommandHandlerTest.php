@@ -6,7 +6,7 @@ use MessageApp\Handler\MessageAppCommandHandler;
 use MessageApp\Message\DefaultMessage;
 use MessageApp\Test\Mock\MessageAppMocker;
 use MessageApp\User\Exception\AppUserException;
-use MessageApp\User\UserBuilder;
+use MessageApp\User\ApplicationUserFactory;
 use Psr\Log\LoggerInterface;
 
 class CommandHandlerTest extends \PHPUnit_Framework_TestCase
@@ -30,7 +30,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $this->userId  = $this->getApplicationUserId(1);
         $this->user = $this->getApplicationUser($this->userId, $this->userName);
-        $this->userBuilder = \Mockery::mock(UserBuilder::class);
+        $this->userBuilder = \Mockery::mock(ApplicationUserFactory::class);
         $this->userManager = $this->getUserManager($this->user);
         $this->command = $this->getCreateUserCommand($this->user);
         $this->eventEmitter = \Mockery::mock('League\Event\EmitterInterface');

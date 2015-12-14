@@ -3,7 +3,7 @@ namespace MessageApp\User;
 
 use MessageApp\User\Exception\AppUserException;
 
-interface UserBuilder
+interface ApplicationUserFactory
 {
     /**
      * Creates an application user

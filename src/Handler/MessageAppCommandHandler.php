@@ -8,7 +8,7 @@ use MessageApp\User\ApplicationUser;
 use MessageApp\User\Exception\AppUserException;
 use MessageApp\User\Repository\ApplicationUserRepository;
 use MessageApp\User\UndefinedApplicationUser;
-use MessageApp\User\UserBuilder;
+use MessageApp\User\ApplicationUserFactory;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -16,7 +16,7 @@ use Psr\Log\NullLogger;
 class MessageAppCommandHandler implements LoggerAwareInterface
 {
     /**
-     * @var UserBuilder
+     * @var ApplicationUserFactory
      */
     private $userBuilder;
 
@@ -38,12 +38,12 @@ class MessageAppCommandHandler implements LoggerAwareInterface
     /**
      * Constructor
      *
-     * @param UserBuilder            $userBuilder
+     * @param ApplicationUserFactory            $userBuilder
      * @param \MessageApp\User\Repository\ApplicationUserRepository $userManager
      * @param EmitterInterface       $eventEmitter
      */
     public function __construct(
-        UserBuilder $userBuilder,
+        ApplicationUserFactory $userBuilder,
         ApplicationUserRepository $userManager,
         EmitterInterface $eventEmitter
     ) {
