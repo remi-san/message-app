@@ -3,9 +3,9 @@ namespace MessageApp\Test\Mock;
 
 use Broadway\Domain\DomainMessage;
 use League\Event\EventInterface;
-use MessageApp\User\Manager\AbstractUserManager;
+use MessageApp\User\Repository\AbstractUserRepository;
 
-class AbstractUserManagerMock extends AbstractUserManager
+class AbstractUserManagerMock extends AbstractUserRepository
 {
     /**
      * Prepares the event to return a League Event

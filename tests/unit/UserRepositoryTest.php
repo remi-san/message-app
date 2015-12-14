@@ -9,7 +9,7 @@ use MessageApp\Test\Mock\AbstractUserManagerMock;
 use MessageApp\Test\Mock\MessageAppMocker;
 use MessageApp\Test\Mock\UserManager;
 
-class UserManagerTest extends \PHPUnit_Framework_TestCase
+class UserRepositoryTest extends \PHPUnit_Framework_TestCase
 {
     use MessageAppMocker;
 

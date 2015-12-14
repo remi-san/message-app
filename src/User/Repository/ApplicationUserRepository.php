@@ -1,11 +1,11 @@
 <?php
-namespace MessageApp\User\Manager;
+namespace MessageApp\User\Repository;
 
 use MessageApp\User\ApplicationUser;
 use MessageApp\User\ApplicationUserId;
 use MessageApp\User\Exception\AppUserException;
 
-interface ApplicationUserManager
+interface ApplicationUserRepository
 {
     /**
      * Retrieves an application user

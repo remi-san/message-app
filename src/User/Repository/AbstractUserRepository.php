@@ -1,5 +1,5 @@
 <?php
-namespace MessageApp\User\Manager;
+namespace MessageApp\User\Repository;
 
 use League\Event\EmitterInterface;
 use League\Event\EventInterface;
@@ -8,7 +8,7 @@ use MessageApp\User\ApplicationUserId;
 use MessageApp\User\Exception\AppUserException;
 use MessageApp\User\Store\ApplicationUserStore;
 
-abstract class AbstractUserManager implements ApplicationUserManager
+abstract class AbstractUserRepository implements ApplicationUserRepository
 {
     /**
      * @var ApplicationUserStore

@@ -6,7 +6,7 @@ use MessageApp\Command\CreateUserCommand;
 use MessageApp\Event\UnableToCreateUserEvent;
 use MessageApp\User\ApplicationUser;
 use MessageApp\User\Exception\AppUserException;
-use MessageApp\User\Manager\ApplicationUserManager;
+use MessageApp\User\Repository\ApplicationUserRepository;
 use MessageApp\User\UndefinedApplicationUser;
 use MessageApp\User\UserBuilder;
 use Psr\Log\LoggerAwareInterface;
@@ -21,7 +21,7 @@ class MessageAppCommandHandler implements LoggerAwareInterface
     private $userBuilder;
 
     /**
-     * @var ApplicationUserManager
+     * @var ApplicationUserRepository
      */
     private $userManager;
 
@@ -39,12 +39,12 @@ class MessageAppCommandHandler implements LoggerAwareInterface
      * Constructor
      *
      * @param UserBuilder            $userBuilder
-     * @param ApplicationUserManager $userManager
+     * @param \MessageApp\User\Repository\ApplicationUserRepository $userManager
      * @param EmitterInterface       $eventEmitter
      */
     public function __construct(
         UserBuilder $userBuilder,
-        ApplicationUserManager $userManager,
+        ApplicationUserRepository $userManager,
         EmitterInterface $eventEmitter
     ) {
         $this->userBuilder = $userBuilder;
