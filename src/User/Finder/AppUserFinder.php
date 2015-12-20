@@ -13,4 +13,10 @@ interface AppUserFinder
      * @return ApplicationUser The user.
      */
     public function find($id);
+
+    /**
+     * @param  ApplicationUser $user
+     * @return void
+     */
+    public function save(ApplicationUser $user);
 }

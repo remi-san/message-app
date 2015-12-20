@@ -17,9 +17,9 @@ interface ApplicationUserStore
     /**
      * Saves a mini game
      *
-     * @param  ApplicationUser $game
+     * @param  ApplicationUser $user
      *
      * @return void
      */
-    public function save(ApplicationUser $game);
+    public function save(ApplicationUser $user);
 }

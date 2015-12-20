@@ -20,5 +20,5 @@ interface ApplicationUser
     /**
      * @return array
      */
-    public function getUncommittedEvents();
+    public function getUncommittedEvents(); // TODO delete
 }
