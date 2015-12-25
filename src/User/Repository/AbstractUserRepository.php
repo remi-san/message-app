@@ -13,7 +13,7 @@ abstract class AbstractUserRepository implements ApplicationUserRepository
     /**
      * @var ApplicationUserStore
      */
-    protected $userRepository;
+    protected $userStore;
 
     /**
      * @var EmitterInterface
@@ -23,14 +23,14 @@ abstract class AbstractUserRepository implements ApplicationUserRepository
     /**
      * Constructor
      *
-     * @param ApplicationUserStore $userRepository
-     * @param EmitterInterface  $eventEmitter
+     * @param ApplicationUserStore $userStore
+     * @param EmitterInterface     $eventEmitter
      */
     public function __construct(
-        ApplicationUserStore $userRepository,
+        ApplicationUserStore $userStore,
         EmitterInterface $eventEmitter
     ) {
-        $this->userRepository = $userRepository;
+        $this->userStore = $userStore;
         $this->eventEmitter = $eventEmitter;
     }
 
@@ -43,7 +43,7 @@ abstract class AbstractUserRepository implements ApplicationUserRepository
      */
     public function get(ApplicationUserId $id)
     {
-        return $this->userRepository->find($id);
+        return $this->userStore->find($id);
     }
 
     /**
@@ -54,9 +54,8 @@ abstract class AbstractUserRepository implements ApplicationUserRepository
      */
     public function save(ApplicationUser $user)
     {
-        $this->userRepository->save($user);
+        $eventStream = $this->userStore->save($user);
 
-        $eventStream = $user->getUncommittedEvents();
         foreach ($eventStream as $domainMessage) {
             $this->eventEmitter->emit($this->prepareEvent($domainMessage));
         }

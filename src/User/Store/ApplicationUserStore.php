@@ -19,7 +19,7 @@ interface ApplicationUserStore
      *
      * @param  ApplicationUser $user
      *
-     * @return void
+     * @return array
      */
     public function save(ApplicationUser $user);
 }
