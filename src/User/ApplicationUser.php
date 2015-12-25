@@ -16,9 +16,4 @@ interface ApplicationUser
      * @return string
      */
     public function getName();
-
-    /**
-     * @return array
-     */
-    public function getUncommittedEvents(); // TODO delete
 }

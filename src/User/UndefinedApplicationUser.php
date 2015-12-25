@@ -47,12 +47,4 @@ class UndefinedApplicationUser implements ApplicationUser
     {
         return $this->originalUser;
     }
-
-    /**
-     * @return \IteratorAggregate
-     */
-    public function getUncommittedEvents()
-    {
-        return array();
-    }
 }
