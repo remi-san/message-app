@@ -52,12 +52,11 @@ class UserRepositoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testSave()
     {
-        $this->userRepository->shouldReceive('save')->with($this->user)->once();
-
         $event = \Mockery::mock(EventInterface::class);
 
-        $this->user
-            ->shouldReceive('getUncommittedEvents')
+        $this->userRepository
+            ->shouldReceive('save')
+            ->with($this->user)
             ->andReturn([\Mockery::mock(new DomainMessage(null, null, new Metadata(), $event, DateTime::now()))])
             ->once();
 
