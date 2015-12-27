@@ -11,7 +11,6 @@ use MessageApp\Parser\MessageParser;
 use MessageApp\User\ApplicationUser;
 use MessageApp\User\ApplicationUserId;
 use MessageApp\User\Repository\ApplicationUserRepository;
-use MessageApp\User\Store\ApplicationUserStore;
 
 trait MessageAppMocker
 {
@@ -122,11 +121,11 @@ trait MessageAppMocker
     }
 
     /**
-     * @return \MessageApp\User\Store\ApplicationUserStore
+     * @return \TwitterHangman\Store\ApplicationUserStore
      */
     public function getUserRepository()
     {
-        return \Mockery::mock('\\MessageApp\\User\\Store\\ApplicationUserStore');
+        return \Mockery::mock('\\TwitterHangman\\Store\\ApplicationUserStore');
     }
 
     /**

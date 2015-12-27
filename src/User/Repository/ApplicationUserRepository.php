@@ -14,7 +14,7 @@ interface ApplicationUserRepository
      * @return ApplicationUser
      * @throws AppUserException
      */
-    public function get(ApplicationUserId $id);
+    public function load(ApplicationUserId $id);
 
     /**
      * Saves a user
