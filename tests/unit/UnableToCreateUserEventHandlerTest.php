@@ -3,15 +3,14 @@ namespace MessageApp\Test;
 
 use League\Event\EventInterface;
 use MessageApp\Event\UnableToCreateUserEvent;
-use MessageApp\Event\UserEvent;
-use MessageApp\Listener\UnableToCreateUserEventListener;
+use MessageApp\Listener\UnableToCreateUserEventHandler;
 use MessageApp\Message\DefaultMessage;
 use MessageApp\Message\Sender\MessageSender;
 use MessageApp\Test\Mock\MessageAppMocker;
 use MessageApp\User\UndefinedApplicationUser;
 use Psr\Log\LoggerInterface;
 
-class UnableToCreateUserEventListenerTest extends \PHPUnit_Framework_TestCase
+class UnableToCreateUserEventHandlerTest extends \PHPUnit_Framework_TestCase
 {
     use MessageAppMocker;
 
@@ -45,7 +44,7 @@ class UnableToCreateUserEventListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnsupportedEvent()
     {
-        $listener = new UnableToCreateUserEventListener(
+        $listener = new UnableToCreateUserEventHandler(
             $this->messageSender
         );
 
@@ -66,7 +65,7 @@ class UnableToCreateUserEventListenerTest extends \PHPUnit_Framework_TestCase
         $user = \Mockery::mock(UndefinedApplicationUser::class);
         $messageText = 'test';
 
-        $listener = new UnableToCreateUserEventListener(
+        $listener = new UnableToCreateUserEventHandler(
             $this->messageSender
         );
 

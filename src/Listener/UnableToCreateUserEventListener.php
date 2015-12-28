@@ -3,34 +3,22 @@ namespace MessageApp\Listener;
 
 use League\Event\AbstractListener;
 use League\Event\EventInterface;
-use MessageApp\Event\UnableToCreateUserEvent;
-use MessageApp\Message\DefaultMessage;
-use MessageApp\Message\Sender\MessageSender;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
-class UnableToCreateUserEventListener extends AbstractListener implements LoggerAwareInterface
+class UnableToCreateUserEventListener extends AbstractListener
 {
     /**
-     * @var MessageSender
+     * @var UnableToCreateUserEventHandler
      */
-    private $messageSender;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private $handler;
 
     /**
      * Constructor
      *
-     * @param MessageSender     $messageSender
+     * @param UnableToCreateUserEventHandler $handler
      */
-    public function __construct(MessageSender $messageSender)
+    public function __construct(UnableToCreateUserEventHandler $handler)
     {
-        $this->messageSender = $messageSender;
-        $this->logger = new NullLogger();
+        $this->handler = $handler;
     }
 
     /**
@@ -42,27 +30,8 @@ class UnableToCreateUserEventListener extends AbstractListener implements Logger
      */
     public function handle(EventInterface $event)
     {
-        if (! $event instanceof UnableToCreateUserEvent) {
-            return;
-        }
+        $context = null;
 
-        $this->logger->info('Send message'); // TODO add better message
-
-        // TODO retrieve the original message
-        $originalMessage = null;
-
-        $message = new DefaultMessage($event->getUser(), $event->getReason());
-        $this->messageSender->send($message, $originalMessage);
-    }
-
-    /**
-     * Sets a logger instance on the object
-     *
-     * @param LoggerInterface $logger
-     * @return null
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
+        $this->handler->handle($event, $context);
     }
 }

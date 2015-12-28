@@ -3,7 +3,7 @@ namespace MessageApp\Test;
 
 use League\Event\EventInterface;
 use MessageApp\Event\UserEvent;
-use MessageApp\Listener\UserEventListener;
+use MessageApp\Listener\UserEventHandler;
 use MessageApp\Message\DefaultMessage;
 use MessageApp\Message\Sender\MessageSender;
 use MessageApp\Test\Mock\MessageAppMocker;
@@ -11,7 +11,7 @@ use MessageApp\User\ApplicationUserId;
 use MessageApp\User\Finder\AppUserFinder;
 use Psr\Log\LoggerInterface;
 
-class UserEventListenerTest extends \PHPUnit_Framework_TestCase
+class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
 {
     use MessageAppMocker;
 
@@ -52,7 +52,7 @@ class UserEventListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnsupportedEvent()
     {
-        $listener = new UserEventListener(
+        $listener = new UserEventHandler(
             $this->userFinder,
             $this->messageSender
         );
@@ -72,7 +72,7 @@ class UserEventListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testIncompleteEvent()
     {
-        $listener = new UserEventListener(
+        $listener = new UserEventHandler(
             $this->userFinder,
             $this->messageSender
         );
@@ -95,7 +95,7 @@ class UserEventListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function testIncompleteEvent2()
     {
-        $listener = new UserEventListener(
+        $listener = new UserEventHandler(
             $this->userFinder,
             $this->messageSender
         );
@@ -122,7 +122,7 @@ class UserEventListenerTest extends \PHPUnit_Framework_TestCase
         $user = $this->getApplicationUser($userId, 'Douglas');
         $messageText = 'test';
 
-        $listener = new UserEventListener(
+        $listener = new UserEventHandler(
             $this->userFinder,
             $this->messageSender
         );

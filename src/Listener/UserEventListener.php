@@ -3,42 +3,22 @@ namespace MessageApp\Listener;
 
 use League\Event\AbstractListener;
 use League\Event\EventInterface;
-use MessageApp\Event\UserEvent;
-use MessageApp\Message\DefaultMessage;
-use MessageApp\Message\Sender\MessageSender;
-use MessageApp\User\Finder\AppUserFinder;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
 
-class UserEventListener extends AbstractListener implements LoggerAwareInterface
+class UserEventListener extends AbstractListener
 {
     /**
-     * @var AppUserFinder
+     * @var UserEventHandler
      */
-    private $userFinder;
-
-    /**
-     * @var MessageSender
-     */
-    private $messageSender;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    private $handler;
 
     /**
      * Constructor
      *
-     * @param AppUserFinder $userFinder
-     * @param MessageSender $messageSender
+     * @param UserEventHandler $handler
      */
-    public function __construct(AppUserFinder $userFinder, MessageSender $messageSender)
+    public function __construct(UserEventHandler $handler)
     {
-        $this->userFinder = $userFinder;
-        $this->messageSender = $messageSender;
-        $this->logger = new NullLogger();
+        $this->handler = $handler;
     }
 
     /**
@@ -50,33 +30,8 @@ class UserEventListener extends AbstractListener implements LoggerAwareInterface
      */
     public function handle(EventInterface $event)
     {
-        if (! $event instanceof UserEvent) {
-            return;
-        }
+        $context = null;
 
-        if (!$event->getUserId() || !$event->getAsMessage()) {
-            return;
-        }
-
-        $this->logger->info('Send message'); // TODO add better message
-
-        // TODO retrieve the original message
-        $originalMessage = null;
-
-        // Build message
-        $user = $this->userFinder->find($event->getUserId());
-        $message = new DefaultMessage($user, $event->getAsMessage());
-        $this->messageSender->send($message, $originalMessage);
-    }
-
-    /**
-     * Sets a logger instance on the object
-     *
-     * @param LoggerInterface $logger
-     * @return null
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
+        $this->handler->handle($event, $context);
     }
 }
