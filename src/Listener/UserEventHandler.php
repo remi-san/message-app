@@ -10,7 +10,7 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
-class UserEventHandler implements LoggerAwareInterface
+class UserEventHandler implements MessageEventHandler, LoggerAwareInterface
 {
     use LoggerAwareTrait;
 

@@ -2,10 +2,10 @@
 namespace MessageApp\Command;
 
 use League\Tactician\Plugins\NamedCommand\NamedCommand;
-use RemiSan\Command\Origin;
-use RemiSan\Command\OriginAwareCommand;
+use RemiSan\Command\Context;
+use RemiSan\Command\ContextAwareCommand;
 
-class CreateUserCommand implements NamedCommand, OriginAwareCommand
+class CreateUserCommand implements NamedCommand, ContextAwareCommand
 {
     const NAME = 'USER.CREATE';
 
@@ -15,20 +15,20 @@ class CreateUserCommand implements NamedCommand, OriginAwareCommand
     private $originalUser;
 
     /**
-     * @var Origin
+     * @var Context
      */
-    private $origin;
+    private $context;
 
     /**
      * Constructor
      *
-     * @param object $originalUser
-     * @param Origin $origin
+     * @param object  $originalUser
+     * @param Context $context
      */
-    public function __construct($originalUser, Origin $origin = null)
+    public function __construct($originalUser, Context $context = null)
     {
         $this->originalUser = $originalUser;
-        $this->origin = $origin;
+        $this->context = $context;
     }
 
     /**
@@ -52,12 +52,12 @@ class CreateUserCommand implements NamedCommand, OriginAwareCommand
     }
 
     /**
-     * Returns the origin
+     * Returns the context
      *
-     * @return Origin
+     * @return Context
      */
-    public function getOrigin()
+    public function getContext()
     {
-        return $this->origin;
+        return $this->context;
     }
 }

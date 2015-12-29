@@ -4,19 +4,19 @@ namespace MessageApp\Listener;
 use League\Event\AbstractListener;
 use League\Event\EventInterface;
 
-class UserEventListener extends AbstractListener
+class MessageEventListener extends AbstractListener
 {
     /**
-     * @var UserEventHandler
+     * @var MessageEventHandler
      */
     private $handler;
 
     /**
      * Constructor
      *
-     * @param UserEventHandler $handler
+     * @param MessageEventHandler $handler
      */
-    public function __construct(UserEventHandler $handler)
+    public function __construct(MessageEventHandler $handler)
     {
         $this->handler = $handler;
     }
