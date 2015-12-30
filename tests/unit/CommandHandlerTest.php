@@ -8,6 +8,7 @@ use MessageApp\Test\Mock\MessageAppMocker;
 use MessageApp\User\Exception\AppUserException;
 use MessageApp\User\ApplicationUserFactory;
 use Psr\Log\LoggerInterface;
+use RemiSan\Command\ErrorEventHandler;
 
 class CommandHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,7 +25,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
 
     private $command;
 
-    private $eventEmitter;
+    private $errorHandler;
 
     public function setUp()
     {
@@ -33,7 +34,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
         $this->userBuilder = \Mockery::mock(ApplicationUserFactory::class);
         $this->userManager = $this->getUserManager($this->user);
         $this->command = $this->getCreateUserCommand($this->user);
-        $this->eventEmitter = \Mockery::mock('League\Event\EmitterInterface');
+        $this->errorHandler = \Mockery::mock(ErrorEventHandler::class);
     }
 
     public function tearDown()
@@ -49,7 +50,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
         $this->userManager->shouldReceive('save')->once();
         $this->userBuilder->shouldReceive('create')->andReturn($this->user);
 
-        $handler = new MessageAppCommandHandler($this->userBuilder, $this->userManager, $this->eventEmitter);
+        $handler = new MessageAppCommandHandler($this->userBuilder, $this->userManager, $this->errorHandler);
 
         $response = $handler->handleCreateUserCommand($this->command);
 
@@ -64,10 +65,10 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
         $this->userManager->shouldReceive('save')->andThrow('\\Exception');
         $this->userBuilder->shouldReceive('create')->andThrow(new AppUserException($this->user));
 
-        $handler = new MessageAppCommandHandler($this->userBuilder, $this->userManager, $this->eventEmitter);
+        $handler = new MessageAppCommandHandler($this->userBuilder, $this->userManager, $this->errorHandler);
 
-        $this->eventEmitter
-            ->shouldReceive('emit')
+        $this->errorHandler
+            ->shouldReceive('handle')
             ->with(\Mockery::on(function ($event) {
                 return $event instanceof UnableToCreateUserEvent;
             }))
@@ -84,7 +85,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testHandler()
     {
-        $handler = new MessageAppCommandHandler($this->userBuilder, $this->userManager, $this->eventEmitter);
+        $handler = new MessageAppCommandHandler($this->userBuilder, $this->userManager, $this->errorHandler);
         $handler->setLogger(\Mockery::mock(LoggerInterface::class));
     }
 }
