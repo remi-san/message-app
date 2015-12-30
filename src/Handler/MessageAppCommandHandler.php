@@ -1,7 +1,6 @@
 <?php
 namespace MessageApp\Handler;
 
-use League\Event\EmitterInterface;
 use MessageApp\Command\CreateUserCommand;
 use MessageApp\Event\UnableToCreateUserEvent;
 use MessageApp\User\ApplicationUser;
@@ -12,6 +11,7 @@ use MessageApp\User\ApplicationUserFactory;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use RemiSan\Command\ErrorEventHandler;
 
 class MessageAppCommandHandler implements LoggerAwareInterface
 {
@@ -26,9 +26,9 @@ class MessageAppCommandHandler implements LoggerAwareInterface
     private $userManager;
 
     /**
-     * @var EmitterInterface
+     * @var ErrorEventHandler
      */
-    private $eventEmitter;
+    private $errorHandler;
 
     /**
      * @var LoggerInterface
@@ -38,18 +38,18 @@ class MessageAppCommandHandler implements LoggerAwareInterface
     /**
      * Constructor
      *
-     * @param ApplicationUserFactory            $userBuilder
-     * @param \MessageApp\User\Repository\ApplicationUserRepository $userManager
-     * @param EmitterInterface       $eventEmitter
+     * @param ApplicationUserFactory    $userBuilder
+     * @param ApplicationUserRepository $userManager
+     * @param ErrorEventHandler         $errorHandler
      */
     public function __construct(
         ApplicationUserFactory $userBuilder,
         ApplicationUserRepository $userManager,
-        EmitterInterface $eventEmitter
+        ErrorEventHandler $errorHandler
     ) {
         $this->userBuilder = $userBuilder;
         $this->userManager = $userManager;
-        $this->eventEmitter = $eventEmitter;
+        $this->errorHandler = $errorHandler;
         $this->logger = new NullLogger();
     }
 
