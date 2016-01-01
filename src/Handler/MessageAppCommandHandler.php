@@ -9,12 +9,14 @@ use MessageApp\User\Repository\ApplicationUserRepository;
 use MessageApp\User\UndefinedApplicationUser;
 use MessageApp\User\ApplicationUserFactory;
 use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use RemiSan\Command\ErrorEventHandler;
 
 class MessageAppCommandHandler implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     /**
      * @var ApplicationUserFactory
      */
@@ -29,11 +31,6 @@ class MessageAppCommandHandler implements LoggerAwareInterface
      * @var ErrorEventHandler
      */
     private $errorHandler;
-
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
 
     /**
      * Constructor
@@ -96,16 +93,5 @@ class MessageAppCommandHandler implements LoggerAwareInterface
         }
 
         return $user;
-    }
-
-    /**
-     * Sets a logger instance on the object
-     *
-     * @param  LoggerInterface $logger
-     * @return void
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
     }
 }

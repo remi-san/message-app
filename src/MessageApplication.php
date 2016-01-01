@@ -8,15 +8,12 @@ use MessageApp\Message\Sender\MessageSender;
 use MessageApp\Parser\Exception\MessageParserException;
 use MessageApp\Parser\MessageParser;
 use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
 class MessageApplication implements LoggerAwareInterface
 {
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
+    use LoggerAwareTrait;
 
     /**
      * @var MessageSender
@@ -104,16 +101,5 @@ class MessageApplication implements LoggerAwareInterface
         if ($returnMessage) {
             $this->messageSender->send($returnMessage, $originalMessage);
         }
-    }
-
-    /**
-     * Sets a logger instance on the object
-     *
-     * @param  LoggerInterface $logger
-     * @return void
-     */
-    public function setLogger(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
     }
 }
