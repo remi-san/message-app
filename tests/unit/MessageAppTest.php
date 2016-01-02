@@ -62,7 +62,6 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
         $command = $this->getApplicationCommand($appUser);
 
         $this->logger->shouldReceive('info')->once();
-        $this->messageSender->shouldReceive('send')->with($message, $contextMessage)->once();
 
         $hangmanApp = new MessageApplication(
             $this->messageSender,
