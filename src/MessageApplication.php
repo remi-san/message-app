@@ -58,7 +58,7 @@ class MessageApplication implements LoggerAwareInterface
     {
         $this->logger->info($message);
         $command = $this->parseMessage($message);
-        $this->handleCommand($command, $message);
+        $this->handleCommand($command);
     }
 
     /**
@@ -85,21 +85,14 @@ class MessageApplication implements LoggerAwareInterface
      * Handles the command
      *
      * @param NamedCommand $command
-     * @param mixed        $originalMessage
      */
-    private function handleCommand(NamedCommand $command = null, $originalMessage = null)
+    private function handleCommand(NamedCommand $command = null)
     {
         if ($command === null) {
             $this->logger->info('Message ignored');
             return;
         }
 
-        // TODO no response should be returned
-        $returnMessage = $this->commandBus->handle($command);
-
-        // TODO handle after event dispatched
-        if ($returnMessage) {
-            $this->messageSender->send($returnMessage, $originalMessage);
-        }
+        $this->commandBus->handle($command);
     }
 }

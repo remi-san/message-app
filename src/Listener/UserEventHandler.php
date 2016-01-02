@@ -59,7 +59,10 @@ class UserEventHandler implements MessageEventHandler, LoggerAwareInterface
 
         // Build message
         $user = $this->userFinder->find($event->getUserId());
+
+        $messageContext = null; // TODO retrieves the context message
+
         $message = new DefaultMessage($user, $event->getAsMessage());
-        $this->messageSender->send($message, $context);
+        $this->messageSender->send($message, $messageContext);
     }
 }
