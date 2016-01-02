@@ -2,6 +2,7 @@
 namespace MessageApp\Handler;
 
 use MessageApp\Command\CreateUserCommand;
+use MessageApp\Error\ErrorEventHandler;
 use MessageApp\Event\UnableToCreateUserEvent;
 use MessageApp\User\ApplicationUser;
 use MessageApp\User\Exception\AppUserException;
@@ -12,7 +13,6 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 use RemiSan\Command\ContextContainer;
-use RemiSan\Command\ErrorEventHandler;
 
 class MessageAppCommandHandler implements LoggerAwareInterface
 {

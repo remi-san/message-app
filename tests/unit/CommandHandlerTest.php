@@ -1,14 +1,13 @@
 <?php
 namespace MessageApp\Test;
 
+use MessageApp\Error\ErrorEventHandler;
 use MessageApp\Event\UnableToCreateUserEvent;
 use MessageApp\Handler\MessageAppCommandHandler;
-use MessageApp\Message\DefaultMessage;
 use MessageApp\Test\Mock\MessageAppMocker;
 use MessageApp\User\Exception\AppUserException;
 use MessageApp\User\ApplicationUserFactory;
 use Psr\Log\LoggerInterface;
-use RemiSan\Command\ErrorEventHandler;
 
 class CommandHandlerTest extends \PHPUnit_Framework_TestCase
 {
