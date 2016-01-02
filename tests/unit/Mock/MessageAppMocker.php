@@ -136,6 +136,7 @@ trait MessageAppMocker
     {
         $command = \Mockery::mock('\\MessageApp\\Command\\CreateUserCommand');
         $command->shouldReceive('getOriginalUser')->andReturn($user);
+        $command->shouldReceive('getContext')->andReturn(null);
         return $command;
     }
 }

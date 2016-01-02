@@ -3,6 +3,7 @@ namespace MessageApp\Test;
 
 use League\Event\EventInterface;
 use MessageApp\Event\UserEvent;
+use MessageApp\Finder\MessageFinder;
 use MessageApp\Listener\UserEventHandler;
 use MessageApp\Message\DefaultMessage;
 use MessageApp\Message\Sender\MessageSender;
@@ -21,6 +22,11 @@ class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
     private $userFinder;
 
     /**
+     * @var MessageFinder
+     */
+    private $messageFinder;
+
+    /**
      * @var MessageSender
      */
     private $messageSender;
@@ -36,6 +42,8 @@ class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->userFinder = \Mockery::mock(AppUserFinder::class);
+
+        $this->messageFinder = \Mockery::mock(MessageFinder::class);
 
         $this->messageSender = $this->getMessageSender();
 
@@ -54,6 +62,7 @@ class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $listener = new UserEventHandler(
             $this->userFinder,
+            $this->messageFinder,
             $this->messageSender
         );
 
@@ -74,6 +83,7 @@ class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $listener = new UserEventHandler(
             $this->userFinder,
+            $this->messageFinder,
             $this->messageSender
         );
 
@@ -97,6 +107,7 @@ class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $listener = new UserEventHandler(
             $this->userFinder,
+            $this->messageFinder,
             $this->messageSender
         );
 
@@ -124,6 +135,7 @@ class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
 
         $listener = new UserEventHandler(
             $this->userFinder,
+            $this->messageFinder,
             $this->messageSender
         );
 

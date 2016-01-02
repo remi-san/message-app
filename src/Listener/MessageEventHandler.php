@@ -3,6 +3,7 @@ namespace MessageApp\Listener;
 
 use League\Event\EventInterface;
 use MessageApp\Message;
+use RemiSan\Command\Context;
 
 interface MessageEventHandler
 {
@@ -10,9 +11,9 @@ interface MessageEventHandler
      * Handle an event.
      *
      * @param EventInterface $event
-     * @param mixed          $context
+     * @param Context        $context
      *
      * @return void
      */
-    public function handle(EventInterface $event, $context = null);
+    public function handle(EventInterface $event, Context $context = null);
 }

@@ -3,15 +3,22 @@ namespace MessageApp\Listener;
 
 use League\Event\EventInterface;
 use MessageApp\Event\UnableToCreateUserEvent;
+use MessageApp\Finder\MessageFinder;
 use MessageApp\Message\DefaultMessage;
 use MessageApp\Message\Sender\MessageSender;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
+use RemiSan\Command\Context;
 
 class UnableToCreateUserEventHandler implements MessageEventHandler, LoggerAwareInterface
 {
     use LoggerAwareTrait;
+
+    /**
+     * @var MessageFinder
+     */
+    private $messageFinder;
 
     /**
      * @var MessageSender
@@ -21,10 +28,14 @@ class UnableToCreateUserEventHandler implements MessageEventHandler, LoggerAware
     /**
      * Constructor
      *
-     * @param MessageSender     $messageSender
+     * @param MessageFinder $messageFinder
+     * @param MessageSender $messageSender
      */
-    public function __construct(MessageSender $messageSender)
-    {
+    public function __construct(
+        MessageFinder $messageFinder,
+        MessageSender $messageSender
+    ) {
+        $this->messageFinder = $messageFinder;
         $this->messageSender = $messageSender;
         $this->logger = new NullLogger();
     }
@@ -33,11 +44,11 @@ class UnableToCreateUserEventHandler implements MessageEventHandler, LoggerAware
      * Handle an event.
      *
      * @param EventInterface $event
-     * @param mixed          $context
+     * @param Context        $context
      *
      * @return void
      */
-    public function handle(EventInterface $event, $context = null)
+    public function handle(EventInterface $event, Context $context = null)
     {
         if (! $event instanceof UnableToCreateUserEvent) {
             return;
@@ -45,9 +56,12 @@ class UnableToCreateUserEventHandler implements MessageEventHandler, LoggerAware
 
         $this->logger->info('Send message'); // TODO add better message
 
-        $messageContext = null; // TODO retrieves the context message
+        $messageContext = null;
+        if ($context) {
+            $messageContext = $this->messageFinder->findByReference($context->getValue());
+        }
 
         $message = new DefaultMessage($event->getUser(), $event->getReason());
-        $this->messageSender->send($message, $messageContext);
+        $this->messageSender->send($message, ($messageContext)?$messageContext->getSource():null);
     }
 }

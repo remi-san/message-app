@@ -11,6 +11,7 @@ use MessageApp\User\ApplicationUserFactory;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
+use RemiSan\Command\ContextContainer;
 use RemiSan\Command\ErrorEventHandler;
 
 class MessageAppCommandHandler implements LoggerAwareInterface
@@ -61,6 +62,8 @@ class MessageAppCommandHandler implements LoggerAwareInterface
         $user = null;
         $originalUser = $command->getOriginalUser();
 
+        ContextContainer::setContext($command->getContext());
+
         try {
             $user = $this->createUser($originalUser);
             $this->userManager->save($user);
@@ -72,6 +75,8 @@ class MessageAppCommandHandler implements LoggerAwareInterface
                 )
             );
         }
+
+        ContextContainer::reset();
     }
 
     /**
