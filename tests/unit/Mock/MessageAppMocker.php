@@ -121,14 +121,6 @@ trait MessageAppMocker
     }
 
     /**
-     * @return \TwitterHangman\Store\ApplicationUserStore
-     */
-    public function getUserRepository()
-    {
-        return \Mockery::mock('\\TwitterHangman\\Store\\ApplicationUserStore');
-    }
-
-    /**
      * @param  object $user
      * @return CreateUserCommand
      */
