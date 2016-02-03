@@ -22,7 +22,7 @@
     "require": {
         "psr/log": "~1.0",
         "ramsey/uuid": "~2.8",
-        "league/tactician": "~0.6",
+        "league/tactician": "^1.0",
         "league/event" : "~2.1",
         "remi-san/command-origin" : "dev-master"
     },
