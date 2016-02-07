@@ -29,7 +29,7 @@ class CreateUserCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function test()
     {
-        $command = new CreateUserCommand($this->user);
+        $command = CreateUserCommand::create($this->user);
 
         $this->assertEquals($this->user, $command->getOriginalUser());
         $this->assertEquals(CreateUserCommand::NAME, $command->getCommandName());

@@ -62,7 +62,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
     public function testKO()
     {
         $this->userManager->shouldReceive('save')->andThrow('\\Exception');
-        $this->userBuilder->shouldReceive('create')->andThrow(new AppUserException($this->user));
+        $this->userBuilder->shouldReceive('create')->andThrow('\\Exception');
 
         $handler = new MessageAppCommandHandler($this->userBuilder, $this->userManager, $this->errorHandler);
 

@@ -20,15 +20,10 @@ class CreateUserCommand implements NamedCommand, ContextAwareCommand
     private $context;
 
     /**
-     * Constructor
-     *
-     * @param object  $originalUser
-     * @param Context $context
+     * Constructor.
      */
-    public function __construct($originalUser, Context $context = null)
+    public function __construct()
     {
-        $this->originalUser = $originalUser;
-        $this->context = $context;
     }
 
     /**
@@ -59,5 +54,23 @@ class CreateUserCommand implements NamedCommand, ContextAwareCommand
     public function getContext()
     {
         return $this->context;
+    }
+
+    /**
+     * Static constructor.
+     *
+     * @param object  $originalUser
+     * @param Context $context
+     *
+     * @return CreateUserCommand
+     */
+    public static function create($originalUser, Context $context = null)
+    {
+        $obj = new self();
+
+        $obj->originalUser = $originalUser;
+        $obj->context = $context;
+
+        return $obj;
     }
 }
