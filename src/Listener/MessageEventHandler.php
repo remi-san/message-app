@@ -3,7 +3,7 @@ namespace MessageApp\Listener;
 
 use League\Event\EventInterface;
 use MessageApp\Message;
-use RemiSan\Command\Context;
+use RemiSan\Context\Context;
 
 interface MessageEventHandler
 {

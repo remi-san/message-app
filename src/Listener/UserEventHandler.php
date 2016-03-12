@@ -10,7 +10,7 @@ use MessageApp\User\Finder\AppUserFinder;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
-use RemiSan\Command\Context;
+use RemiSan\Context\Context;
 
 class UserEventHandler implements MessageEventHandler, LoggerAwareInterface
 {

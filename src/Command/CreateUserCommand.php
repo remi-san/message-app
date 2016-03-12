@@ -2,8 +2,8 @@
 namespace MessageApp\Command;
 
 use League\Tactician\Plugins\NamedCommand\NamedCommand;
-use RemiSan\Command\Context;
-use RemiSan\Command\ContextAware;
+use RemiSan\Context\Context;
+use RemiSan\Context\ContextAware;
 
 class CreateUserCommand implements NamedCommand, ContextAware
 {

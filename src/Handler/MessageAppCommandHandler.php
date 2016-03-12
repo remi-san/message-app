@@ -5,14 +5,14 @@ use MessageApp\Command\CreateUserCommand;
 use MessageApp\Error\ErrorEventHandler;
 use MessageApp\Event\UnableToCreateUserEvent;
 use MessageApp\User\ApplicationUser;
+use MessageApp\User\ApplicationUserFactory;
 use MessageApp\User\Exception\AppUserException;
 use MessageApp\User\Repository\ApplicationUserRepository;
 use MessageApp\User\UndefinedApplicationUser;
-use MessageApp\User\ApplicationUserFactory;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
-use RemiSan\Command\ContextContainer;
+use RemiSan\Context\ContextContainer;
 
 class MessageAppCommandHandler implements LoggerAwareInterface
 {

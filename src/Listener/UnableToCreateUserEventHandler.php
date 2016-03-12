@@ -9,7 +9,7 @@ use MessageApp\Message\Sender\MessageSender;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
-use RemiSan\Command\Context;
+use RemiSan\Context\Context;
 
 class UnableToCreateUserEventHandler implements MessageEventHandler, LoggerAwareInterface
 {
