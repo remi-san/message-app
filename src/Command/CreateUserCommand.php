@@ -3,9 +3,9 @@ namespace MessageApp\Command;
 
 use League\Tactician\Plugins\NamedCommand\NamedCommand;
 use RemiSan\Command\Context;
-use RemiSan\Command\ContextAwareCommand;
+use RemiSan\Command\ContextAware;
 
-class CreateUserCommand implements NamedCommand, ContextAwareCommand
+class CreateUserCommand implements NamedCommand, ContextAware
 {
     const NAME = 'USER.CREATE';
 
