@@ -7,10 +7,12 @@ use MessageApp\Finder\MessageFinder;
 use MessageApp\Listener\UserEventHandler;
 use MessageApp\Message\DefaultMessage;
 use MessageApp\Message\Sender\MessageSender;
+use MessageApp\SourceMessage;
 use MessageApp\Test\Mock\MessageAppMocker;
 use MessageApp\User\ApplicationUserId;
 use MessageApp\User\Finder\AppUserFinder;
 use Psr\Log\LoggerInterface;
+use RemiSan\Context\Context;
 
 class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -133,6 +135,18 @@ class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
         $user = $this->getApplicationUser($userId, 'Douglas');
         $messageText = 'test';
 
+        $source = 'src';
+
+        $context = \Mockery::mock(Context::class, function ($context) {
+            $context->shouldReceive('getValue')->andReturn('contextValue');
+        });
+
+        $sourceMessage = \Mockery::mock(SourceMessage::class, function ($sourceMessage) use ($source) {
+            $sourceMessage->shouldReceive('getSource')->andReturn($source);
+        });
+
+        $this->messageFinder->shouldReceive('findByReference')->with('contextValue')->andReturn($sourceMessage);
+
         $listener = new UserEventHandler(
             $this->userFinder,
             $this->messageFinder,
@@ -154,7 +168,7 @@ class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
                     return $message instanceof DefaultMessage &&
                         $message->getMessage() === $messageText;
                 }),
-                null
+                $source
             )
             ->once();
 
@@ -163,6 +177,6 @@ class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
             $event->shouldReceive('getAsMessage')->andReturn($messageText);
             $event->shouldReceive('getName')->andReturn('user.event');
         });
-        $listener->handle($event);
+        $listener->handle($event, $context);
     }
 }

@@ -3,6 +3,7 @@ namespace MessageApp\Test;
 
 use MessageApp\Command\CreateUserCommand;
 use MessageApp\Test\Mock\MessageAppMocker;
+use RemiSan\Context\Context;
 
 class CreateUserCommandTest extends \PHPUnit_Framework_TestCase
 {
@@ -29,9 +30,12 @@ class CreateUserCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function test()
     {
-        $command = CreateUserCommand::create($this->user);
+        $context = \Mockery::mock(Context::class);
+
+        $command = CreateUserCommand::create($this->user, $context);
 
         $this->assertEquals($this->user, $command->getOriginalUser());
         $this->assertEquals(CreateUserCommand::NAME, $command->getCommandName());
+        $this->assertEquals($context, $command->getContext());
     }
 }
