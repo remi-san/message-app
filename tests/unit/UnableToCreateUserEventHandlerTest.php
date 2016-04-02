@@ -71,7 +71,9 @@ class UnableToCreateUserEventHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testCompleteEvent()
     {
-        $user = \Mockery::mock(UndefinedApplicationUser::class);
+        $user = \Mockery::mock(UndefinedApplicationUser::class, function ($user) {
+            $user->shouldReceive('getName')->andReturn('user');
+        });
         $messageText = 'test';
 
         $listener = new UnableToCreateUserEventHandler(
@@ -96,6 +98,7 @@ class UnableToCreateUserEventHandlerTest extends \PHPUnit_Framework_TestCase
         $event = \Mockery::mock(UnableToCreateUserEvent::class, function ($event) use ($user, $messageText) {
             $event->shouldReceive('getUser')->andReturn($user);
             $event->shouldReceive('getReason')->andReturn($messageText);
+            $event->shouldReceive('getName')->andReturn(UnableToCreateUserEvent::NAME);
         });
         $listener->handle($event);
     }

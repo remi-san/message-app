@@ -76,7 +76,7 @@ class UserEventHandler implements MessageEventHandler, LoggerAwareInterface
             ]
         );
 
-        $message = null;
+        $messageContext = null;
         if ($context) {
             $messageContext = $this->messageFinder->findByReference($context->getValue());
         }

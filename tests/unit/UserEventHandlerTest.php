@@ -161,6 +161,7 @@ class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
         $event = \Mockery::mock(UserEvent::class, function ($event) use ($userId, $messageText) {
             $event->shouldReceive('getUserId')->andReturn($userId);
             $event->shouldReceive('getAsMessage')->andReturn($messageText);
+            $event->shouldReceive('getName')->andReturn('user.event');
         });
         $listener->handle($event);
     }
