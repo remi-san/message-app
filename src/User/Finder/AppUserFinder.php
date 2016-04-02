@@ -1,4 +1,5 @@
 <?php
+
 namespace MessageApp\User\Finder;
 
 use MessageApp\User\ApplicationUser;

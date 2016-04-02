@@ -1,4 +1,5 @@
 <?php
+
 namespace MessageApp;
 
 use League\Tactician\CommandBus;
@@ -72,7 +73,7 @@ class MessageApplication implements LoggerAwareInterface
         try {
             return $this->messageParser->parse($message);
         } catch (MessageParserException $e) {
-            $this->logger->error('Error parsing or executing command', array('exception' => $e->getMessage()));
+            $this->logger->error('Error parsing or executing command', ['exception' => $e->getMessage()]);
             $this->messageSender->send(
                 new DefaultMessage($e->getUser(), $e->getMessage()),
                 $message

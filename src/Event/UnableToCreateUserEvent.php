@@ -1,4 +1,5 @@
 <?php
+
 namespace MessageApp\Event;
 
 use League\Event\Event;

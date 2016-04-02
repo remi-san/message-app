@@ -1,4 +1,5 @@
 <?php
+
 namespace MessageApp\Error;
 
 use League\Event\EventInterface;

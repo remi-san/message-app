@@ -1,4 +1,5 @@
 <?php
+
 namespace MessageApp\Handler;
 
 use MessageApp\Command\CreateUserCommand;
@@ -67,7 +68,9 @@ class MessageAppCommandHandler implements LoggerAwareInterface
         try {
             $user = $this->createUser($originalUser);
             $this->userManager->save($user);
+            $this->logger->info('User Created');
         } catch (\Exception $e) {
+            $this->logger->error('Error creating the user');
             $this->errorHandler->handle(
                 new UnableToCreateUserEvent(
                     new UndefinedApplicationUser($originalUser),
@@ -87,16 +90,7 @@ class MessageAppCommandHandler implements LoggerAwareInterface
      */
     private function createUser($originalUser)
     {
-        $user = null;
-
-        try {
-            $this->logger->debug('Trying to create user');
-            $user = $this->userBuilder->create($originalUser);
-            $this->logger->info('User Created');
-        } catch (AppUserException $e) {
-            $this->logger->error('Error creating the user');
-        }
-
-        return $user;
+        $this->logger->debug('Trying to create user');
+        return $this->userBuilder->create($originalUser);
     }
 }

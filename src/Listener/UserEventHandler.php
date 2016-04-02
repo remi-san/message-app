@@ -1,4 +1,5 @@
 <?php
+
 namespace MessageApp\Listener;
 
 use League\Event\EventInterface;
@@ -59,25 +60,38 @@ class UserEventHandler implements MessageEventHandler, LoggerAwareInterface
      */
     public function handle(EventInterface $event, Context $context = null)
     {
-        if (! $event instanceof UserEvent) {
+        if (! self::isValidEvent($event)) {
             return;
         }
-
-        if (!$event->getUserId() || !$event->getAsMessage()) {
-            return;
-        }
-
-        $this->logger->info('Send message'); // TODO add better message
 
         // Build message
         $user = $this->userFinder->find($event->getUserId());
 
-        $messageContext = null;
+        $this->logger->info(
+            'Send message',
+            [
+                'user' => $user->getName(),
+                'message' => $event->getAsMessage(),
+                'type' => $event->getName()
+            ]
+        );
+
+        $message = null;
         if ($context) {
             $messageContext = $this->messageFinder->findByReference($context->getValue());
         }
 
         $message = new DefaultMessage($user, $event->getAsMessage());
         $this->messageSender->send($message, ($messageContext)?$messageContext->getSource():null);
+    }
+
+    /**
+     * @param EventInterface $event
+     *
+     * @return bool
+     */
+    private static function isValidEvent(EventInterface $event)
+    {
+        return $event instanceof UserEvent && $event->getUserId() && $event->getAsMessage();
     }
 }

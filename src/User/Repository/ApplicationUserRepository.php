@@ -1,4 +1,5 @@
 <?php
+
 namespace MessageApp\User\Repository;
 
 use MessageApp\User\ApplicationUser;
@@ -11,8 +12,8 @@ interface ApplicationUserRepository
      * Retrieves an application user
      *
      * @param  ApplicationUserId $id
-     * @return ApplicationUser
      * @throws AppUserException
+     * @return ApplicationUser
      */
     public function load(ApplicationUserId $id);
 

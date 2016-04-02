@@ -1,4 +1,5 @@
 <?php
+
 namespace MessageApp\Finder;
 
 use MessageApp\SourceMessage;

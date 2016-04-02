@@ -1,6 +1,7 @@
 {
     "name": "remi-san/message-app",
     "description" : "A message-based application lib.",
+    "license": "MIT",
     "keywords": [
         "Application",
         "Message-based"
@@ -22,12 +23,23 @@
     },
     "require-dev": {
         "phpunit/phpunit": "~4.5",
-        "Mockery/Mockery": "~0.9"
+        "Mockery/Mockery": "~0.9",
+        "fabpot/php-cs-fixer": "^1.10",
+        "squizlabs/php_codesniffer": "~2.0"
     },
     "autoload": {
         "psr-4": {
-            "MessageApp\\": "src/",
+            "MessageApp\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "MessageApp\\Test\\" : "tests/unit/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
         }
     }
 }

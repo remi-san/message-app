@@ -1,4 +1,5 @@
 <?php
+
 namespace MessageApp\Message;
 
 use MessageApp\Message;

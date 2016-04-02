@@ -1,4 +1,5 @@
 <?php
+
 namespace MessageApp;
 
 use MessageApp\User\ApplicationUser;

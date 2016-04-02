@@ -1,4 +1,5 @@
 <?php
+
 namespace MessageApp\Listener;
 
 use League\Event\EventInterface;
@@ -54,7 +55,14 @@ class UnableToCreateUserEventHandler implements MessageEventHandler, LoggerAware
             return;
         }
 
-        $this->logger->info('Send message'); // TODO add better message
+        $this->logger->info(
+            'Send message',
+            [
+                'user' => $event->getUser()->getName(),
+                'message' => $event->getReason(),
+                'type' => $event->getName()
+            ]
+        );
 
         $messageContext = null;
         if ($context) {

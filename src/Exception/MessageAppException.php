@@ -1,4 +1,5 @@
 <?php
+
 namespace MessageApp\Exception;
 
 use Exception;
@@ -22,7 +23,6 @@ class MessageAppException extends \Exception
     public function __construct(ApplicationUser $user = null, $message = '', $code = 0, \Exception $previous = null)
     {
         $this->user = $user;
-        $this->originalUser = $user;
         parent::__construct($message, $code, $previous);
     }
 

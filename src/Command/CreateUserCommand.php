@@ -1,4 +1,5 @@
 <?php
+
 namespace MessageApp\Command;
 
 use League\Tactician\Plugins\NamedCommand\NamedCommand;

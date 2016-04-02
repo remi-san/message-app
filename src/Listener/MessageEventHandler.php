@@ -1,8 +1,8 @@
 <?php
+
 namespace MessageApp\Listener;
 
 use League\Event\EventInterface;
-use MessageApp\Message;
 use RemiSan\Context\Context;
 
 interface MessageEventHandler
