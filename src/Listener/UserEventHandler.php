@@ -60,7 +60,7 @@ class UserEventHandler implements MessageEventHandler, LoggerAwareInterface
      */
     public function handle(EventInterface $event, Context $context = null)
     {
-        if (! self::isValidEvent($event)) {
+        if (! ($event instanceof UserEvent && $event->getUserId() && $event->getAsMessage())) {
             return;
         }
 
@@ -83,15 +83,5 @@ class UserEventHandler implements MessageEventHandler, LoggerAwareInterface
 
         $message = new DefaultMessage($user, $event->getAsMessage());
         $this->messageSender->send($message, ($messageContext)?$messageContext->getSource():null);
-    }
-
-    /**
-     * @param EventInterface $event
-     *
-     * @return bool
-     */
-    private static function isValidEvent(EventInterface $event)
-    {
-        return $event instanceof UserEvent && $event->getUserId() && $event->getAsMessage();
     }
 }
