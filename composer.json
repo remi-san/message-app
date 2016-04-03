@@ -29,11 +29,7 @@
     },
     "autoload": {
         "psr-4": {
-            "MessageApp\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
+            "MessageApp\\": "src/",
             "MessageApp\\Test\\" : "tests/unit/"
         }
     },
