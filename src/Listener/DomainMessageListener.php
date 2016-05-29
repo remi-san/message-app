@@ -33,7 +33,7 @@ class DomainMessageListener implements EventListenerInterface
     public function handle(DomainMessage $message)
     {
         $event = $message->getPayload();
-        $context = static::getContext($message);
+        $context = self::getContext($message);
 
         $this->handler->handle($event, $context);
     }

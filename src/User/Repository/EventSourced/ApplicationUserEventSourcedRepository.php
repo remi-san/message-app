@@ -2,6 +2,7 @@
 
 namespace MessageApp\User\Repository\EventSourced;
 
+use Broadway\Domain\AggregateRoot;
 use Broadway\EventSourcing\EventSourcingRepository;
 use MessageApp\User\ApplicationUser;
 use MessageApp\User\ApplicationUserId;
@@ -33,6 +34,10 @@ class ApplicationUserEventSourcedRepository implements ApplicationUserRepository
      */
     public function save(ApplicationUser $user)
     {
+        if (!$user instanceof AggregateRoot) {
+            throw new \InvalidArgumentException();
+        }
+
         $this->repository->save($user);
     }
 
@@ -45,6 +50,12 @@ class ApplicationUserEventSourcedRepository implements ApplicationUserRepository
      */
     public function load(ApplicationUserId $id)
     {
-        return $this->repository->load($id);
+        $user = $this->repository->load($id);
+
+        if ($user !== null && ! $user instanceof ApplicationUser) {
+            throw new \InvalidArgumentException();
+        }
+
+        return $user;
     }
 }
