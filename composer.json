@@ -27,7 +27,8 @@
         "fabpot/php-cs-fixer": "^1.10",
         "squizlabs/php_codesniffer": "~2.0",
         "broadway/broadway": "^0.9",
-        "remi-san/broadway-tools" : "^0.1@dev"
+        "remi-san/broadway-tools" : "^0.1@dev",
+        "remi-san/transaction-manager": "^1.0"
     },
     "autoload": {
         "psr-4": {
@@ -37,7 +38,8 @@
     },
     "suggest": {
         "broadway/broadway": "Allows to use event sourced repository.",
-        "remi-san/broadway-tools" : "Allows to use the DomainMessage listener"
+        "remi-san/broadway-tools" : "Allows to use the DomainMessage listener",
+        "remi-san/transaction-manager": "Allows to use a transaction manager"
     },
     "extra": {
         "branch-alias": {
