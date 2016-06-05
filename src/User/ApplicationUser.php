@@ -17,4 +17,11 @@ interface ApplicationUser
      * @return string
      */
     public function getName();
+
+    /**
+     * Returns the preferred language
+     *
+     * @return string
+     */
+    public function getPreferredLanguage();
 }

@@ -40,6 +40,16 @@ class UndefinedApplicationUser implements ApplicationUser
     }
 
     /**
+     * Returns the preferred language
+     *
+     * @return string
+     */
+    public function getPreferredLanguage()
+    {
+        return 'en';
+    }
+
+    /**
      * Gets the original User
      *
      * @return object

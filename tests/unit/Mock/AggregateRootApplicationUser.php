@@ -44,4 +44,14 @@ class AggregateRootApplicationUser implements AggregateRoot, ApplicationUser
     {
         return 'name';
     }
+
+    /**
+     * Returns the preferred language
+     *
+     * @return string
+     */
+    public function getPreferredLanguage()
+    {
+        return 'en';
+    }
 }
