@@ -5,9 +5,9 @@ use MessageApp\Message;
 
 class MessageResponse implements Message
 {
-    public function getUser()
+    public function getUsers()
     {
-        return null;
+        return [];
     }
 
     public function getMessage()

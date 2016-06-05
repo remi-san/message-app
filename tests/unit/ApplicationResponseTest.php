@@ -21,9 +21,9 @@ class ApplicationResponseTest extends \PHPUnit_Framework_TestCase
         $message = 'message';
         $user = $this->getApplicationUser($this->getApplicationUserId(42), 'adam');
 
-        $response = new DefaultMessage($user, $message);
+        $response = new DefaultMessage([$user], $message);
 
-        $this->assertEquals($user, $response->getUser());
+        $this->assertEquals([$user], $response->getUsers());
         $this->assertEquals($message, $response->getMessage());
     }
 }

@@ -35,7 +35,7 @@ trait MessageAppMocker
     public function getSendMessageResponse(ApplicationUser $user = null, $message = null)
     {
         $response = \Mockery::mock('\\MessageApp\\Message\\DefaultMessage');
-        $response->shouldReceive('getUser')->andReturn($user);
+        $response->shouldReceive('getUsers')->andReturn([$user]);
         $response->shouldReceive('getMessage')->andReturn($message);
         return $response;
     }
@@ -93,7 +93,7 @@ trait MessageAppMocker
     {
         $message = \Mockery::mock('\\MessageApp\\Message');
         $message->shouldReceive('getMessage')->andReturn($text);
-        $message->shouldReceive('getUser')->andReturn($user);
+        $message->shouldReceive('getUsers')->andReturn([$user]);
 
         return $message;
     }

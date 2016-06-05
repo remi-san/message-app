@@ -8,25 +8,35 @@ use MessageApp\User\ApplicationUser;
 class DefaultMessage implements Message
 {
     /**
+     * @var ApplicationUser[]
+     */
+    protected $users;
+
+    /**
      * @var string
      */
     protected $message;
 
     /**
-     * @var ApplicationUser
-     */
-    protected $user;
-
-    /**
      * Construct
      *
-     * @param ApplicationUser $user
-     * @param string          $message
+     * @param ApplicationUser[] $users
+     * @param string            $message
      */
-    public function __construct(ApplicationUser $user, $message)
+    public function __construct(array $users, $message)
     {
-        $this->user = $user;
+        $this->users = $users;
         $this->message = $message;
+    }
+
+    /**
+     * Returns the user the message must be sent to
+     *
+     * @return ApplicationUser
+     */
+    public function getUsers()
+    {
+        return $this->users;
     }
 
     /**
@@ -37,15 +47,5 @@ class DefaultMessage implements Message
     public function getMessage()
     {
         return $this->message;
-    }
-
-    /**
-     * Returns the user the message must be sent to
-     *
-     * @return ApplicationUser
-     */
-    public function getUser()
-    {
-        return $this->user;
     }
 }
