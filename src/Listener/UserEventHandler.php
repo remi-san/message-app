@@ -82,6 +82,6 @@ class UserEventHandler implements MessageEventHandler, LoggerAwareInterface
         }
 
         $message = new DefaultMessage([$user], $event->getAsMessage());
-        $this->messageSender->send($message, ($messageContext)?$messageContext->getSource():null);
+        $this->messageSender->send($message, ($messageContext)?$messageContext->getSource():null); // TODO translate
     }
 }

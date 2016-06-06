@@ -75,7 +75,7 @@ class MessageApplication implements LoggerAwareInterface
         } catch (MessageParserException $e) {
             $this->logger->error('Error parsing or executing command', ['exception' => $e->getMessage()]);
             $this->messageSender->send(
-                new DefaultMessage([$e->getUser()], $e->getMessage()),
+                new DefaultMessage([$e->getUser()], $e->getMessage()), // TODO translate
                 $message
             );
             return null;

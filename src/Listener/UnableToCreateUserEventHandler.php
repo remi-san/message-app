@@ -70,6 +70,6 @@ class UnableToCreateUserEventHandler implements MessageEventHandler, LoggerAware
         }
 
         $message = new DefaultMessage([$event->getUser()], $event->getReason());
-        $this->messageSender->send($message, ($messageContext)?$messageContext->getSource():null);
+        $this->messageSender->send($message, ($messageContext)?$messageContext->getSource():null); // TODO translate
     }
 }
