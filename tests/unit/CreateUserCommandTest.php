@@ -31,11 +31,13 @@ class CreateUserCommandTest extends \PHPUnit_Framework_TestCase
     public function test()
     {
         $context = \Mockery::mock(Context::class);
+        $language = 'en';
 
-        $command = CreateUserCommand::create($this->user, $context);
+        $command = CreateUserCommand::create($this->user, $language, $context);
 
         $this->assertEquals($this->user, $command->getOriginalUser());
         $this->assertEquals(CreateUserCommand::NAME, $command->getCommandName());
         $this->assertEquals($context, $command->getContext());
+        $this->assertEquals($language, $command->getPreferredLanguage());
     }
 }

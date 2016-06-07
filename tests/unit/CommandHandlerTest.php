@@ -32,7 +32,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
         $this->user = $this->getApplicationUser($this->userId, $this->userName);
         $this->userBuilder = \Mockery::mock(ApplicationUserFactory::class);
         $this->userManager = $this->getUserManager($this->user);
-        $this->command = $this->getCreateUserCommand($this->user);
+        $this->command = $this->getCreateUserCommand($this->user, 'en');
         $this->errorHandler = \Mockery::mock(ErrorEventHandler::class);
     }
 

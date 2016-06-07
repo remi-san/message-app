@@ -16,6 +16,11 @@ class CreateUserCommand implements NamedCommand, ContextAware
     private $originalUser;
 
     /**
+     * @var string
+     */
+    private $preferredLanguage;
+
+    /**
      * @var Context
      */
     private $context;
@@ -48,6 +53,14 @@ class CreateUserCommand implements NamedCommand, ContextAware
     }
 
     /**
+     * @return string
+     */
+    public function getPreferredLanguage()
+    {
+        return $this->preferredLanguage;
+    }
+
+    /**
      * Returns the context
      *
      * @return Context
@@ -61,15 +74,17 @@ class CreateUserCommand implements NamedCommand, ContextAware
      * Static constructor.
      *
      * @param object  $originalUser
+     * @param string  $preferredLanguage
      * @param Context $context
      *
      * @return CreateUserCommand
      */
-    public static function create($originalUser, Context $context = null)
+    public static function create($originalUser, $preferredLanguage, Context $context = null)
     {
         $obj = new self();
 
         $obj->originalUser = $originalUser;
+        $obj->preferredLanguage = $preferredLanguage;
         $obj->context = $context;
 
         return $obj;

@@ -66,7 +66,7 @@ class MessageAppCommandHandler implements LoggerAwareInterface
         ContextContainer::setContext($command->getContext());
 
         try {
-            $user = $this->createUser($originalUser);
+            $user = $this->createUser($originalUser, $command->getPreferredLanguage());
             $this->userManager->save($user);
             $this->logger->info('User Created');
         } catch (\Exception $e) {
@@ -86,11 +86,12 @@ class MessageAppCommandHandler implements LoggerAwareInterface
      * Creates the player
      *
      * @param  object $originalUser
+     * @param  string $language
      * @return ApplicationUser
      */
-    private function createUser($originalUser)
+    private function createUser($originalUser, $language)
     {
         $this->logger->debug('Trying to create user');
-        return $this->userBuilder->create($originalUser);
+        return $this->userBuilder->create($originalUser, $language);
     }
 }
