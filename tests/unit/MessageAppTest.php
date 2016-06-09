@@ -1,6 +1,8 @@
 <?php
 namespace MessageApp\Test;
 
+use MessageApp\Message;
+use MessageApp\Message\MessageFactory;
 use MessageApp\Message\Sender\MessageSender;
 use MessageApp\MessageApplication;
 use MessageApp\Test\Mock\MessageAppMocker;
@@ -17,14 +19,22 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
     const ID_2 = 2000;
 
     const ID_3 = 3000;
+
     /**
      * @var int
      */
     protected $lastMessageId;
+
     /**
      * @var LoggerInterface
      */
     protected $logger;
+
+    /**
+     * @var MessageFactory
+     */
+    private $factory;
+
     /**
      * @var MessageSender
      */
@@ -38,6 +48,8 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
         $this->lastMessageId = self::ID_1;
 
         $this->messageSender = $this->getMessageSender();
+
+        $this->factory = \Mockery::mock(MessageFactory::class);
 
         $this->logger = \Mockery::mock('\\Psr\\Log\\LoggerInterface');
     }
@@ -66,6 +78,7 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
         $hangmanApp = new MessageApplication(
             $this->messageSender,
             $this->getParser($command),
+            $this->factory,
             $this->getCommandBus($message)
         );
         $hangmanApp->setLogger($this->logger);
@@ -82,7 +95,12 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
 
         $this->logger->shouldReceive('info')->twice();
 
-        $hangmanApp = new MessageApplication($this->messageSender, $this->getParser(null), $this->getCommandBus());
+        $hangmanApp = new MessageApplication(
+            $this->messageSender,
+            $this->getParser(null),
+            $this->factory,
+            $this->getCommandBus()
+        );
         $hangmanApp->setLogger($this->logger);
 
         $hangmanApp->handle($message);
@@ -96,7 +114,43 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
         $userId = $this->getApplicationUserId(42);
         $userName = 'Arthur';
         $user = $this->getApplicationUser($userId, $userName);
+        $message = new \stdClass();
+        $errorMessage = \Mockery::mock(Message::class);
 
+        $exception = \Mockery::mock('\\MessageApp\\Parser\\Exception\\MessageParserException');
+        $exception->shouldReceive('getUser')->andReturn($user);
+
+        $parser = \Mockery::mock('\\MessageApp\\Parser\\MessageParser');
+        $parser->shouldReceive('parse')->andThrow($exception);
+
+        $this->logger->shouldReceive('info')->twice();
+        $this->logger->shouldReceive('error')->once();
+        $this->messageSender->shouldReceive('send')->with($errorMessage, $message)->once();
+
+        $this->factory
+            ->shouldReceive('buildMessage')
+            ->with([$user], $exception)
+            ->andReturn($errorMessage);
+
+        $hangmanApp = new MessageApplication(
+            $this->messageSender,
+            $parser,
+            $this->factory,
+            $this->getCommandBus()
+        );
+        $hangmanApp->setLogger($this->logger);
+
+        $hangmanApp->handle($message);
+    }
+
+    /**
+     * @test
+     */
+    public function testHandleWithParsingErrorWithoutMessage()
+    {
+        $userId = $this->getApplicationUserId(42);
+        $userName = 'Arthur';
+        $user = $this->getApplicationUser($userId, $userName);
         $message = new \stdClass();
 
         $exception = \Mockery::mock('\\MessageApp\\Parser\\Exception\\MessageParserException');
@@ -107,9 +161,20 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
 
         $this->logger->shouldReceive('info')->twice();
         $this->logger->shouldReceive('error')->once();
-        $this->messageSender->shouldReceive('send')->once();
+        $this->logger->shouldReceive('warning')->once();
+        $this->messageSender->shouldReceive('send')->never();
 
-        $hangmanApp = new MessageApplication($this->messageSender, $parser, $this->getCommandBus());
+        $this->factory
+            ->shouldReceive('buildMessage')
+            ->with([$user], $exception)
+            ->andReturn(null);
+
+        $hangmanApp = new MessageApplication(
+            $this->messageSender,
+            $parser,
+            $this->factory,
+            $this->getCommandBus()
+        );
         $hangmanApp->setLogger($this->logger);
 
         $hangmanApp->handle($message);

@@ -5,7 +5,8 @@ use League\Event\EventInterface;
 use MessageApp\Event\UnableToCreateUserEvent;
 use MessageApp\Finder\MessageFinder;
 use MessageApp\Listener\UnableToCreateUserEventHandler;
-use MessageApp\Message\DefaultMessage;
+use MessageApp\Message;
+use MessageApp\Message\MessageFactory;
 use MessageApp\Message\Sender\MessageSender;
 use MessageApp\SourceMessage;
 use MessageApp\Test\Mock\MessageAppMocker;
@@ -21,6 +22,11 @@ class UnableToCreateUserEventHandlerTest extends \PHPUnit_Framework_TestCase
      * @var MessageFinder
      */
     private $messageFinder;
+
+    /**
+     * @var MessageFactory
+     */
+    private $factory;
 
     /**
      * @var MessageSender
@@ -41,6 +47,8 @@ class UnableToCreateUserEventHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->messageSender = $this->getMessageSender();
 
+        $this->factory = \Mockery::mock(MessageFactory::class);
+
         $this->logger = \Mockery::mock('\\Psr\\Log\\LoggerInterface');
     }
 
@@ -56,6 +64,7 @@ class UnableToCreateUserEventHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $listener = new UnableToCreateUserEventHandler(
             $this->messageFinder,
+            $this->factory,
             $this->messageSender
         );
 
@@ -78,6 +87,7 @@ class UnableToCreateUserEventHandlerTest extends \PHPUnit_Framework_TestCase
         });
         $messageText = 'test';
         $source = 'src';
+        $message = \Mockery::mock(Message::class);
 
         $context = \Mockery::mock(Context::class, function ($context) {
             $context->shouldReceive('getValue')->andReturn('contextValue');
@@ -91,6 +101,7 @@ class UnableToCreateUserEventHandlerTest extends \PHPUnit_Framework_TestCase
 
         $listener = new UnableToCreateUserEventHandler(
             $this->messageFinder,
+            $this->factory,
             $this->messageSender
         );
 
@@ -99,13 +110,7 @@ class UnableToCreateUserEventHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->messageSender
             ->shouldReceive('send')
-            ->with(
-                \Mockery::on(function ($message) use ($messageText) {
-                    return $message instanceof DefaultMessage &&
-                        $message->getMessage() === $messageText;
-                }),
-                $source
-            )
+            ->with($message, $source)
             ->once();
 
         $event = \Mockery::mock(UnableToCreateUserEvent::class, function ($event) use ($user, $messageText) {
@@ -113,6 +118,61 @@ class UnableToCreateUserEventHandlerTest extends \PHPUnit_Framework_TestCase
             $event->shouldReceive('getReason')->andReturn($messageText);
             $event->shouldReceive('getName')->andReturn(UnableToCreateUserEvent::NAME);
         });
+
+        $this->factory
+            ->shouldReceive('buildMessage')
+            ->with([$user], $event)
+            ->andReturn($message);
+
+        $listener->handle($event, $context);
+    }
+
+    /**
+     * @test
+     */
+    public function testCompleteEventNoMessage()
+    {
+        $user = \Mockery::mock(UndefinedApplicationUser::class, function ($user) {
+            $user->shouldReceive('getName')->andReturn('user');
+        });
+        $messageText = 'test';
+        $source = 'src';
+
+        $context = \Mockery::mock(Context::class, function ($context) {
+            $context->shouldReceive('getValue')->andReturn('contextValue');
+        });
+
+        $sourceMessage = \Mockery::mock(SourceMessage::class, function ($sourceMessage) use ($source) {
+            $sourceMessage->shouldReceive('getSource')->andReturn($source);
+        });
+
+        $this->messageFinder->shouldReceive('findByReference')->with('contextValue')->andReturn($sourceMessage);
+
+        $listener = new UnableToCreateUserEventHandler(
+            $this->messageFinder,
+            $this->factory,
+            $this->messageSender
+        );
+
+        $listener->setLogger($this->logger);
+        $this->logger->shouldReceive('info');
+        $this->logger->shouldReceive('warning');
+
+        $this->messageSender
+            ->shouldReceive('send')
+            ->never();
+
+        $event = \Mockery::mock(UnableToCreateUserEvent::class, function ($event) use ($user, $messageText) {
+            $event->shouldReceive('getUser')->andReturn($user);
+            $event->shouldReceive('getReason')->andReturn($messageText);
+            $event->shouldReceive('getName')->andReturn(UnableToCreateUserEvent::NAME);
+        });
+
+        $this->factory
+            ->shouldReceive('buildMessage')
+            ->with([$user], $event)
+            ->andReturn(null);
+
         $listener->handle($event, $context);
     }
 }
