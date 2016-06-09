@@ -6,6 +6,7 @@ use League\Event\EventInterface;
 use MessageApp\Event\UnableToCreateUserEvent;
 use MessageApp\Finder\MessageFinder;
 use MessageApp\Message\DefaultMessage;
+use MessageApp\Message\MessageFactory;
 use MessageApp\Message\Sender\MessageSender;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -22,6 +23,11 @@ class UnableToCreateUserEventHandler implements MessageEventHandler, LoggerAware
     private $messageFinder;
 
     /**
+     * @var MessageFactory
+     */
+    private $messageFactory;
+
+    /**
      * @var MessageSender
      */
     private $messageSender;
@@ -29,14 +35,17 @@ class UnableToCreateUserEventHandler implements MessageEventHandler, LoggerAware
     /**
      * Constructor
      *
-     * @param MessageFinder $messageFinder
-     * @param MessageSender $messageSender
+     * @param MessageFinder  $messageFinder
+     * @param MessageFactory $messageFactory
+     * @param MessageSender  $messageSender
      */
     public function __construct(
         MessageFinder $messageFinder,
+        MessageFactory $messageFactory,
         MessageSender $messageSender
     ) {
         $this->messageFinder = $messageFinder;
+        $this->messageFactory = $messageFactory;
         $this->messageSender = $messageSender;
         $this->logger = new NullLogger();
     }
@@ -69,7 +78,13 @@ class UnableToCreateUserEventHandler implements MessageEventHandler, LoggerAware
             $messageContext = $this->messageFinder->findByReference($context->getValue());
         }
 
-        $message = new DefaultMessage([$event->getUser()], $event->getReason());
-        $this->messageSender->send($message, ($messageContext)?$messageContext->getSource():null); // TODO translate
+        $message = $this->messageFactory->buildMessage([$event->getUser()], $event);
+
+        if (!$message) {
+            $this->logger->warning('Message could not be generated');
+            return;
+        }
+
+        $this->messageSender->send($message, ($messageContext) ? $messageContext->getSource() : null);
     }
 }

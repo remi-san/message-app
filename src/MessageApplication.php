@@ -5,6 +5,7 @@ namespace MessageApp;
 use League\Tactician\CommandBus;
 use League\Tactician\Plugins\NamedCommand\NamedCommand;
 use MessageApp\Message\DefaultMessage;
+use MessageApp\Message\MessageFactory;
 use MessageApp\Message\Sender\MessageSender;
 use MessageApp\Parser\Exception\MessageParserException;
 use MessageApp\Parser\MessageParser;
@@ -27,6 +28,11 @@ class MessageApplication implements LoggerAwareInterface
     protected $messageParser;
 
     /**
+     * @var MessageFactory
+     */
+    private $messageFactory;
+
+    /**
      * @var CommandBus
      */
     protected $commandBus;
@@ -36,15 +42,18 @@ class MessageApplication implements LoggerAwareInterface
      *
      * @param MessageSender  $messageSender
      * @param MessageParser  $messageParser
+     * @param MessageFactory $messageFactory
      * @param CommandBus     $commandBus
      */
     public function __construct(
         MessageSender $messageSender,
         MessageParser $messageParser,
+        MessageFactory $messageFactory,
         CommandBus $commandBus
     ) {
         $this->messageSender = $messageSender;
         $this->messageParser = $messageParser;
+        $this->messageFactory = $messageFactory;
         $this->commandBus = $commandBus;
         $this->logger = new NullLogger();
     }
@@ -74,10 +83,15 @@ class MessageApplication implements LoggerAwareInterface
             return $this->messageParser->parse($message);
         } catch (MessageParserException $e) {
             $this->logger->error('Error parsing or executing command', ['exception' => $e->getMessage()]);
-            $this->messageSender->send(
-                new DefaultMessage([$e->getUser()], $e->getMessage()), // TODO translate
-                $message
-            );
+
+            $errorMessage = $this->messageFactory->buildMessage([$e->getUser()], $e);
+
+            if (!$errorMessage) {
+                $this->logger->warning('Message could not be generated');
+                return null;
+            }
+
+            $this->messageSender->send($errorMessage, $message);
             return null;
         }
     }

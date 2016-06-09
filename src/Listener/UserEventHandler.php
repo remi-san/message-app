@@ -6,6 +6,7 @@ use League\Event\EventInterface;
 use MessageApp\Event\UserEvent;
 use MessageApp\Finder\MessageFinder;
 use MessageApp\Message\DefaultMessage;
+use MessageApp\Message\MessageFactory;
 use MessageApp\Message\Sender\MessageSender;
 use MessageApp\User\Finder\AppUserFinder;
 use Psr\Log\LoggerAwareInterface;
@@ -28,6 +29,11 @@ class UserEventHandler implements MessageEventHandler, LoggerAwareInterface
     private $messageFinder;
 
     /**
+     * @var MessageFactory
+     */
+    private $messageFactory;
+
+    /**
      * @var MessageSender
      */
     private $messageSender;
@@ -37,15 +43,18 @@ class UserEventHandler implements MessageEventHandler, LoggerAwareInterface
      *
      * @param AppUserFinder $userFinder
      * @param MessageFinder $messageFinder
+     * @param MessageFactory $messageFactory
      * @param MessageSender $messageSender
      */
     public function __construct(
         AppUserFinder $userFinder,
         MessageFinder $messageFinder,
+        MessageFactory $messageFactory,
         MessageSender $messageSender
     ) {
         $this->userFinder = $userFinder;
         $this->messageFinder = $messageFinder;
+        $this->messageFactory = $messageFactory;
         $this->messageSender = $messageSender;
         $this->logger = new NullLogger();
     }
@@ -81,7 +90,13 @@ class UserEventHandler implements MessageEventHandler, LoggerAwareInterface
             $messageContext = $this->messageFinder->findByReference($context->getValue());
         }
 
-        $message = new DefaultMessage([$user], $event->getAsMessage());
-        $this->messageSender->send($message, ($messageContext)?$messageContext->getSource():null); // TODO translate
+        $message = $this->messageFactory->buildMessage([$user], $event);
+
+        if (!$message) {
+            $this->logger->warning('Message could not be generated');
+            return;
+        }
+
+        $this->messageSender->send($message, ($messageContext) ? $messageContext->getSource() : null);
     }
 }
