@@ -1,6 +1,6 @@
 <?php
 
-namespace MessageApp\Message;
+namespace MessageApp\Message\TextExtractor;
 
 interface MessageTextExtractor
 {

@@ -3,7 +3,7 @@
 namespace MessageApp\Test;
 
 use MessageApp\Message\MessageFactory;
-use MessageApp\Message\MessageTextExtractor;
+use MessageApp\Message\TextExtractor\MessageTextExtractor;
 use MessageApp\User\ApplicationUser;
 use MessageApp\User\UndefinedApplicationUser;
 

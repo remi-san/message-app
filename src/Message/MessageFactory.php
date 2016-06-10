@@ -2,6 +2,7 @@
 
 namespace MessageApp\Message;
 
+use MessageApp\Message\TextExtractor\MessageTextExtractor;
 use MessageApp\User\ApplicationUser;
 use MessageApp\User\UndefinedApplicationUser;
 
