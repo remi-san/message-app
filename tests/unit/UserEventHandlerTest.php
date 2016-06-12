@@ -108,32 +108,6 @@ class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
 
         $event = \Mockery::mock(UserEvent::class, function ($event) {
             $event->shouldReceive('getUserId')->andReturn(null);
-            $event->shouldReceive('getAsMessage')->andReturn('message');
-        });
-        $listener->handle($event);
-    }
-
-    /**
-     * @test
-     */
-    public function testIncompleteEvent2()
-    {
-        $listener = new UserEventHandler(
-            $this->userFinder,
-            $this->messageFinder,
-            $this->factory,
-            $this->messageSender
-        );
-
-        $listener->setLogger($this->logger);
-        $this->logger->shouldReceive('info');
-
-        $this->userFinder->shouldReceive('find')->never();
-        $this->messageSender->shouldReceive('send')->never();
-
-        $event = \Mockery::mock(UserEvent::class, function ($event) {
-            $event->shouldReceive('getUserId')->andReturn(\Mockery::mock(ApplicationUserId::class));
-            $event->shouldReceive('getAsMessage')->andReturn(null);
         });
         $listener->handle($event);
     }
@@ -181,7 +155,6 @@ class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
 
         $event = \Mockery::mock(UserEvent::class, function ($event) use ($userId, $messageText) {
             $event->shouldReceive('getUserId')->andReturn($userId);
-            $event->shouldReceive('getAsMessage')->andReturn($messageText);
             $event->shouldReceive('getName')->andReturn('user.event');
         });
 
@@ -235,7 +208,6 @@ class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
 
         $event = \Mockery::mock(UserEvent::class, function ($event) use ($userId, $messageText) {
             $event->shouldReceive('getUserId')->andReturn($userId);
-            $event->shouldReceive('getAsMessage')->andReturn($messageText);
             $event->shouldReceive('getName')->andReturn('user.event');
         });
 

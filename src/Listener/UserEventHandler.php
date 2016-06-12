@@ -69,7 +69,7 @@ class UserEventHandler implements MessageEventHandler, LoggerAwareInterface
      */
     public function handle(EventInterface $event, Context $context = null)
     {
-        if (! ($event instanceof UserEvent && $event->getUserId() && $event->getAsMessage())) {
+        if (!($event instanceof UserEvent && $event->getUserId())) {
             return;
         }
 
@@ -80,7 +80,6 @@ class UserEventHandler implements MessageEventHandler, LoggerAwareInterface
             'Send message',
             [
                 'user' => $user->getName(),
-                'message' => $event->getAsMessage(),
                 'type' => $event->getName()
             ]
         );
