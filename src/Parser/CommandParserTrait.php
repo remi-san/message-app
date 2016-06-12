@@ -15,10 +15,7 @@ trait CommandParserTrait
     protected function checkUser(ApplicationUser $user)
     {
         if ($user instanceof UndefinedApplicationUser) {
-            throw new MessageParserException(
-                $user,
-                'User is not valid!'
-            );
+            throw MessageParserException::invalidUser($user);
         }
     }
 }
