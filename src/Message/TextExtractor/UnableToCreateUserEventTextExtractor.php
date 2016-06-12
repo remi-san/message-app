@@ -19,6 +19,6 @@ class UnableToCreateUserEventTextExtractor implements MessageTextExtractor
             return null;
         }
 
-        return $object->getReason();
+        return 'Could not create the user!'; // TODO translate
     }
 }

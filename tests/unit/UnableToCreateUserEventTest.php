@@ -25,9 +25,8 @@ class UnableToCreateUserEventTest extends \PHPUnit_Framework_TestCase
      */
     public function test()
     {
-        $event = new UnableToCreateUserEvent($this->user, 'reason');
+        $event = new UnableToCreateUserEvent($this->user);
 
         $this->assertEquals($this->user, $event->getUser());
-        $this->assertEquals('reason', $event->getReason());
     }
 }

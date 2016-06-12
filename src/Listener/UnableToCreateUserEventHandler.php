@@ -68,7 +68,6 @@ class UnableToCreateUserEventHandler implements MessageEventHandler, LoggerAware
             'Send message',
             [
                 'user' => $event->getUser()->getName(),
-                'message' => $event->getReason(),
                 'type' => $event->getName()
             ]
         );

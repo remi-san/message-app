@@ -7,6 +7,21 @@ use MessageApp\Event\UserEvent;
 class UserEventTextExtractor implements MessageTextExtractor
 {
     /**
+     * @var MessageTextExtractor[]
+     */
+    private $gameResultExtractors;
+
+    /**
+     * Constructor.
+     *
+     * @param $gameResultExtractors
+     */
+    public function __construct(array $gameResultExtractors = [])
+    {
+        $this->gameResultExtractors = $gameResultExtractors;
+    }
+
+    /**
      * Extract the message from the game result.
      *
      * @param  object $object
@@ -19,6 +34,12 @@ class UserEventTextExtractor implements MessageTextExtractor
             return null;
         }
 
-        return $object->getAsMessage();
+        foreach ($this->gameResultExtractors as $extractor) {
+            if ($message = $extractor->extractMessage($object, $languageIso)) {
+                return $message;
+            }
+        }
+
+        throw new \InvalidArgumentException('Unsupported User Event');
     }
 }

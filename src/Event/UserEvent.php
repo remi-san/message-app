@@ -11,9 +11,4 @@ interface UserEvent extends EventInterface
      * @return ApplicationUserId
      */
     public function getUserId();
-
-    /**
-     * @return string
-     */
-    public function getAsMessage();
 }

@@ -21,16 +21,13 @@ class UnableToCreateUserEventExceptionTextExtractorTest extends \PHPUnit_Framewo
      */
     public function testWithUnableToCreateUserEvent()
     {
-        $message = 'test-message';
-        $event = \Mockery::mock(UnableToCreateUserEvent::class, function ($event) use ($message) {
-            $event->shouldReceive('getReason')->andReturn($message);
-        });
+        $event = \Mockery::mock(UnableToCreateUserEvent::class);
 
         $extractor = new UnableToCreateUserEventTextExtractor();
 
         $extractedMessage = $extractor->extractMessage($event, 'en');
 
-        $this->assertEquals($message, $extractedMessage);
+        $this->assertEquals('Could not create the user!', $extractedMessage);
     }
 
     /**

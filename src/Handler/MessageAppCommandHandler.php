@@ -73,8 +73,7 @@ class MessageAppCommandHandler implements LoggerAwareInterface
             $this->logger->error('Error creating the user');
             $this->errorHandler->handle(
                 new UnableToCreateUserEvent(
-                    new UndefinedApplicationUser($originalUser),
-                    'Could not create the user!'
+                    new UndefinedApplicationUser($originalUser)
                 )
             );
         }

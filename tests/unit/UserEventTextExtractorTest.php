@@ -3,6 +3,7 @@
 namespace MessageApp\Test;
 
 use MessageApp\Event\UserEvent;
+use MessageApp\Message\TextExtractor\MessageTextExtractor;
 use MessageApp\Message\TextExtractor\UserEventTextExtractor;
 
 class UserEventExceptionTextExtractorTest extends \PHPUnit_Framework_TestCase
@@ -22,15 +23,33 @@ class UserEventExceptionTextExtractorTest extends \PHPUnit_Framework_TestCase
     public function testWithUserEvent()
     {
         $message = 'test-message';
-        $event = \Mockery::mock(UserEvent::class, function ($event) use ($message) {
-            $event->shouldReceive('getAsMessage')->andReturn($message);
+        $lang = 'en';
+        $gameResult = \Mockery::mock(UserEvent::class);
+        $extractor = \Mockery::mock(MessageTextExtractor::class, function ($result) use ($message, $gameResult, $lang) {
+            $result->shouldReceive('extractMessage')
+                ->with($gameResult, $lang)
+                ->andReturn($message)
+                ->once();
         });
 
-        $extractor = new UserEventTextExtractor();
+        $extractor = new UserEventTextExtractor([$extractor]);
 
-        $extractedMessage = $extractor->extractMessage($event, 'en');
+        $extractedMessage = $extractor->extractMessage($gameResult, $lang);
 
         $this->assertEquals($message, $extractedMessage);
+    }
+
+    /**
+     * @test
+     */
+    public function testWithUnmanagedUserEvent()
+    {
+        $gameResult = \Mockery::mock(UserEvent::class);
+
+        $extractor = new UserEventTextExtractor([]);
+
+        $this->setExpectedException(\InvalidArgumentException::class);
+        $extractor->extractMessage($gameResult, 'en');
     }
 
     /**

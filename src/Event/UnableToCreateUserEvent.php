@@ -18,20 +18,13 @@ class UnableToCreateUserEvent extends Event
     private $user;
 
     /**
-     * @var string
-     */
-    private $reason;
-
-    /**
      * Constructor
      *
      * @param UndefinedApplicationUser $user
-     * @param string                   $reason
      */
-    public function __construct(UndefinedApplicationUser $user, $reason)
+    public function __construct(UndefinedApplicationUser $user)
     {
         $this->user = $user;
-        $this->reason = $reason;
     }
 
     /**
@@ -40,13 +33,5 @@ class UnableToCreateUserEvent extends Event
     public function getUser()
     {
         return $this->user;
-    }
-
-    /**
-     * @return string
-     */
-    public function getReason()
-    {
-        return $this->reason;
     }
 }
