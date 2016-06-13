@@ -3,6 +3,7 @@
 namespace MessageApp\Message\TextExtractor;
 
 use MessageApp\Event\UserEvent;
+use RemiSan\Intl\TranslatableResource;
 
 class UserEventTextExtractor implements MessageTextExtractor
 {
@@ -26,7 +27,7 @@ class UserEventTextExtractor implements MessageTextExtractor
      *
      * @param  object $object
      * @param  string $languageIso
-     * @return string
+     * @return TranslatableResource
      */
     public function extractMessage($object, $languageIso)
     {

@@ -6,6 +6,7 @@ use MessageApp\Message\MessageFactory;
 use MessageApp\Message\TextExtractor\MessageTextExtractor;
 use MessageApp\User\ApplicationUser;
 use MessageApp\User\UndefinedApplicationUser;
+use RemiSan\Intl\TranslatableResource;
 
 class MessageFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -81,7 +82,8 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
         $language = 'en';
         $user = \Mockery::mock(ApplicationUser::class);
         $object = new \stdClass();
-        $translatedMessage = 'translated';
+        $translatedString = 'translated';
+        $translatedMessage = new TranslatableResource($translatedString, ['key'=>'value']);
 
         $factory = new MessageFactory($this->extractor);
 
@@ -93,7 +95,7 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
         $message = $factory->buildMessage([$user, null], $object, $language);
 
         $this->assertEquals([$user], $message->getUsers());
-        $this->assertEquals($translatedMessage, $message->getMessage());
+        $this->assertEquals($translatedString, $message->getMessage());
     }
 
     /**
@@ -106,7 +108,8 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
             $u->shouldReceive('getPreferredLanguage')->andReturn($language);
         });
         $object = new \stdClass();
-        $translatedMessage = 'translated';
+        $translatedString = 'translated';
+        $translatedMessage = new TranslatableResource($translatedString, ['key'=>'value']);
 
         $factory = new MessageFactory($this->extractor);
 
@@ -118,6 +121,6 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
         $message = $factory->buildMessage([null, $user], $object);
 
         $this->assertEquals([$user], $message->getUsers());
-        $this->assertEquals($translatedMessage, $message->getMessage());
+        $this->assertEquals($translatedString, $message->getMessage());
     }
 }

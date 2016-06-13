@@ -3,6 +3,7 @@
 namespace MessageApp\Message\TextExtractor;
 
 use MessageApp\Event\UnableToCreateUserEvent;
+use RemiSan\Intl\TranslatableResource;
 
 class UnableToCreateUserEventTextExtractor implements MessageTextExtractor
 {
@@ -11,7 +12,7 @@ class UnableToCreateUserEventTextExtractor implements MessageTextExtractor
      *
      * @param  object $object
      * @param  string $languageIso
-     * @return string
+     * @return TranslatableResource
      */
     public function extractMessage($object, $languageIso)
     {
@@ -19,6 +20,6 @@ class UnableToCreateUserEventTextExtractor implements MessageTextExtractor
             return null;
         }
 
-        return 'Could not create the user!'; // TODO pass a key and transform it to TranslatableResource
+        return new TranslatableResource('Could not create the user!'); // TODO pass a key
     }
 }

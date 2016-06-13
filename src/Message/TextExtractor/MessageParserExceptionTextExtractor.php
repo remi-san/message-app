@@ -3,6 +3,7 @@
 namespace MessageApp\Message\TextExtractor;
 
 use MessageApp\Parser\Exception\MessageParserException;
+use RemiSan\Intl\TranslatableResource;
 
 class MessageParserExceptionTextExtractor implements MessageTextExtractor
 {
@@ -11,7 +12,7 @@ class MessageParserExceptionTextExtractor implements MessageTextExtractor
      *
      * @param  object $object
      * @param  string $languageIso
-     * @return string
+     * @return TranslatableResource
      */
     public function extractMessage($object, $languageIso)
     {
@@ -19,6 +20,6 @@ class MessageParserExceptionTextExtractor implements MessageTextExtractor
             return null;
         }
 
-        return $object->getMessage(); // TODO get the code and transform it to TranslatableResource
+        return new TranslatableResource($object->getMessage()); // TODO get the code
     }
 }

@@ -2,6 +2,8 @@
 
 namespace MessageApp\Message\TextExtractor;
 
+use RemiSan\Intl\TranslatableResource;
+
 class CompositeTextExtractor implements MessageTextExtractor
 {
     /**
@@ -32,7 +34,7 @@ class CompositeTextExtractor implements MessageTextExtractor
      *
      * @param  object $object
      * @param  string $languageIso
-     * @return string
+     * @return TranslatableResource
      */
     public function extractMessage($object, $languageIso)
     {

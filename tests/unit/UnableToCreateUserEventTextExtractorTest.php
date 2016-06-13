@@ -4,6 +4,7 @@ namespace MessageApp\Test;
 
 use MessageApp\Event\UnableToCreateUserEvent;
 use MessageApp\Message\TextExtractor\UnableToCreateUserEventTextExtractor;
+use RemiSan\Intl\TranslatableResource;
 
 class UnableToCreateUserEventExceptionTextExtractorTest extends \PHPUnit_Framework_TestCase
 {
@@ -27,7 +28,7 @@ class UnableToCreateUserEventExceptionTextExtractorTest extends \PHPUnit_Framewo
 
         $extractedMessage = $extractor->extractMessage($event, 'en');
 
-        $this->assertEquals('Could not create the user!', $extractedMessage);
+        $this->assertEquals(new TranslatableResource('Could not create the user!'), $extractedMessage);
     }
 
     /**

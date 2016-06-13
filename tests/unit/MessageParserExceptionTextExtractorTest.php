@@ -4,6 +4,7 @@ namespace MessageApp\Test;
 
 use MessageApp\Message\TextExtractor\MessageParserExceptionTextExtractor;
 use MessageApp\Parser\Exception\MessageParserException;
+use RemiSan\Intl\TranslatableResource;
 
 class MessageParserExceptionTextExtractorTest extends \PHPUnit_Framework_TestCase
 {
@@ -28,7 +29,7 @@ class MessageParserExceptionTextExtractorTest extends \PHPUnit_Framework_TestCas
 
         $extractedMessage = $extractor->extractMessage($exception, 'en');
 
-        $this->assertEquals($message, $extractedMessage);
+        $this->assertEquals(new TranslatableResource($message), $extractedMessage);
     }
 
     /**

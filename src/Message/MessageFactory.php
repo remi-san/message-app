@@ -43,7 +43,7 @@ class MessageFactory
             return null;
         }
 
-        return new DefaultMessage($filteredUsers, $messageText);
+        return new DefaultMessage($filteredUsers, vsprintf($messageText->getKey(), $messageText->getParameters()));
     }
 
     /**
