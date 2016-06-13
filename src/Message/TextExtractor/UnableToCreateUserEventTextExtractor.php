@@ -19,6 +19,6 @@ class UnableToCreateUserEventTextExtractor implements MessageTextExtractor
             return null;
         }
 
-        return 'Could not create the user!'; // TODO translate
+        return 'Could not create the user!'; // TODO pass a key and transform it to TranslatableResource
     }
 }
