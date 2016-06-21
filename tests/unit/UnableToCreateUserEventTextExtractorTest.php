@@ -26,7 +26,7 @@ class UnableToCreateUserEventExceptionTextExtractorTest extends \PHPUnit_Framewo
 
         $extractor = new UnableToCreateUserEventTextExtractor();
 
-        $extractedMessage = $extractor->extractMessage($event, 'en');
+        $extractedMessage = $extractor->extractMessage($event);
 
         $this->assertEquals(new TranslatableResource('Could not create the user!'), $extractedMessage);
     }
@@ -38,7 +38,7 @@ class UnableToCreateUserEventExceptionTextExtractorTest extends \PHPUnit_Framewo
     {
         $extractor = new UnableToCreateUserEventTextExtractor();
 
-        $extractedMessage = $extractor->extractMessage(null, 'en');
+        $extractedMessage = $extractor->extractMessage(null);
 
         $this->assertNull($extractedMessage);
     }

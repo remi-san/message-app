@@ -33,13 +33,12 @@ class CompositeTextExtractor implements MessageTextExtractor
      * Extract the message from the game result.
      *
      * @param  object $object
-     * @param  string $languageIso
      * @return TranslatableResource
      */
-    public function extractMessage($object, $languageIso)
+    public function extractMessage($object)
     {
         foreach ($this->extractors as $extractor) {
-            if ($message = $extractor->extractMessage($object, $languageIso)) {
+            if ($message = $extractor->extractMessage($object)) {
                 return $message;
             }
         }

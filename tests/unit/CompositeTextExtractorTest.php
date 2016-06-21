@@ -23,19 +23,18 @@ class CompositeTextExtractorTest extends \PHPUnit_Framework_TestCase
     {
         $event = new \stdClass();
         $message = 'test-message';
-        $language = 'en';
-        $subExOne = \Mockery::mock(MessageTextExtractor::class, function ($extractor) use ($event, $language) {
-            $extractor->shouldReceive('extractMessage')->with($event, $language)->andReturn(null);
+        $subExOne = \Mockery::mock(MessageTextExtractor::class, function ($extractor) use ($event) {
+            $extractor->shouldReceive('extractMessage')->with($event)->andReturn(null);
         });
-        $subExTwo = \Mockery::mock(MessageTextExtractor::class, function ($extractor) use ($event, $language, $message) {
-            $extractor->shouldReceive('extractMessage')->with($event, $language)->andReturn($message);
+        $subExTwo = \Mockery::mock(MessageTextExtractor::class, function ($extractor) use ($event, $message) {
+            $extractor->shouldReceive('extractMessage')->with($event)->andReturn($message);
         });
 
         $extractor = new CompositeTextExtractor();
         $extractor->addExtractor($subExOne);
         $extractor->addExtractor($subExTwo);
 
-        $extractedMessage = $extractor->extractMessage($event, $language);
+        $extractedMessage = $extractor->extractMessage($event);
 
         $this->assertEquals($message, $extractedMessage);
     }
@@ -47,7 +46,7 @@ class CompositeTextExtractorTest extends \PHPUnit_Framework_TestCase
     {
         $extractor = new CompositeTextExtractor();
 
-        $extractedMessage = $extractor->extractMessage(null, 'en');
+        $extractedMessage = $extractor->extractMessage(null);
 
         $this->assertNull($extractedMessage);
     }

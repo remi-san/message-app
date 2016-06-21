@@ -68,7 +68,7 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->extractor
             ->shouldReceive('extractMessage')
-            ->with($object, $language)
+            ->with($object)
             ->andReturn(null);
 
         $this->assertNull($factory->buildMessage([$user], $object, $language));
@@ -89,7 +89,7 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->extractor
             ->shouldReceive('extractMessage')
-            ->with($object, $language)
+            ->with($object)
             ->andReturn($translatedMessage);
 
         $message = $factory->buildMessage([$user, null], $object, $language);
@@ -115,7 +115,7 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->extractor
             ->shouldReceive('extractMessage')
-            ->with($object, $language)
+            ->with($object)
             ->andReturn($translatedMessage);
 
         $message = $factory->buildMessage([null, $user], $object);

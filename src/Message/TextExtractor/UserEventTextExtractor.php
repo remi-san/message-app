@@ -26,17 +26,16 @@ class UserEventTextExtractor implements MessageTextExtractor
      * Extract the message from the game result.
      *
      * @param  object $object
-     * @param  string $languageIso
      * @return TranslatableResource
      */
-    public function extractMessage($object, $languageIso)
+    public function extractMessage($object)
     {
         if (!$object instanceof UserEvent) {
             return null;
         }
 
         foreach ($this->gameResultExtractors as $extractor) {
-            if ($message = $extractor->extractMessage($object, $languageIso)) {
+            if ($message = $extractor->extractMessage($object)) {
                 return $message;
             }
         }

@@ -23,18 +23,17 @@ class UserEventExceptionTextExtractorTest extends \PHPUnit_Framework_TestCase
     public function testWithUserEvent()
     {
         $message = 'test-message';
-        $lang = 'en';
         $gameResult = \Mockery::mock(UserEvent::class);
-        $extractor = \Mockery::mock(MessageTextExtractor::class, function ($result) use ($message, $gameResult, $lang) {
+        $extractor = \Mockery::mock(MessageTextExtractor::class, function ($result) use ($message, $gameResult) {
             $result->shouldReceive('extractMessage')
-                ->with($gameResult, $lang)
+                ->with($gameResult)
                 ->andReturn($message)
                 ->once();
         });
 
         $extractor = new UserEventTextExtractor([$extractor]);
 
-        $extractedMessage = $extractor->extractMessage($gameResult, $lang);
+        $extractedMessage = $extractor->extractMessage($gameResult);
 
         $this->assertEquals($message, $extractedMessage);
     }
@@ -49,7 +48,7 @@ class UserEventExceptionTextExtractorTest extends \PHPUnit_Framework_TestCase
         $extractor = new UserEventTextExtractor([]);
 
         $this->setExpectedException(\InvalidArgumentException::class);
-        $extractor->extractMessage($gameResult, 'en');
+        $extractor->extractMessage($gameResult);
     }
 
     /**
@@ -59,7 +58,7 @@ class UserEventExceptionTextExtractorTest extends \PHPUnit_Framework_TestCase
     {
         $extractor = new UserEventTextExtractor();
 
-        $extractedMessage = $extractor->extractMessage(null, 'en');
+        $extractedMessage = $extractor->extractMessage(null);
 
         $this->assertNull($extractedMessage);
     }

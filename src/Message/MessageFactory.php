@@ -37,11 +37,13 @@ class MessageFactory
             return null;
         }
 
-        $messageText = $this->extractor->extractMessage($object, ($language) ? : self::getLanguage($filteredUsers));
+        $messageText = $this->extractor->extractMessage($object);
 
         if ($messageText === null) {
             return null;
         }
+
+        // $language = ($language) ? : self::getLanguage($filteredUsers); // TODO use it
 
         return new DefaultMessage($filteredUsers, vsprintf($messageText->getKey(), $messageText->getParameters()));
     }

@@ -27,7 +27,7 @@ class MessageParserExceptionTextExtractorTest extends \PHPUnit_Framework_TestCas
 
         $extractor = new MessageParserExceptionTextExtractor();
 
-        $extractedMessage = $extractor->extractMessage($exception, 'en');
+        $extractedMessage = $extractor->extractMessage($exception);
 
         $this->assertEquals(new TranslatableResource($message), $extractedMessage);
     }
@@ -39,7 +39,7 @@ class MessageParserExceptionTextExtractorTest extends \PHPUnit_Framework_TestCas
     {
         $extractor = new MessageParserExceptionTextExtractor();
 
-        $extractedMessage = $extractor->extractMessage(null, 'en');
+        $extractedMessage = $extractor->extractMessage(null);
 
         $this->assertNull($extractedMessage);
     }
