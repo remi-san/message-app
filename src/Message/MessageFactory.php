@@ -5,6 +5,7 @@ namespace MessageApp\Message;
 use MessageApp\Message\TextExtractor\MessageTextExtractor;
 use MessageApp\User\ApplicationUser;
 use MessageApp\User\UndefinedApplicationUser;
+use RemiSan\Intl\ResourceTranslator;
 
 class MessageFactory
 {
@@ -14,13 +15,20 @@ class MessageFactory
     private $extractor;
 
     /**
+     * @var ResourceTranslator
+     */
+    private $resourceTranslator;
+
+    /**
      * Constructor.
      *
      * @param MessageTextExtractor $extractor
+     * @param ResourceTranslator   $resourceTranslator
      */
-    public function __construct(MessageTextExtractor $extractor)
+    public function __construct(MessageTextExtractor $extractor, ResourceTranslator $resourceTranslator)
     {
         $this->extractor = $extractor;
+        $this->resourceTranslator = $resourceTranslator;
     }
 
     /**
@@ -37,15 +45,21 @@ class MessageFactory
             return null;
         }
 
-        $messageText = $this->extractor->extractMessage($object);
+        $messageResource = $this->extractor->extractMessage($object);
 
-        if ($messageText === null) {
+        if ($messageResource === null) {
             return null;
         }
 
-        // $language = ($language) ? : self::getLanguage($filteredUsers); // TODO use it
+        $language = ($language) ? : self::getLanguage($filteredUsers);
 
-        return new DefaultMessage($filteredUsers, vsprintf($messageText->getKey(), $messageText->getParameters()));
+        try {
+            $translatedText = $this->resourceTranslator->translate($language, $messageResource);
+        } catch (\IntlException $e) {
+            $translatedText = $messageResource->getKey();
+        }
+
+        return new DefaultMessage($filteredUsers, $translatedText);
     }
 
     /**

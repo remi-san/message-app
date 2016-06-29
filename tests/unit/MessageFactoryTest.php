@@ -6,6 +6,7 @@ use MessageApp\Message\MessageFactory;
 use MessageApp\Message\TextExtractor\MessageTextExtractor;
 use MessageApp\User\ApplicationUser;
 use MessageApp\User\UndefinedApplicationUser;
+use RemiSan\Intl\ResourceTranslator;
 use RemiSan\Intl\TranslatableResource;
 
 class MessageFactoryTest extends \PHPUnit_Framework_TestCase
@@ -15,9 +16,15 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
      */
     private $extractor;
 
+    /**
+     * @var ResourceTranslator
+     */
+    private $resourceTranslator;
+
     public function setUp()
     {
         $this->extractor = \Mockery::mock(MessageTextExtractor::class);
+        $this->resourceTranslator = \Mockery::mock(ResourceTranslator::class);
     }
 
     public function tearDown()
@@ -30,7 +37,7 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function withNoUsersItShouldReturnNull()
     {
-        $factory = new MessageFactory($this->extractor);
+        $factory = new MessageFactory($this->extractor, $this->resourceTranslator);
 
         $this->assertNull($factory->buildMessage([], null));
     }
@@ -40,7 +47,7 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function withNullUserItShouldReturnNull()
     {
-        $factory = new MessageFactory($this->extractor);
+        $factory = new MessageFactory($this->extractor, $this->resourceTranslator);
 
         $this->assertNull($factory->buildMessage([null], null));
     }
@@ -50,7 +57,7 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function withUndefinedApplicationUserItShouldReturnNull()
     {
-        $factory = new MessageFactory($this->extractor);
+        $factory = new MessageFactory($this->extractor, $this->resourceTranslator);
 
         $this->assertNull($factory->buildMessage([\Mockery::mock(UndefinedApplicationUser::class)], null));
     }
@@ -64,7 +71,7 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
         $user = \Mockery::mock(ApplicationUser::class);
         $object = new \stdClass();
 
-        $factory = new MessageFactory($this->extractor);
+        $factory = new MessageFactory($this->extractor, $this->resourceTranslator);
 
         $this->extractor
             ->shouldReceive('extractMessage')
@@ -84,8 +91,12 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
         $object = new \stdClass();
         $translatedString = 'translated';
         $translatedMessage = new TranslatableResource($translatedString, ['key'=>'value']);
+        $this->resourceTranslator
+            ->shouldReceive('translate')
+            ->with($language, $translatedMessage)
+            ->andReturn($translatedString);
 
-        $factory = new MessageFactory($this->extractor);
+        $factory = new MessageFactory($this->extractor, $this->resourceTranslator);
 
         $this->extractor
             ->shouldReceive('extractMessage')
@@ -110,8 +121,12 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
         $object = new \stdClass();
         $translatedString = 'translated';
         $translatedMessage = new TranslatableResource($translatedString, ['key'=>'value']);
+        $this->resourceTranslator
+            ->shouldReceive('translate')
+            ->with($language, $translatedMessage)
+            ->andReturn($translatedString);
 
-        $factory = new MessageFactory($this->extractor);
+        $factory = new MessageFactory($this->extractor, $this->resourceTranslator);
 
         $this->extractor
             ->shouldReceive('extractMessage')

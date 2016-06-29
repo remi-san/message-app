@@ -22,14 +22,15 @@ class MessageParserExceptionTextExtractorTest extends \PHPUnit_Framework_TestCas
      */
     public function testWithMessageParserException()
     {
+        $code = 'message.code';
         $message = 'test-message';
-        $exception = new MessageParserException(null, null, $message);
+        $exception = new MessageParserException(null, $code, $message);
 
         $extractor = new MessageParserExceptionTextExtractor();
 
         $extractedMessage = $extractor->extractMessage($exception);
 
-        $this->assertEquals(new TranslatableResource($message), $extractedMessage);
+        $this->assertEquals(new TranslatableResource($code), $extractedMessage);
     }
 
     /**

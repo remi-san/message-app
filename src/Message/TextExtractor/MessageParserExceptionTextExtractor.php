@@ -19,6 +19,6 @@ class MessageParserExceptionTextExtractor implements MessageTextExtractor
             return null;
         }
 
-        return new TranslatableResource($object->getMessage()); // TODO get the code
+        return new TranslatableResource($object->getCodeName());
     }
 }
