@@ -7,17 +7,17 @@ use MessageApp\User\ApplicationUser;
 
 class MessageParserException extends MessageAppException
 {
-    const JOIN_MULTIPLE_USERS = 'JOIN.MULTIPLE-USERS';
-    const JOIN_UNREGISTERED_USER = 'JOIN.UNREGISTERED-USERS';
-    const JOIN_NO_GAME = 'JOIN.NO-GAME';
-    const JOIN_YOURSELF = 'JOIN.YOURSELF';
-    const JOIN_GAME_RUNNING = 'JOIN.GAME-RUNNING';
-    const START_NOT_IN = 'START.NOT-IN';
-    const LEAVE_NOT_IN = 'LEAVE.NOT-IN';
-    const CREATE_MULTIPLE = 'CREATE.MULTIPLE';
-    const GAME_NOT_FOUND = 'GAME-NOT-FOUND';
-    const INVALID_USER = 'INVALID-USER';
-    const PARSE_ERROR = 'PARSE-ERROR';
+    const JOIN_MULTIPLE_USERS = 'game.parser.exception.join.multiple-users';
+    const JOIN_UNREGISTERED_USER = 'game.parser.exception.join.unregistered-users';
+    const JOIN_NO_GAME = 'game.parser.exception.join.no-game';
+    const JOIN_YOURSELF = 'game.parser.exception.join.yourself';
+    const JOIN_GAME_RUNNING = 'game.parser.exception.join.game-running';
+    const START_NOT_IN = 'game.parser.exception.start.not-in';
+    const LEAVE_NOT_IN = 'game.parser.exception.leave.not-in';
+    const CREATE_MULTIPLE = 'game.parser.exception.create.multiple';
+    const GAME_NOT_FOUND = 'game.parser.exception.game-not-found';
+    const INVALID_USER = 'parser.exception.invalid-user';
+    const PARSE_ERROR = 'parser.exception.parse-error';
 
     /**
      * @var string
