@@ -3,12 +3,18 @@
 namespace MessageApp\Command;
 
 use League\Tactician\Plugins\NamedCommand\NamedCommand;
+use MessageApp\User\ApplicationUserId;
 use RemiSan\Context\Context;
 use RemiSan\Context\ContextAware;
 
 class CreateUserCommand implements NamedCommand, ContextAware
 {
     const NAME = 'USER.CREATE';
+
+    /**
+     * @var ApplicationUserId
+     */
+    private $id;
 
     /**
      * @var object
@@ -30,6 +36,14 @@ class CreateUserCommand implements NamedCommand, ContextAware
      */
     public function __construct()
     {
+    }
+
+    /**
+     * @return ApplicationUserId
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 
     /**
@@ -73,16 +87,18 @@ class CreateUserCommand implements NamedCommand, ContextAware
     /**
      * Static constructor.
      *
-     * @param object  $originalUser
-     * @param string  $preferredLanguage
-     * @param Context $context
+     * @param ApplicationUserId $id
+     * @param object            $originalUser
+     * @param string            $preferredLanguage
+     * @param Context           $context
      *
      * @return CreateUserCommand
      */
-    public static function create($originalUser, $preferredLanguage, Context $context = null)
+    public static function create(ApplicationUserId $id, $originalUser, $preferredLanguage, Context $context = null)
     {
         $obj = new self();
 
+        $obj->id = $id;
         $obj->originalUser = $originalUser;
         $obj->preferredLanguage = $preferredLanguage;
         $obj->context = $context;

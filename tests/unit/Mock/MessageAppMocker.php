@@ -121,13 +121,16 @@ trait MessageAppMocker
     }
 
     /**
-     * @param  object $user
-     * @param  string $language
+     * @param ApplicationUserId $userId
+     * @param  object           $user
+     * @param  string           $language
+     *
      * @return CreateUserCommand
      */
-    public function getCreateUserCommand($user, $language = 'en')
+    public function getCreateUserCommand(ApplicationUserId $userId, $user, $language = 'en')
     {
         $command = \Mockery::mock('\\MessageApp\\Command\\CreateUserCommand');
+        $command->shouldReceive('getId')->andReturn($userId);
         $command->shouldReceive('getOriginalUser')->andReturn($user);
         $command->shouldReceive('getContext')->andReturn(null);
         $command->shouldReceive('getPreferredLanguage')->andReturn($language);

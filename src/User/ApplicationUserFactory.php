@@ -9,10 +9,12 @@ interface ApplicationUserFactory
     /**
      * Creates an application user
      *
-     * @param  object $object
-     * @param  string $language
-     * @throws AppUserException
+     * @param ApplicationUserId $userId
+     * @param  object           $object
+     * @param  string           $language
+     *
      * @return ApplicationUser
+     * @throws AppUserException
      */
-    public function create($object, $language);
+    public function create(ApplicationUserId $userId, $object, $language);
 }

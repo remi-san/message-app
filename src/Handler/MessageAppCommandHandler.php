@@ -7,7 +7,7 @@ use MessageApp\Error\ErrorEventHandler;
 use MessageApp\Event\UnableToCreateUserEvent;
 use MessageApp\User\ApplicationUser;
 use MessageApp\User\ApplicationUserFactory;
-use MessageApp\User\Exception\AppUserException;
+use MessageApp\User\ApplicationUserId;
 use MessageApp\User\Repository\ApplicationUserRepository;
 use MessageApp\User\UndefinedApplicationUser;
 use Psr\Log\LoggerAwareInterface;
@@ -66,7 +66,11 @@ class MessageAppCommandHandler implements LoggerAwareInterface
         ContextContainer::setContext($command->getContext());
 
         try {
-            $user = $this->createUser($originalUser, $command->getPreferredLanguage());
+            $user = $this->createUser(
+                $command->getId(),
+                $originalUser,
+                $command->getPreferredLanguage()
+            );
             $this->userManager->save($user);
             $this->logger->info('User Created');
         } catch (\Exception $e) {
@@ -84,13 +88,15 @@ class MessageAppCommandHandler implements LoggerAwareInterface
     /**
      * Creates the player
      *
-     * @param  object $originalUser
-     * @param  string $language
+     * @param ApplicationUserId $userId
+     * @param  object           $originalUser
+     * @param  string           $language
+     *
      * @return ApplicationUser
      */
-    private function createUser($originalUser, $language)
+    private function createUser(ApplicationUserId $userId, $originalUser, $language)
     {
         $this->logger->debug('Trying to create user');
-        return $this->userBuilder->create($originalUser, $language);
+        return $this->userBuilder->create($userId, $originalUser, $language);
     }
 }
