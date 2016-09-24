@@ -47,8 +47,9 @@ class UserEventExceptionTextExtractorTest extends \PHPUnit_Framework_TestCase
 
         $extractor = new UserEventTextExtractor([]);
 
-        $this->setExpectedException(\InvalidArgumentException::class);
-        $extractor->extractMessage($gameResult);
+        $extractedMessage = $extractor->extractMessage($gameResult);
+
+        $this->assertNull($extractedMessage);
     }
 
     /**

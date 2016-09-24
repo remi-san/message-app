@@ -40,6 +40,6 @@ class UserEventTextExtractor implements MessageTextExtractor
             }
         }
 
-        throw new \InvalidArgumentException('Unsupported User Event');
+        return null;
     }
 }
