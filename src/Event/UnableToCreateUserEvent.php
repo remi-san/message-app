@@ -24,6 +24,7 @@ class UnableToCreateUserEvent extends Event
      */
     public function __construct(UndefinedApplicationUser $user)
     {
+        parent::__construct(self::NAME);
         $this->user = $user;
     }
 

@@ -5,12 +5,12 @@ namespace MessageApp\Event;
 use League\Event\Event;
 use MessageApp\User\ThirdParty\User;
 
-class ThirdPartyAccountLinked extends Event
+class ThirdPartyAccountReplaced extends Event
 {
     /**
      * @var string
      */
-    const NAME = 'user.3rd-party.linked';
+    const NAME = 'user.3rd-party.replaced';
 
     /** @var User */
     private $thirdPartyUser;
