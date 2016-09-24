@@ -13,4 +13,11 @@ interface Source
      * @return string
      */
     public function __toString();
+
+    /**
+     * @param Source $source
+     *
+     * @return bool
+     */
+    public function is(Source $source);
 }
