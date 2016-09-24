@@ -6,7 +6,7 @@ use League\Event\Event;
 use MessageApp\User\ApplicationUserId;
 use MessageApp\User\ThirdParty\Account;
 
-class ThirdPartyAccountReplacedEvent extends Event
+class ThirdPartyAccountReplacedEvent extends Event implements UserEvent
 {
     /**
      * @var string

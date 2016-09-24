@@ -6,7 +6,7 @@ use League\Event\Event;
 use MessageApp\User\ApplicationUserId;
 use MessageApp\User\ThirdParty\Account;
 
-class ThirdPartyAccountLinkedEvent extends Event
+class ThirdPartyAccountLinkedEvent extends Event implements UserEvent
 {
     /** @var string */
     const NAME = 'user.3rd-party.linked';
