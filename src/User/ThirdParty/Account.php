@@ -2,7 +2,7 @@
 
 namespace MessageApp\User\ThirdParty;
 
-interface User
+interface Account
 {
     /**
      * @return Source
