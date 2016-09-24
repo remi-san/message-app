@@ -10,6 +10,7 @@ use MessageApp\Message\Sender\MessageSender;
 use MessageApp\Parser\MessageParser;
 use MessageApp\User\ApplicationUser;
 use MessageApp\User\ApplicationUserId;
+use MessageApp\User\Entity\SourcedUser;
 use MessageApp\User\Repository\ApplicationUserRepository;
 
 trait MessageAppMocker
@@ -110,10 +111,11 @@ trait MessageAppMocker
     }
 
     /**
-     * @param  ApplicationUser $user
+     * @param SourcedUser $user
+     *
      * @return ApplicationUserRepository
      */
-    public function getUserManager(ApplicationUser $user)
+    public function getUserRepository(SourcedUser $user)
     {
         $manager = \Mockery::mock('\\MessageApp\\User\\Repository\\ApplicationUserRepository');
         $manager->shouldReceive('get')->andReturn($user);

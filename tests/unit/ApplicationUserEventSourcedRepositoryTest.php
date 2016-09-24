@@ -5,8 +5,8 @@ namespace MessageApp\Test;
 use Broadway\Domain\AggregateRoot;
 use Broadway\EventSourcing\EventSourcingRepository;
 use MessageApp\Test\Mock\AggregateRootApplicationUser;
-use MessageApp\User\ApplicationUser;
 use MessageApp\User\ApplicationUserId;
+use MessageApp\User\Entity\SourcedUser;
 use MessageApp\User\Repository\EventSourced\ApplicationUserEventSourcedRepository;
 
 class ApplicationUserEventSourcedRepositoryTest extends \PHPUnit_Framework_TestCase
@@ -29,23 +29,9 @@ class ApplicationUserEventSourcedRepositoryTest extends \PHPUnit_Framework_TestC
     /**
      * @test
      */
-    public function itShouldThrowAnExceptionIfUserIsNotAnAggregateRoot()
-    {
-        $user = \Mockery::mock(ApplicationUser::class);
-
-        $repository = new ApplicationUserEventSourcedRepository($this->repository);
-
-        $this->setExpectedException(\InvalidArgumentException::class);
-
-        $repository->save($user);
-    }
-
-    /**
-     * @test
-     */
     public function itShouldDeferSaveToInnerRepository()
     {
-        $user = new AggregateRootApplicationUser();
+        $user = \Mockery::mock(SourcedUser::class);
 
         $repository = new ApplicationUserEventSourcedRepository($this->repository);
 
@@ -60,7 +46,7 @@ class ApplicationUserEventSourcedRepositoryTest extends \PHPUnit_Framework_TestC
     public function itShouldUseTheInnerRepositoryToLoadTheUser()
     {
         $userId = \Mockery::mock(ApplicationUserId::class);
-        $user = new AggregateRootApplicationUser();
+        $user = \Mockery::mock(SourcedUser::class);
 
         $repository = new ApplicationUserEventSourcedRepository($this->repository);
 

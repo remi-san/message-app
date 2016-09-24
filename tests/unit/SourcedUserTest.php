@@ -2,9 +2,9 @@
 namespace MessageApp\Test;
 
 use MessageApp\Test\Mock\MessageAppMocker;
-use MessageApp\User\Entity\ApplicationUser;
+use MessageApp\User\Entity\SourcedUser;
 
-class ApplicationUserTest extends \PHPUnit_Framework_TestCase
+class SourcedUserTest extends \PHPUnit_Framework_TestCase
 {
     use MessageAppMocker;
 
@@ -22,7 +22,7 @@ class ApplicationUserTest extends \PHPUnit_Framework_TestCase
         $language = 'en';
 
         $userId = $this->getApplicationUserId(33);
-        $user = ApplicationUser::createUser($userId, $name, $language);
+        $user = SourcedUser::createUser($userId, $name, $language);
 
         $this->assertEquals($userId, $user->getId());
         $this->assertEquals($name, $user->getName());
@@ -34,6 +34,6 @@ class ApplicationUserTest extends \PHPUnit_Framework_TestCase
      */
     public function testReconstitution()
     {
-        $this->assertTrue(ApplicationUser::instantiateForReconstitution() instanceof ApplicationUser);
+        $this->assertTrue(SourcedUser::instantiateForReconstitution() instanceof SourcedUser);
     }
 }

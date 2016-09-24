@@ -6,12 +6,11 @@ use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use MessageApp\Event\ThirdPartyAccountLinkedEvent;
 use MessageApp\Event\ThirdPartyAccountReplacedEvent;
 use MessageApp\Event\UserCreatedEvent;
-use MessageApp\User\ApplicationUser as OriginalAppUser;
 use MessageApp\User\ApplicationUserId;
 use MessageApp\User\ThirdParty\Account as ThirdPartyAccount;
 use MessageApp\User\ThirdParty\Source;
 
-class ApplicationUser extends EventSourcedAggregateRoot implements OriginalAppUser
+class SourcedUser extends EventSourcedAggregateRoot
 {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -203,7 +202,7 @@ class ApplicationUser extends EventSourcedAggregateRoot implements OriginalAppUs
      * @param  string            $name
      * @param  string            $language
      *
-     * @return ApplicationUser
+     * @return SourcedUser
      */
     public static function createUser(ApplicationUserId $id, $name, $language)
     {
@@ -226,7 +225,7 @@ class ApplicationUser extends EventSourcedAggregateRoot implements OriginalAppUs
     /**
      * Static construction method for reconstitution
      *
-     * @return ApplicationUser
+     * @return SourcedUser
      */
     public static function instantiateForReconstitution()
     {

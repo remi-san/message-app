@@ -2,8 +2,8 @@
 
 namespace MessageApp\User\Repository;
 
-use MessageApp\User\ApplicationUser;
 use MessageApp\User\ApplicationUserId;
+use MessageApp\User\Entity\SourcedUser;
 use MessageApp\User\Exception\AppUserException;
 
 interface ApplicationUserRepository
@@ -12,16 +12,18 @@ interface ApplicationUserRepository
      * Retrieves an application user
      *
      * @param  ApplicationUserId $id
+     *
      * @throws AppUserException
-     * @return ApplicationUser
+     * @return SourcedUser
      */
     public function load(ApplicationUserId $id);
 
     /**
      * Saves a user
      *
-     * @param  ApplicationUser $user
+     * @param  SourcedUser $user
+     *
      * @return void
      */
-    public function save(ApplicationUser $user);
+    public function save(SourcedUser $user);
 }
