@@ -2,7 +2,9 @@
 
 namespace MessageApp\User;
 
-class UndefinedApplicationUser implements ApplicationUser
+use MessageApp\Parser\LocalizedUser;
+
+class UndefinedApplicationUser implements ApplicationUser, LocalizedUser
 {
     /**
      * @var object
@@ -57,5 +59,13 @@ class UndefinedApplicationUser implements ApplicationUser
     public function getOriginalUser()
     {
         return $this->originalUser;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function isDefined()
+    {
+        return false;
     }
 }
