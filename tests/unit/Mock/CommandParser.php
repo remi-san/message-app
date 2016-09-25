@@ -3,13 +3,13 @@
 namespace MessageApp\Test\Mock;
 
 use MessageApp\Parser\CommandParserTrait;
-use MessageApp\User\ApplicationUser;
+use MessageApp\Parser\LocalizedUser;
 
 class CommandParser
 {
     use CommandParserTrait;
 
-    public function testableCheckUser(ApplicationUser $user)
+    public function testableCheckUser(LocalizedUser $user)
     {
         $this->checkUser($user);
     }

@@ -3,18 +3,16 @@
 namespace MessageApp\Parser;
 
 use MessageApp\Parser\Exception\MessageParserException;
-use MessageApp\User\ApplicationUser;
-use MessageApp\User\UndefinedApplicationUser;
 
 trait CommandParserTrait
 {
     /**
-     * @param ApplicationUser $user
+     * @param LocalizedUser $user
      * @throws MessageParserException
      */
-    protected function checkUser(ApplicationUser $user)
+    protected function checkUser(LocalizedUser $user)
     {
-        if ($user instanceof UndefinedApplicationUser) {
+        if (! $user->isDefined()) {
             throw MessageParserException::invalidUser($user);
         }
     }

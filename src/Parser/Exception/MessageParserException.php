@@ -2,10 +2,9 @@
 
 namespace MessageApp\Parser\Exception;
 
-use MessageApp\Exception\MessageAppException;
-use MessageApp\User\ApplicationUser;
+use MessageApp\Parser\LocalizedUser;
 
-class MessageParserException extends MessageAppException
+class MessageParserException extends \Exception
 {
     const JOIN_MULTIPLE_USERS = 'game.parser.exception.join.multiple-users';
     const JOIN_UNREGISTERED_USER = 'game.parser.exception.join.unregistered-users';
@@ -20,6 +19,11 @@ class MessageParserException extends MessageAppException
     const PARSE_ERROR = 'parser.exception.parse-error';
 
     /**
+     * @var LocalizedUser
+     */
+    private $user;
+
+    /**
      * @var string
      */
     private $codeName;
@@ -27,21 +31,32 @@ class MessageParserException extends MessageAppException
     /**
      * Constructor
      *
-     * @param ApplicationUser $user
-     * @param string          $codeName
-     * @param string          $message
-     * @param int             $code
-     * @param \Exception      $previous
+     * @param LocalizedUser $user
+     * @param string        $codeName
+     * @param string        $message
+     * @param int           $code
+     * @param \Exception    $previous
      */
     public function __construct(
-        ApplicationUser $user = null,
+        LocalizedUser $user = null,
         $codeName = null,
         $message = '',
         $code = 0,
         \Exception $previous = null
     ) {
-        parent::__construct($user, $message, $code, $previous);
+        parent::__construct($message, $code, $previous);
         $this->codeName = $codeName;
+        $this->user = $user;
+    }
+
+    /**
+     * Returns the user
+     *
+     * @return LocalizedUser
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 
     /**
@@ -53,82 +68,82 @@ class MessageParserException extends MessageAppException
     }
 
     /**
-     * @param ApplicationUser $user
+     * @param LocalizedUser $user
      * @return MessageParserException
      */
-    public static function cannotJoinMultipleUsers(ApplicationUser $user)
+    public static function cannotJoinMultipleUsers(LocalizedUser $user)
     {
         return new self($user, self::JOIN_MULTIPLE_USERS, 'You have to provide one (and only one) user to join!');
     }
 
     /**
-     * @param ApplicationUser $user
+     * @param LocalizedUser $user
      * @return MessageParserException
      */
-    public static function cannotJoinUnregisteredUser(ApplicationUser $user)
+    public static function cannotJoinUnregisteredUser(LocalizedUser $user)
     {
         return new self($user, self::JOIN_UNREGISTERED_USER, 'You cannot join a user who is not registered!');
     }
 
     /**
-     * @param ApplicationUser $user
+     * @param LocalizedUser $user
      * @return MessageParserException
      */
-    public static function cannotJoinUserWithoutAGame(ApplicationUser $user)
+    public static function cannotJoinUserWithoutAGame(LocalizedUser $user)
     {
         return new self($user, self::JOIN_NO_GAME, 'You cannot join a player with no game!');
     }
 
     /**
-     * @param ApplicationUser $user
+     * @param LocalizedUser $user
      * @return MessageParserException
      */
-    public static function cannotJoinYourself(ApplicationUser $user)
+    public static function cannotJoinYourself(LocalizedUser $user)
     {
         return new self($user, self::JOIN_YOURSELF, 'You cannot join yourself!');
     }
 
     /**
-     * @param ApplicationUser $user
+     * @param LocalizedUser $user
      * @return MessageParserException
      */
-    public static function cannotJoinIfGameAlreadyRunning(ApplicationUser $user)
+    public static function cannotJoinIfGameAlreadyRunning(LocalizedUser $user)
     {
         return new self($user, self::JOIN_GAME_RUNNING, 'You already have a game running!');
     }
 
     /**
-     * @param ApplicationUser $user
+     * @param LocalizedUser $user
      * @return MessageParserException
      */
-    public static function cannotParseMessage(ApplicationUser $user)
+    public static function cannotParseMessage(LocalizedUser $user)
     {
         return new self($user, self::PARSE_ERROR, 'Could not parse message!');
     }
 
     /**
-     * @param ApplicationUser $user
+     * @param LocalizedUser $user
      * @return MessageParserException
      */
-    public static function cannotStartGameUserIsNotIn(ApplicationUser $user)
+    public static function cannotStartGameUserIsNotIn(LocalizedUser $user)
     {
         return new self($user, self::START_NOT_IN, 'You cannot start a game you are not in!');
     }
 
     /**
-     * @param ApplicationUser $user
+     * @param LocalizedUser $user
      * @return MessageParserException
      */
-    public static function cannotLeaveGameUserIsNotIn(ApplicationUser $user)
+    public static function cannotLeaveGameUserIsNotIn(LocalizedUser $user)
     {
         return new self($user, self::LEAVE_NOT_IN, 'You cannot leave a game you are not in!');
     }
 
     /**
-     * @param ApplicationUser $user
+     * @param LocalizedUser $user
      * @return MessageParserException
      */
-    public static function cannotFindGameForUser(ApplicationUser $user)
+    public static function cannotFindGameForUser(LocalizedUser $user)
     {
         return new self(
             $user,
@@ -138,19 +153,19 @@ class MessageParserException extends MessageAppException
     }
 
     /**
-     * @param ApplicationUser $user
+     * @param LocalizedUser $user
      * @return MessageParserException
      */
-    public static function cannotCreateMultipleGames(ApplicationUser $user)
+    public static function cannotCreateMultipleGames(LocalizedUser $user)
     {
         return new self($user, self::CREATE_MULTIPLE, 'You already have a game running!');
     }
 
     /**
-     * @param ApplicationUser $user
+     * @param LocalizedUser $user
      * @return MessageParserException
      */
-    public static function invalidUser(ApplicationUser $user)
+    public static function invalidUser(LocalizedUser $user)
     {
         return new self($user, self::INVALID_USER, 'User is not valid!');
     }
