@@ -3,7 +3,7 @@ namespace MessageApp\Parser;
 
 use MessageApp\User\ApplicationUserId;
 
-interface LocalizedUser
+interface ParsingUser
 {
     /**
      * Returns the id

@@ -2,9 +2,9 @@
 
 namespace MessageApp\User;
 
-use MessageApp\Parser\LocalizedUser;
+use MessageApp\Parser\ParsingUser;
 
-class UndefinedApplicationUser implements ApplicationUser, LocalizedUser
+class UndefinedApplicationUser implements ApplicationUser, ParsingUser
 {
     /**
      * @var object

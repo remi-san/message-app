@@ -7,10 +7,11 @@ use MessageApp\Parser\Exception\MessageParserException;
 trait CommandParserTrait
 {
     /**
-     * @param LocalizedUser $user
-     * @throws MessageParserException
+     * @param ParsingUser $user
+     *
+*@throws MessageParserException
      */
-    protected function checkUser(LocalizedUser $user)
+    protected function checkUser(ParsingUser $user)
     {
         if (! $user->isDefined()) {
             throw MessageParserException::invalidUser($user);

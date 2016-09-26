@@ -2,7 +2,7 @@
 
 namespace MessageApp\Parser\Exception;
 
-use MessageApp\Parser\LocalizedUser;
+use MessageApp\Parser\ParsingUser;
 
 class MessageParserException extends \Exception
 {
@@ -19,7 +19,7 @@ class MessageParserException extends \Exception
     const PARSE_ERROR = 'parser.exception.parse-error';
 
     /**
-     * @var LocalizedUser
+     * @var ParsingUser
      */
     private $user;
 
@@ -31,14 +31,14 @@ class MessageParserException extends \Exception
     /**
      * Constructor
      *
-     * @param LocalizedUser $user
-     * @param string        $codeName
-     * @param string        $message
-     * @param int           $code
-     * @param \Exception    $previous
+     * @param ParsingUser $user
+     * @param string      $codeName
+     * @param string      $message
+     * @param int         $code
+     * @param \Exception  $previous
      */
     public function __construct(
-        LocalizedUser $user = null,
+        ParsingUser $user = null,
         $codeName = null,
         $message = '',
         $code = 0,
@@ -52,7 +52,7 @@ class MessageParserException extends \Exception
     /**
      * Returns the user
      *
-     * @return LocalizedUser
+     * @return ParsingUser
      */
     public function getUser()
     {
@@ -68,82 +68,91 @@ class MessageParserException extends \Exception
     }
 
     /**
-     * @param LocalizedUser $user
-     * @return MessageParserException
+     * @param ParsingUser $user
+     *
+*@return MessageParserException
      */
-    public static function cannotJoinMultipleUsers(LocalizedUser $user)
+    public static function cannotJoinMultipleUsers(ParsingUser $user)
     {
         return new self($user, self::JOIN_MULTIPLE_USERS, 'You have to provide one (and only one) user to join!');
     }
 
     /**
-     * @param LocalizedUser $user
-     * @return MessageParserException
+     * @param ParsingUser $user
+     *
+*@return MessageParserException
      */
-    public static function cannotJoinUnregisteredUser(LocalizedUser $user)
+    public static function cannotJoinUnregisteredUser(ParsingUser $user)
     {
         return new self($user, self::JOIN_UNREGISTERED_USER, 'You cannot join a user who is not registered!');
     }
 
     /**
-     * @param LocalizedUser $user
-     * @return MessageParserException
+     * @param ParsingUser $user
+     *
+*@return MessageParserException
      */
-    public static function cannotJoinUserWithoutAGame(LocalizedUser $user)
+    public static function cannotJoinUserWithoutAGame(ParsingUser $user)
     {
         return new self($user, self::JOIN_NO_GAME, 'You cannot join a player with no game!');
     }
 
     /**
-     * @param LocalizedUser $user
-     * @return MessageParserException
+     * @param ParsingUser $user
+     *
+*@return MessageParserException
      */
-    public static function cannotJoinYourself(LocalizedUser $user)
+    public static function cannotJoinYourself(ParsingUser $user)
     {
         return new self($user, self::JOIN_YOURSELF, 'You cannot join yourself!');
     }
 
     /**
-     * @param LocalizedUser $user
-     * @return MessageParserException
+     * @param ParsingUser $user
+     *
+*@return MessageParserException
      */
-    public static function cannotJoinIfGameAlreadyRunning(LocalizedUser $user)
+    public static function cannotJoinIfGameAlreadyRunning(ParsingUser $user)
     {
         return new self($user, self::JOIN_GAME_RUNNING, 'You already have a game running!');
     }
 
     /**
-     * @param LocalizedUser $user
-     * @return MessageParserException
+     * @param ParsingUser $user
+     *
+*@return MessageParserException
      */
-    public static function cannotParseMessage(LocalizedUser $user)
+    public static function cannotParseMessage(ParsingUser $user)
     {
         return new self($user, self::PARSE_ERROR, 'Could not parse message!');
     }
 
     /**
-     * @param LocalizedUser $user
-     * @return MessageParserException
+     * @param ParsingUser $user
+     *
+*@return MessageParserException
      */
-    public static function cannotStartGameUserIsNotIn(LocalizedUser $user)
+    public static function cannotStartGameUserIsNotIn(ParsingUser $user)
     {
         return new self($user, self::START_NOT_IN, 'You cannot start a game you are not in!');
     }
 
     /**
-     * @param LocalizedUser $user
-     * @return MessageParserException
+     * @param ParsingUser $user
+     *
+*@return MessageParserException
      */
-    public static function cannotLeaveGameUserIsNotIn(LocalizedUser $user)
+    public static function cannotLeaveGameUserIsNotIn(ParsingUser $user)
     {
         return new self($user, self::LEAVE_NOT_IN, 'You cannot leave a game you are not in!');
     }
 
     /**
-     * @param LocalizedUser $user
-     * @return MessageParserException
+     * @param ParsingUser $user
+     *
+*@return MessageParserException
      */
-    public static function cannotFindGameForUser(LocalizedUser $user)
+    public static function cannotFindGameForUser(ParsingUser $user)
     {
         return new self(
             $user,
@@ -153,19 +162,20 @@ class MessageParserException extends \Exception
     }
 
     /**
-     * @param LocalizedUser $user
-     * @return MessageParserException
+     * @param ParsingUser $user
+     *
+*@return MessageParserException
      */
-    public static function cannotCreateMultipleGames(LocalizedUser $user)
+    public static function cannotCreateMultipleGames(ParsingUser $user)
     {
         return new self($user, self::CREATE_MULTIPLE, 'You already have a game running!');
     }
 
     /**
-     * @param LocalizedUser $user
+     * @param ParsingUser $user
      * @return MessageParserException
      */
-    public static function invalidUser(LocalizedUser $user)
+    public static function invalidUser(ParsingUser $user)
     {
         return new self($user, self::INVALID_USER, 'User is not valid!');
     }
