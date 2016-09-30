@@ -4,7 +4,6 @@ namespace MessageApp\Test;
 use MessageApp\Exception\MessageAppException;
 use MessageApp\Test\Mock\MessageAppMocker;
 use MessageApp\User\Exception\UnsupportedUserException;
-use MessageApp\User\Exception\UserNotFoundException;
 
 class ExceptionTest extends \PHPUnit_Framework_TestCase
 {
@@ -32,9 +31,7 @@ class ExceptionTest extends \PHPUnit_Framework_TestCase
     public function testMessageAppConstructor()
     {
 
-        $exception = new MessageAppException($this->user);
-
-        $this->assertEquals($this->user, $exception->getUser());
+        new MessageAppException();
     }
 
     /**
@@ -43,19 +40,6 @@ class ExceptionTest extends \PHPUnit_Framework_TestCase
     public function testUnsupportedUserConstructor()
     {
 
-        $exception = new UnsupportedUserException();
-
-        $this->assertNull($exception->getUser());
-    }
-
-    /**
-     * @test
-     */
-    public function testUserNotFoundConstructor()
-    {
-
-        $exception = new UserNotFoundException($this->user);
-
-        $this->assertNull($exception->getUser());
+        new UnsupportedUserException();
     }
 }

@@ -6,8 +6,7 @@ use MessageApp\Event\UnableToCreateUserEvent;
 use MessageApp\Handler\MessageAppCommandHandler;
 use MessageApp\Test\Mock\MessageAppMocker;
 use MessageApp\User\Entity\SourcedUser;
-use MessageApp\User\Exception\AppUserException;
-use MessageApp\User\ApplicationUserFactory;
+use MessageApp\User\UserFactory;
 use Psr\Log\LoggerInterface;
 
 class CommandHandlerTest extends \PHPUnit_Framework_TestCase
@@ -34,7 +33,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
             $appUser->shouldReceive('getId')->andReturn($this->userId);
             $appUser->shouldReceive('getName')->andReturn($this->userName);
         });
-        $this->userBuilder = \Mockery::mock(ApplicationUserFactory::class);
+        $this->userBuilder = \Mockery::mock(UserFactory::class);
         $this->userManager = $this->getUserRepository($this->user);
         $this->command = $this->getCreateUserCommand($this->userId, $this->user, 'en');
         $this->errorHandler = \Mockery::mock(ErrorEventHandler::class);

@@ -2,10 +2,10 @@
 
 namespace MessageApp\User;
 
+use MessageApp\Exception\MessageAppException;
 use MessageApp\User\Entity\SourcedUser;
-use MessageApp\User\Exception\AppUserException;
 
-interface ApplicationUserFactory
+interface UserFactory
 {
     /**
      * Creates an application user
@@ -15,7 +15,7 @@ interface ApplicationUserFactory
      * @param  string           $language
      *
      * @return SourcedUser
-     * @throws AppUserException
+     * @throws MessageAppException
      */
     public function create(ApplicationUserId $userId, $object, $language);
 }

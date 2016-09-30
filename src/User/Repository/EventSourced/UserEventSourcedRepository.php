@@ -4,12 +4,12 @@ namespace MessageApp\User\Repository\EventSourced;
 
 use Broadway\Domain\AggregateRoot;
 use Broadway\EventSourcing\EventSourcingRepository;
+use MessageApp\Exception\MessageAppException;
 use MessageApp\User\ApplicationUserId;
 use MessageApp\User\Entity\SourcedUser;
-use MessageApp\User\Exception\AppUserException;
-use MessageApp\User\Repository\ApplicationUserRepository;
+use MessageApp\User\Repository\UserRepository;
 
-class ApplicationUserEventSourcedRepository implements ApplicationUserRepository
+class UserEventSourcedRepository implements UserRepository
 {
     /**
      * @var EventSourcingRepository
@@ -31,7 +31,7 @@ class ApplicationUserEventSourcedRepository implements ApplicationUserRepository
      *
      * @param  SourcedUser $user
      *
-*@return void
+     * @return void
      */
     public function save(SourcedUser $user)
     {
@@ -47,7 +47,7 @@ class ApplicationUserEventSourcedRepository implements ApplicationUserRepository
      *
      * @param  ApplicationUserId $id
      *
-*@throws AppUserException
+     * @throws MessageAppException
      * @return SourcedUser
      */
     public function load(ApplicationUserId $id)

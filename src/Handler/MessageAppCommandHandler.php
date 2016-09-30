@@ -6,9 +6,10 @@ use MessageApp\Command\CreateUserCommand;
 use MessageApp\Error\ErrorEventHandler;
 use MessageApp\Event\UnableToCreateUserEvent;
 use MessageApp\User\ApplicationUser;
-use MessageApp\User\ApplicationUserFactory;
+use MessageApp\User\UserFactory;
 use MessageApp\User\ApplicationUserId;
-use MessageApp\User\Repository\ApplicationUserRepository;
+use MessageApp\User\Entity\SourcedUser;
+use MessageApp\User\Repository\UserRepository;
 use MessageApp\User\UndefinedApplicationUser;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -20,12 +21,12 @@ class MessageAppCommandHandler implements LoggerAwareInterface
     use LoggerAwareTrait;
 
     /**
-     * @var ApplicationUserFactory
+     * @var UserFactory
      */
     private $userBuilder;
 
     /**
-     * @var ApplicationUserRepository
+     * @var UserRepository
      */
     private $userManager;
 
@@ -37,13 +38,13 @@ class MessageAppCommandHandler implements LoggerAwareInterface
     /**
      * Constructor
      *
-     * @param ApplicationUserFactory    $userBuilder
-     * @param ApplicationUserRepository $userManager
-     * @param ErrorEventHandler         $errorHandler
+     * @param UserFactory       $userBuilder
+     * @param UserRepository    $userManager
+     * @param ErrorEventHandler $errorHandler
      */
     public function __construct(
-        ApplicationUserFactory $userBuilder,
-        ApplicationUserRepository $userManager,
+        UserFactory $userBuilder,
+        UserRepository $userManager,
         ErrorEventHandler $errorHandler
     ) {
         $this->userBuilder = $userBuilder;
@@ -92,7 +93,7 @@ class MessageAppCommandHandler implements LoggerAwareInterface
      * @param  object           $originalUser
      * @param  string           $language
      *
-     * @return ApplicationUser
+     * @return SourcedUser
      */
     private function createUser(ApplicationUserId $userId, $originalUser, $language)
     {

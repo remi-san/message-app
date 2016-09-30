@@ -4,10 +4,9 @@ namespace MessageApp\Test;
 
 use Broadway\Domain\AggregateRoot;
 use Broadway\EventSourcing\EventSourcingRepository;
-use MessageApp\Test\Mock\AggregateRootApplicationUser;
 use MessageApp\User\ApplicationUserId;
 use MessageApp\User\Entity\SourcedUser;
-use MessageApp\User\Repository\EventSourced\ApplicationUserEventSourcedRepository;
+use MessageApp\User\Repository\EventSourced\UserEventSourcedRepository;
 
 class ApplicationUserEventSourcedRepositoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -33,7 +32,7 @@ class ApplicationUserEventSourcedRepositoryTest extends \PHPUnit_Framework_TestC
     {
         $user = \Mockery::mock(SourcedUser::class);
 
-        $repository = new ApplicationUserEventSourcedRepository($this->repository);
+        $repository = new UserEventSourcedRepository($this->repository);
 
         $this->repository->shouldReceive('save')->with($user);
 
@@ -48,7 +47,7 @@ class ApplicationUserEventSourcedRepositoryTest extends \PHPUnit_Framework_TestC
         $userId = \Mockery::mock(ApplicationUserId::class);
         $user = \Mockery::mock(SourcedUser::class);
 
-        $repository = new ApplicationUserEventSourcedRepository($this->repository);
+        $repository = new UserEventSourcedRepository($this->repository);
 
         $this->repository->shouldReceive('load')->with($userId)->andReturn($user);
 
@@ -64,7 +63,7 @@ class ApplicationUserEventSourcedRepositoryTest extends \PHPUnit_Framework_TestC
     {
         $userId = \Mockery::mock(ApplicationUserId::class);
 
-        $repository = new ApplicationUserEventSourcedRepository($this->repository);
+        $repository = new UserEventSourcedRepository($this->repository);
 
         $this->repository->shouldReceive('load')->with($userId)->andReturn(null);
 
@@ -79,7 +78,7 @@ class ApplicationUserEventSourcedRepositoryTest extends \PHPUnit_Framework_TestC
         $userId = \Mockery::mock(ApplicationUserId::class);
         $user = \Mockery::mock(AggregateRoot::class);
 
-        $repository = new ApplicationUserEventSourcedRepository($this->repository);
+        $repository = new UserEventSourcedRepository($this->repository);
 
         $this->repository->shouldReceive('load')->with($userId)->andReturn($user);
         $this->setExpectedException(\InvalidArgumentException::class);
