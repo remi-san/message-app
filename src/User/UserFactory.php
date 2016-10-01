@@ -10,9 +10,9 @@ interface UserFactory
     /**
      * Creates an application user
      *
-     * @param ApplicationUserId $userId
-     * @param  object           $object
-     * @param  string           $language
+     * @param  ApplicationUserId $userId
+     * @param  object            $object
+     * @param  string            $language
      *
      * @return SourcedUser
      * @throws MessageAppException
