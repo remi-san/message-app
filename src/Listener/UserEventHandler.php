@@ -5,7 +5,6 @@ namespace MessageApp\Listener;
 use League\Event\EventInterface;
 use MessageApp\Event\UserEvent;
 use MessageApp\Finder\MessageFinder;
-use MessageApp\Message\DefaultMessage;
 use MessageApp\Message\MessageFactory;
 use MessageApp\Message\Sender\MessageSender;
 use MessageApp\User\Finder\AppUserFinder;
