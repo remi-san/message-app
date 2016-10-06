@@ -7,6 +7,11 @@ use MessageApp\Parser\ParsingUser;
 class UndefinedApplicationUser implements ApplicationUser, ParsingUser
 {
     /**
+     * @var ApplicationUserId
+     */
+    protected $userId;
+
+    /**
      * @var object
      */
     protected $originalUser;
@@ -14,21 +19,25 @@ class UndefinedApplicationUser implements ApplicationUser, ParsingUser
     /**
      * Constructor
      *
-     * @param object $originalUser
+     * @param ApplicationUserId $userId
+     * @param object            $originalUser
      */
-    public function __construct($originalUser)
-    {
+    public function __construct(
+        ApplicationUserId $userId,
+        $originalUser
+    ) {
         $this->originalUser = $originalUser;
+        $this->userId = $userId;
     }
 
     /**
      * Returns the id
      *
-     * @return string|int
+     * @return ApplicationUserId
      */
     public function getId()
     {
-        return null;
+        return $this->userId;
     }
 
     /**

@@ -18,7 +18,7 @@ class ApplicationUserId
      */
     public function __construct($id = null)
     {
-        $this->id = (string) (($id) ?  $id : Uuid::uuid4());
+        $this->id = (string) (($id) ?  $id : $this->generateId());
     }
 
     /**
@@ -35,5 +35,13 @@ class ApplicationUserId
     public function __toString()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    protected function generateId()
+    {
+        return (string) Uuid::uuid4();
     }
 }
