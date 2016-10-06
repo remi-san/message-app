@@ -17,12 +17,11 @@ class UndefinedUserTest extends \PHPUnit_Framework_TestCase
     public function test()
     {
         $object = new \stdClass();
-        $userId = new ApplicationUserId();
 
-        $user = new UndefinedApplicationUser($userId, $object);
+        $user = new UndefinedApplicationUser($object);
 
         $this->assertEquals($object, $user->getOriginalUser());
-        $this->assertEquals($userId, $user->getId());
+        $this->assertNull($user->getId());
         $this->assertNull($user->getName());
         $this->assertEquals('en', $user->getPreferredLanguage());
     }
