@@ -73,7 +73,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('handle')
             ->with(\Mockery::on(function ($event) {
                 return $event instanceof UnableToCreateUserEvent;
-            }))
+            }), null)
             ->once();
 
 
