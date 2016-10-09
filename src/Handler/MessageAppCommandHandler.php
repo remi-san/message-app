@@ -5,7 +5,6 @@ namespace MessageApp\Handler;
 use MessageApp\Command\CreateUserCommand;
 use MessageApp\Error\ErrorEventHandler;
 use MessageApp\Event\UnableToCreateUserEvent;
-use MessageApp\User\ApplicationUser;
 use MessageApp\User\UserFactory;
 use MessageApp\User\ApplicationUserId;
 use MessageApp\User\Entity\SourcedUser;
@@ -57,7 +56,6 @@ class MessageAppCommandHandler implements LoggerAwareInterface
      * Handles a CreateUserCommand
      *
      * @param  CreateUserCommand $command
-     * @return string
      */
     public function handleCreateUserCommand(CreateUserCommand $command)
     {
@@ -72,7 +70,9 @@ class MessageAppCommandHandler implements LoggerAwareInterface
                 $originalUser,
                 $command->getPreferredLanguage()
             );
+
             $this->userManager->save($user);
+
             $this->logger->info('User Created');
         } catch (\Exception $e) {
             $this->logger->error('Error creating the user');
@@ -80,7 +80,8 @@ class MessageAppCommandHandler implements LoggerAwareInterface
                 new UnableToCreateUserEvent(
                     $command->getId(),
                     new UndefinedApplicationUser($originalUser)
-                )
+                ),
+                $command->getContext()
             );
         }
 

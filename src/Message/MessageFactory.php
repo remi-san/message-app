@@ -71,7 +71,7 @@ class MessageFactory
         return array_values(
             array_unique(
                 array_filter($users, function (ApplicationUser $user = null) {
-                    return $user !== null && !$user instanceof UndefinedApplicationUser;
+                    return $user !== null;
                 })
             )
         );

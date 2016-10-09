@@ -4,7 +4,6 @@ namespace MessageApp;
 
 use League\Tactician\CommandBus;
 use League\Tactician\Plugins\NamedCommand\NamedCommand;
-use MessageApp\Message\DefaultMessage;
 use MessageApp\Message\MessageFactory;
 use MessageApp\Message\Sender\MessageSender;
 use MessageApp\Parser\Exception\MessageParserException;

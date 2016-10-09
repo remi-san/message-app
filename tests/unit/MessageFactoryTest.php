@@ -55,16 +55,6 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function withUndefinedApplicationUserItShouldReturnNull()
-    {
-        $factory = new MessageFactory($this->extractor, $this->resourceTranslator);
-
-        $this->assertNull($factory->buildMessage([\Mockery::mock(UndefinedApplicationUser::class)], null));
-    }
-
-    /**
-     * @test
-     */
     public function withApplicationUserIfItCannotExtractMessageItShouldReturnNull()
     {
         $language = 'en';
