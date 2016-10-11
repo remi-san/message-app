@@ -70,7 +70,7 @@ class MessageParserException extends \Exception
     /**
      * @param ParsingUser $user
      *
-*@return MessageParserException
+     * @return MessageParserException
      */
     public static function cannotJoinMultipleUsers(ParsingUser $user)
     {
@@ -80,7 +80,7 @@ class MessageParserException extends \Exception
     /**
      * @param ParsingUser $user
      *
-*@return MessageParserException
+     * @return MessageParserException
      */
     public static function cannotJoinUnregisteredUser(ParsingUser $user)
     {
@@ -90,7 +90,7 @@ class MessageParserException extends \Exception
     /**
      * @param ParsingUser $user
      *
-*@return MessageParserException
+     * @return MessageParserException
      */
     public static function cannotJoinUserWithoutAGame(ParsingUser $user)
     {
@@ -100,7 +100,7 @@ class MessageParserException extends \Exception
     /**
      * @param ParsingUser $user
      *
-*@return MessageParserException
+     * @return MessageParserException
      */
     public static function cannotJoinYourself(ParsingUser $user)
     {
@@ -110,7 +110,7 @@ class MessageParserException extends \Exception
     /**
      * @param ParsingUser $user
      *
-*@return MessageParserException
+     * @return MessageParserException
      */
     public static function cannotJoinIfGameAlreadyRunning(ParsingUser $user)
     {
@@ -120,7 +120,7 @@ class MessageParserException extends \Exception
     /**
      * @param ParsingUser $user
      *
-*@return MessageParserException
+     * @return MessageParserException
      */
     public static function cannotParseMessage(ParsingUser $user)
     {
@@ -130,7 +130,7 @@ class MessageParserException extends \Exception
     /**
      * @param ParsingUser $user
      *
-*@return MessageParserException
+     * @return MessageParserException
      */
     public static function cannotStartGameUserIsNotIn(ParsingUser $user)
     {
@@ -140,7 +140,7 @@ class MessageParserException extends \Exception
     /**
      * @param ParsingUser $user
      *
-*@return MessageParserException
+     * @return MessageParserException
      */
     public static function cannotLeaveGameUserIsNotIn(ParsingUser $user)
     {
@@ -150,7 +150,7 @@ class MessageParserException extends \Exception
     /**
      * @param ParsingUser $user
      *
-*@return MessageParserException
+     * @return MessageParserException
      */
     public static function cannotFindGameForUser(ParsingUser $user)
     {
@@ -164,7 +164,7 @@ class MessageParserException extends \Exception
     /**
      * @param ParsingUser $user
      *
-*@return MessageParserException
+     * @return MessageParserException
      */
     public static function cannotCreateMultipleGames(ParsingUser $user)
     {
