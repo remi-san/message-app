@@ -3,6 +3,8 @@
 namespace MessageApp\User;
 
 use MessageApp\Parser\ParsingUser;
+use MessageApp\User\ThirdParty\Account;
+use MessageApp\User\ThirdParty\Source;
 
 class UndefinedApplicationUser implements ApplicationUser, ParsingUser
 {
@@ -63,10 +65,41 @@ class UndefinedApplicationUser implements ApplicationUser, ParsingUser
     }
 
     /**
+     * @param Source $source
+     *
+     * @return Account
+     */
+    public function getThirdPartyAccount(Source $source)
+    {
+        return null;
+    }
+
+    /**
      * @inheritDoc
      */
     public function isDefined()
     {
         return false;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+    }
+
+    /**
+     * @param string $language
+     */
+    public function setPreferredLanguage($language)
+    {
+    }
+
+    /**
+     * @param Account $account
+     */
+    public function setThirdPartyAccount(Account $account)
+    {
     }
 }
