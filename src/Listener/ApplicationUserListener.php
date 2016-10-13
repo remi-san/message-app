@@ -12,7 +12,6 @@ use MessageApp\User\ThirdParty\Account;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
-use TwitterHangman\ReadModel\Entity\User;
 
 class ApplicationUserListener implements ListenerInterface, LoggerAwareInterface
 {
