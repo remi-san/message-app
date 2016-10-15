@@ -6,6 +6,8 @@ use MessageApp\Event\UnableToCreateUserEvent;
 use MessageApp\Handler\MessageAppCommandHandler;
 use MessageApp\Test\Mock\MessageAppMocker;
 use MessageApp\User\Entity\SourcedUser;
+use MessageApp\User\ThirdParty\Account;
+use MessageApp\User\ThirdParty\AccountFactory;
 use MessageApp\User\UserFactory;
 use Psr\Log\LoggerInterface;
 
@@ -26,6 +28,8 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
 
     private $errorHandler;
 
+    private $accountFactory;
+
     public function setUp()
     {
         $this->userId  = $this->getApplicationUserId(1);
@@ -37,6 +41,7 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
         $this->userManager = $this->getUserRepository($this->user);
         $this->command = $this->getCreateUserCommand($this->userId, $this->user, 'en');
         $this->errorHandler = \Mockery::mock(ErrorEventHandler::class);
+        $this->accountFactory = \Mockery::mock(AccountFactory::class);
     }
 
     public function tearDown()
@@ -52,7 +57,12 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
         $this->userManager->shouldReceive('save')->once();
         $this->userBuilder->shouldReceive('create')->andReturn($this->user);
 
-        $handler = new MessageAppCommandHandler($this->userBuilder, $this->userManager, $this->errorHandler);
+        $handler = new MessageAppCommandHandler(
+            $this->userBuilder,
+            $this->userManager,
+            $this->accountFactory,
+            $this->errorHandler
+        );
 
         $response = $handler->handleCreateUserCommand($this->command);
 
@@ -66,8 +76,14 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $this->userManager->shouldReceive('save')->andThrow('\\Exception');
         $this->userBuilder->shouldReceive('create')->andThrow('\\Exception');
+        $this->accountFactory->shouldReceive('build')->andReturn(\Mockery::mock(Account::class));
 
-        $handler = new MessageAppCommandHandler($this->userBuilder, $this->userManager, $this->errorHandler);
+        $handler = new MessageAppCommandHandler(
+            $this->userBuilder,
+            $this->userManager,
+            $this->accountFactory,
+            $this->errorHandler
+        );
 
         $this->errorHandler
             ->shouldReceive('handle')
@@ -87,7 +103,12 @@ class CommandHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testHandler()
     {
-        $handler = new MessageAppCommandHandler($this->userBuilder, $this->userManager, $this->errorHandler);
+        $handler = new MessageAppCommandHandler(
+            $this->userBuilder,
+            $this->userManager,
+            $this->accountFactory,
+            $this->errorHandler
+        );
         $handler->setLogger(\Mockery::mock(LoggerInterface::class));
     }
 }

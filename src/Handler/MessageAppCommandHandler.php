@@ -5,11 +5,12 @@ namespace MessageApp\Handler;
 use MessageApp\Command\CreateUserCommand;
 use MessageApp\Error\ErrorEventHandler;
 use MessageApp\Event\UnableToCreateUserEvent;
-use MessageApp\User\UserFactory;
 use MessageApp\User\ApplicationUserId;
 use MessageApp\User\Entity\SourcedUser;
 use MessageApp\User\Repository\UserRepository;
+use MessageApp\User\ThirdParty\AccountFactory;
 use MessageApp\User\UndefinedApplicationUser;
+use MessageApp\User\UserFactory;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
@@ -30,6 +31,11 @@ class MessageAppCommandHandler implements LoggerAwareInterface
     private $userManager;
 
     /**
+     * @var \MessageApp\User\ThirdParty\AccountFactory
+     */
+    private $accountFactory;
+
+    /**
      * @var ErrorEventHandler
      */
     private $errorHandler;
@@ -37,17 +43,20 @@ class MessageAppCommandHandler implements LoggerAwareInterface
     /**
      * Constructor
      *
-     * @param UserFactory       $userBuilder
-     * @param UserRepository    $userManager
-     * @param ErrorEventHandler $errorHandler
+     * @param UserFactory                                $userBuilder
+     * @param UserRepository                             $userManager
+     * @param \MessageApp\User\ThirdParty\AccountFactory $accountFactory
+     * @param ErrorEventHandler                          $errorHandler
      */
     public function __construct(
         UserFactory $userBuilder,
         UserRepository $userManager,
+        AccountFactory $accountFactory,
         ErrorEventHandler $errorHandler
     ) {
         $this->userBuilder = $userBuilder;
         $this->userManager = $userManager;
+        $this->accountFactory = $accountFactory;
         $this->errorHandler = $errorHandler;
         $this->logger = new NullLogger();
     }
@@ -79,7 +88,9 @@ class MessageAppCommandHandler implements LoggerAwareInterface
             $this->errorHandler->handle(
                 new UnableToCreateUserEvent(
                     $command->getId(),
-                    new UndefinedApplicationUser($originalUser)
+                    new UndefinedApplicationUser(
+                        $this->accountFactory->build($originalUser)
+                    )
                 ),
                 $command->getContext()
             );

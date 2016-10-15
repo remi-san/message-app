@@ -9,19 +9,18 @@ use MessageApp\User\ThirdParty\Source;
 class UndefinedApplicationUser implements ApplicationUser, ParsingUser
 {
     /**
-     * @var object
+     * @var Account
      */
-    protected $originalUser;
+    protected $account;
 
     /**
      * Constructor
      *
-     * @param object            $originalUser
+     * @param Account $account
      */
-    public function __construct(
-        $originalUser
-    ) {
-        $this->originalUser = $originalUser;
+    public function __construct(Account $account)
+    {
+        $this->account = $account;
     }
 
     /**
@@ -55,23 +54,13 @@ class UndefinedApplicationUser implements ApplicationUser, ParsingUser
     }
 
     /**
-     * Gets the original User
-     *
-     * @return object
-     */
-    public function getOriginalUser()
-    {
-        return $this->originalUser;
-    }
-
-    /**
      * @param Source $source
      *
      * @return Account
      */
     public function getThirdPartyAccount(Source $source)
     {
-        return null;
+        return $this->account; // TODO check source
     }
 
     /**

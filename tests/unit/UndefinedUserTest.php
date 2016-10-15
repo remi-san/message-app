@@ -2,7 +2,10 @@
 namespace MessageApp\Test;
 
 use MessageApp\User\ApplicationUserId;
+use MessageApp\User\ThirdParty\Account;
+use MessageApp\User\ThirdParty\Source;
 use MessageApp\User\UndefinedApplicationUser;
+use TwitterMessageApp\Account\TwitterSource;
 
 class UndefinedUserTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,13 +19,14 @@ class UndefinedUserTest extends \PHPUnit_Framework_TestCase
      */
     public function test()
     {
-        $object = new \stdClass();
+        $object = \Mockery::mock(Account::class);
+        $source = \Mockery::mock(Source::class);
 
         $user = new UndefinedApplicationUser($object);
 
-        $this->assertEquals($object, $user->getOriginalUser());
         $this->assertNull($user->getId());
         $this->assertNull($user->getName());
         $this->assertEquals('en', $user->getPreferredLanguage());
+        $this->assertEquals($object, $user->getThirdPartyAccount($source));
     }
 }
