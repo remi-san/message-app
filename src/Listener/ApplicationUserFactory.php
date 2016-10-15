@@ -2,6 +2,7 @@
 
 namespace MessageApp\Listener;
 
+use MessageApp\User\ApplicationUser;
 use MessageApp\User\ApplicationUserId;
 
 interface ApplicationUserFactory
@@ -12,6 +13,8 @@ interface ApplicationUserFactory
      * @param ApplicationUserId $id
      * @param string            $name
      * @param string            $preferredLanguage
+     *
+     * @return ApplicationUser
      */
     public function create(
         ApplicationUserId $id,
