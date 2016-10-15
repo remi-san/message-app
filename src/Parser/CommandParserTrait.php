@@ -9,7 +9,7 @@ trait CommandParserTrait
     /**
      * @param ParsingUser $user
      *
-*@throws MessageParserException
+     * @throws MessageParserException
      */
     protected function checkUser(ParsingUser $user)
     {
