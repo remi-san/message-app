@@ -72,7 +72,7 @@ class ApplicationUserListener implements ListenerInterface, LoggerAwareInterface
     {
         $this->logger->info('Third party account linked event');
 
-        $this->updateUserTwitterAccount($event->getUserId(), $event->getThirdPartyAccount());
+        $this->updateUserThirdPartyAccount($event->getUserId(), $event->getThirdPartyAccount());
     }
 
     /**
@@ -82,14 +82,14 @@ class ApplicationUserListener implements ListenerInterface, LoggerAwareInterface
     {
         $this->logger->info('Third party account replaced event');
 
-        $this->updateUserTwitterAccount($event->getUserId(), $event->getThirdPartyAccount());
+        $this->updateUserThirdPartyAccount($event->getUserId(), $event->getThirdPartyAccount());
     }
 
     /**
      * @param ApplicationUserId $userId
      * @param Account           $account
      */
-    private function updateUserTwitterAccount(ApplicationUserId $userId, Account $account)
+    private function updateUserThirdPartyAccount(ApplicationUserId $userId, Account $account)
     {
         $user = $this->finder->find((string) $userId);
 
