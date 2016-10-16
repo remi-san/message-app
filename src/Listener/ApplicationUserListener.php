@@ -45,9 +45,9 @@ class ApplicationUserListener implements ListenerInterface, LoggerAwareInterface
     /**
      * @param UserCreatedEvent $event
      */
-    public function applyUserCreatedEvent(UserCreatedEvent $event)
+    public function handleUserCreatedEvent(UserCreatedEvent $event)
     {
-        $this->logger->info('Read model received user event');
+        $this->logger->info('Message read model received user event');
 
         $user = $this->finder->find($event->getUserId());
 
@@ -68,7 +68,7 @@ class ApplicationUserListener implements ListenerInterface, LoggerAwareInterface
     /**
      * @param ThirdPartyAccountLinkedEvent $event
      */
-    public function applyThirdPartyAccountLinkedEvent(ThirdPartyAccountLinkedEvent $event)
+    public function handleThirdPartyAccountLinkedEvent(ThirdPartyAccountLinkedEvent $event)
     {
         $this->logger->info('Third party account linked event');
 
@@ -78,7 +78,7 @@ class ApplicationUserListener implements ListenerInterface, LoggerAwareInterface
     /**
      * @param ThirdPartyAccountReplacedEvent $event
      */
-    public function applyThirdPartyAccountReplacedEvent(ThirdPartyAccountReplacedEvent $event)
+    public function handleThirdPartyAccountReplacedEvent(ThirdPartyAccountReplacedEvent $event)
     {
         $this->logger->info('Third party account replaced event');
 
