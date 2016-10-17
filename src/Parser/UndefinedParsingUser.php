@@ -1,8 +1,7 @@
 <?php
 
-namespace Parser;
+namespace MessageApp\Parser;
 
-use MessageApp\Parser\ParsingUser;
 use MessageApp\User\ApplicationUserId;
 use MessageApp\User\ThirdParty\Account;
 
