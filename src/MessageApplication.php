@@ -8,6 +8,7 @@ use MessageApp\Message\MessageFactory;
 use MessageApp\Message\Sender\MessageSender;
 use MessageApp\Parser\Exception\MessageParserException;
 use MessageApp\Parser\MessageParser;
+use MessageApp\User\UndefinedApplicationUser;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
@@ -83,7 +84,10 @@ class MessageApplication implements LoggerAwareInterface
         } catch (MessageParserException $e) {
             $this->logger->error('Error parsing or executing command', ['exception' => $e->getMessage()]);
 
-            $errorMessage = $this->messageFactory->buildMessage([$e->getUser()], $e);
+            $errorMessage = $this->messageFactory->buildMessage(
+                [ new UndefinedApplicationUser($e->getUser()->getAccount()) ],
+                $e
+            );
 
             if (!$errorMessage) {
                 $this->logger->warning('Message could not be generated');

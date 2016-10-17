@@ -5,7 +5,10 @@ use MessageApp\Message;
 use MessageApp\Message\MessageFactory;
 use MessageApp\Message\Sender\MessageSender;
 use MessageApp\MessageApplication;
+use MessageApp\Parser\ParsingUser;
 use MessageApp\Test\Mock\MessageAppMocker;
+use MessageApp\User\ThirdParty\Account;
+use MessageApp\User\UndefinedApplicationUser;
 use MiniGame\Entity\MiniGame;
 use MiniGame\Entity\Player;
 use Psr\Log\LoggerInterface;
@@ -113,7 +116,11 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
     {
         $userId = $this->getApplicationUserId(42);
         $userName = 'Arthur';
-        $user = $this->getApplicationUser($userId, $userName);
+        $user = \Mockery::mock(ParsingUser::class, function ($user) use ($userId, $userName) {
+            $user->shouldReceive('getId')->andReturn($userId);
+            $user->shouldReceive('getName')->andReturn($userName);
+            $user->shouldReceive('getAccount')->andReturn(\Mockery::mock(Account::class));
+        });
         $message = new \stdClass();
         $errorMessage = \Mockery::mock(Message::class);
 
@@ -129,7 +136,14 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
 
         $this->factory
             ->shouldReceive('buildMessage')
-            ->with([$user], $exception)
+            ->with(
+                \Mockery::on(function ($users) {
+                    $this->assertCount(1, $users);
+                    $this->assertInstanceOf(UndefinedApplicationUser::class, $users[0]);
+                    return true;
+                }),
+                $exception
+            )
             ->andReturn($errorMessage);
 
         $hangmanApp = new MessageApplication(
@@ -150,7 +164,11 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
     {
         $userId = $this->getApplicationUserId(42);
         $userName = 'Arthur';
-        $user = $this->getApplicationUser($userId, $userName);
+        $user = \Mockery::mock(ParsingUser::class, function ($user) use ($userId, $userName) {
+            $user->shouldReceive('getId')->andReturn($userId);
+            $user->shouldReceive('getName')->andReturn($userName);
+            $user->shouldReceive('getAccount')->andReturn(\Mockery::mock(Account::class));
+        });
         $message = new \stdClass();
 
         $exception = \Mockery::mock('\\MessageApp\\Parser\\Exception\\MessageParserException');
@@ -166,7 +184,14 @@ class MessageAppTest extends \PHPUnit_Framework_TestCase
 
         $this->factory
             ->shouldReceive('buildMessage')
-            ->with([$user], $exception)
+            ->with(
+                \Mockery::on(function ($users) {
+                    $this->assertCount(1, $users);
+                    $this->assertInstanceOf(UndefinedApplicationUser::class, $users[0]);
+                    return true;
+                }),
+                $exception
+            )
             ->andReturn(null);
 
         $hangmanApp = new MessageApplication(

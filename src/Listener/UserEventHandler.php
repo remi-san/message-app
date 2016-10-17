@@ -88,7 +88,7 @@ class UserEventHandler implements MessageEventHandler, LoggerAwareInterface
             $messageContext = $this->messageFinder->findByReference($context->getValue());
         }
 
-        $message = $this->messageFactory->buildMessage([$user], $event);
+        $message = $this->messageFactory->buildMessage([ $user ], $event);
 
         if (!$message) {
             $this->logger->warning('Message could not be generated');

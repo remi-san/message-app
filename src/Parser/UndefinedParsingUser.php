@@ -1,12 +1,12 @@
 <?php
 
-namespace MessageApp\User;
+namespace Parser;
 
 use MessageApp\Parser\ParsingUser;
+use MessageApp\User\ApplicationUserId;
 use MessageApp\User\ThirdParty\Account;
-use MessageApp\User\ThirdParty\Source;
 
-class UndefinedApplicationUser implements ApplicationUser
+class UndefinedParsingUser implements ParsingUser
 {
     /**
      * @var Account
@@ -54,33 +54,22 @@ class UndefinedApplicationUser implements ApplicationUser
     }
 
     /**
-     * @param Source $source
+     * Get the account
      *
      * @return Account
      */
-    public function getThirdPartyAccount(Source $source)
+    public function getAccount()
     {
-        return $this->account; // TODO check source
+        return $this->account;
     }
 
     /**
-     * @param string $name
+     * Is the user defined
+     *
+     * @return boolean
      */
-    public function setName($name)
+    public function isDefined()
     {
-    }
-
-    /**
-     * @param string $language
-     */
-    public function setPreferredLanguage($language)
-    {
-    }
-
-    /**
-     * @param Account $account
-     */
-    public function setThirdPartyAccount(Account $account)
-    {
+        return false;
     }
 }
