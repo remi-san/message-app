@@ -85,7 +85,7 @@ class MessageApplication implements LoggerAwareInterface
             $this->logger->error('Error parsing or executing command', ['exception' => $e->getMessage()]);
 
             $errorMessage = $this->messageFactory->buildMessage(
-                [ new UndefinedApplicationUser($e->getUser()->getAccount()) ],
+                [ $this->getMessageUser($e) ],
                 $e
             );
 
@@ -112,5 +112,15 @@ class MessageApplication implements LoggerAwareInterface
         }
 
         $this->commandBus->handle($command);
+    }
+
+    /**
+     * @param MessageParserException $exception
+     *
+     * @return UndefinedApplicationUser
+     */
+    private function getMessageUser(MessageParserException $exception)
+    {
+        return new UndefinedApplicationUser($exception->getUser()->getAccount());
     }
 }

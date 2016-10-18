@@ -31,7 +31,7 @@ class MessageAppCommandHandler implements LoggerAwareInterface
     private $userManager;
 
     /**
-     * @var \MessageApp\User\ThirdParty\AccountFactory
+     * @var AccountFactory
      */
     private $accountFactory;
 
@@ -43,10 +43,10 @@ class MessageAppCommandHandler implements LoggerAwareInterface
     /**
      * Constructor
      *
-     * @param UserFactory                                $userBuilder
-     * @param UserRepository                             $userManager
-     * @param \MessageApp\User\ThirdParty\AccountFactory $accountFactory
-     * @param ErrorEventHandler                          $errorHandler
+     * @param UserFactory       $userBuilder
+     * @param UserRepository    $userManager
+     * @param AccountFactory    $accountFactory
+     * @param ErrorEventHandler $errorHandler
      */
     public function __construct(
         UserFactory $userBuilder,
