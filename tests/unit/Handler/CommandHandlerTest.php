@@ -1,5 +1,5 @@
 <?php
-namespace MessageApp\Test;
+namespace MessageApp\Test\Handler;
 
 use MessageApp\Error\ErrorEventHandler;
 use MessageApp\Event\UnableToCreateUserEvent;

@@ -1,6 +1,6 @@
 <?php
 
-namespace MessageApp\Test;
+namespace MessageApp\Test\Message\TextExtractor;
 
 use MessageApp\Event\UserCreatedEvent;
 use MessageApp\Message\TextExtractor\UserCreatedEventTextExtractor;

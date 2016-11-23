@@ -1,5 +1,5 @@
 <?php
-namespace MessageApp\Test;
+namespace MessageApp\Test\Listener;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;

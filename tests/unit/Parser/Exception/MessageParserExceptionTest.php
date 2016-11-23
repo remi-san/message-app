@@ -1,6 +1,6 @@
 <?php
 
-namespace MessageApp\Test;
+namespace MessageApp\Test\Parser\Exception;
 
 use MessageApp\Parser\Exception\MessageParserException;
 use MessageApp\Parser\ParsingUser;

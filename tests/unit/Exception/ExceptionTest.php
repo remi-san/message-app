@@ -1,5 +1,5 @@
 <?php
-namespace MessageApp\Test;
+namespace MessageApp\Test\Exception;
 
 use MessageApp\Exception\MessageAppException;
 use MessageApp\Test\Mock\MessageAppMocker;

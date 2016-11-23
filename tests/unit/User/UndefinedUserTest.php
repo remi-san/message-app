@@ -1,5 +1,5 @@
 <?php
-namespace MessageApp\Test;
+namespace MessageApp\Test\User;
 
 use MessageApp\User\ApplicationUserId;
 use MessageApp\User\ThirdParty\Account;

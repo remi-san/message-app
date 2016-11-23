@@ -1,5 +1,5 @@
 <?php
-namespace MessageApp\Test;
+namespace MessageApp\Test\Event;
 
 use MessageApp\Event\UnableToCreateUserEvent;
 use MessageApp\Test\Mock\MessageAppMocker;

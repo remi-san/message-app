@@ -1,10 +1,10 @@
 <?php
-namespace MessageApp\Test;
+namespace MessageApp\Test\Message;
 
 use MessageApp\Message\DefaultMessage;
 use MessageApp\Test\Mock\MessageAppMocker;
 
-class ApplicationResponseTest extends \PHPUnit_Framework_TestCase
+class DefaultMessageTest extends \PHPUnit_Framework_TestCase
 {
     use MessageAppMocker;
 

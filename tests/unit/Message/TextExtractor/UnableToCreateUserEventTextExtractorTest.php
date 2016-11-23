@@ -1,6 +1,6 @@
 <?php
 
-namespace MessageApp\Test;
+namespace MessageApp\Test\Message\TextExtractor;
 
 use MessageApp\Event\UnableToCreateUserEvent;
 use MessageApp\Message\TextExtractor\UnableToCreateUserEventTextExtractor;

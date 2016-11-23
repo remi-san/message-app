@@ -1,6 +1,6 @@
 <?php
 
-namespace MessageApp\Test;
+namespace MessageApp\Test\Message\Sender;
 
 use MessageApp\Message;
 use MessageApp\Message\Sender\MessageSender;

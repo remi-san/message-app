@@ -1,5 +1,5 @@
 <?php
-namespace MessageApp\Test;
+namespace MessageApp\Test\User\Entity;
 
 use MessageApp\Test\Mock\MessageAppMocker;
 use MessageApp\User\Entity\SourcedUser;

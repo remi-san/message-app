@@ -1,5 +1,5 @@
 <?php
-namespace MessageApp\Test;
+namespace MessageApp\Test\Command;
 
 use MessageApp\Command\CreateUserCommand;
 use MessageApp\Test\Mock\MessageAppMocker;

@@ -1,6 +1,6 @@
 <?php
 
-namespace MessageApp\Test;
+namespace MessageApp\Test\Message\TextExtractor;
 
 use MessageApp\Message\TextExtractor\MessageParserExceptionTextExtractor;
 use MessageApp\Parser\Exception\MessageParserException;
