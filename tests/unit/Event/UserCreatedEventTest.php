@@ -1,28 +1,28 @@
 <?php
 namespace MessageApp\Test\Event;
 
+use Faker\Factory;
 use MessageApp\Event\UserCreatedEvent;
-use MessageApp\Test\Mock\MessageAppMocker;
 use MessageApp\User\ApplicationUserId;
 
 class UserCreatedEventTest extends \PHPUnit_Framework_TestCase
 {
-    use MessageAppMocker;
-
-    /**
-     * @var ApplicationUserId
-     */
+    /** @var ApplicationUserId */
     private $id;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $username;
+
+    /** @var string */
+    private $language;
 
     public function setUp()
     {
-        $this->id = $this->getApplicationUserId(33);
-        $this->username = 'john';
+        $faker = Factory::create();
+
+        $this->id = new ApplicationUserId($faker->uuid);
+        $this->username = $faker->userName;
+        $this->language = $faker->countryISOAlpha3;
     }
 
     public function tearDown()
@@ -33,13 +33,12 @@ class UserCreatedEventTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function testAccessors()
+    public function itShouldCreateTheEvent()
     {
-        $language = 'en';
-        $event = new UserCreatedEvent($this->id, $this->username, $language);
+        $event = new UserCreatedEvent($this->id, $this->username, $this->language);
 
         $this->assertEquals($this->id, $event->getUserId());
         $this->assertEquals($this->username, $event->getUsername());
-        $this->assertEquals($language, $event->getPreferredLanguage());
+        $this->assertEquals($this->language, $event->getPreferredLanguage());
     }
 }
