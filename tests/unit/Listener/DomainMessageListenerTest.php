@@ -7,18 +7,40 @@ use Broadway\Tools\Metadata\Context\ContextEnricher;
 use League\Event\EventInterface;
 use MessageApp\Listener\DomainMessageListener;
 use MessageApp\Listener\MessageEventHandler;
+use Mockery\Mock;
 use RemiSan\Context\Context;
 
 class DomainMessageListenerTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var MessageEventHandler
-     */
+    /** @var EventInterface */
+    private $event;
+
+    /** @var Context */
+    private $context;
+
+    /** @var Metadata | Mock */
+    private $metadata;
+
+    /** @var DomainMessage */
+    private $message;
+
+    /** @var MessageEventHandler | Mock */
     private $handler;
+
+    /** @var DomainMessageListener */
+    private $serviceUnderTest;
 
     public function setUp()
     {
+        $this->event = \Mockery::mock(EventInterface::class);
+        $this->context = \Mockery::mock(Context::class);
+        $this->metadata = \Mockery::mock(Metadata::class);
+
+        $this->message = DomainMessage::recordNow('id', 0, $this->metadata, $this->event);
+
         $this->handler = \Mockery::mock(MessageEventHandler::class);
+
+        $this->serviceUnderTest = new DomainMessageListener($this->handler);
     }
 
     public function tearDown()
@@ -31,17 +53,11 @@ class DomainMessageListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function itShouldDeferHandlingToInnerHandlerAfterRetrievingEventAndContext()
     {
-        $event = \Mockery::mock(EventInterface::class);
-        $context = \Mockery::mock(Context::class);
-        $metadata = \Mockery::mock(Metadata::class, function ($metadata) use ($context) {
-            $metadata->shouldReceive('serialize')->andReturn([ContextEnricher::CONTEXT => $context]);
-        });
-        $message = DomainMessage::recordNow('id', 0, $metadata, $event);
+        $this->givenMetadataContainsContext();
 
-        $this->handler->shouldReceive('handle')->with($event, $context)->once();
+        $this->assertHandlerWillHandleEventWithContext();
 
-        $listener = new DomainMessageListener($this->handler);
-        $listener->handle($message);
+        $this->serviceUnderTest->handle($this->message);
     }
 
     /**
@@ -49,15 +65,30 @@ class DomainMessageListenerTest extends \PHPUnit_Framework_TestCase
      */
     public function itShouldDeferHandlingToInnerHandlerAfterRetrievingEventAndNullContext()
     {
-        $event = \Mockery::mock(EventInterface::class);
-        $metadata = \Mockery::mock(Metadata::class, function ($metadata) {
-            $metadata->shouldReceive('serialize')->andReturn([]);
-        });
-        $message = DomainMessage::recordNow('id', 0, $metadata, $event);
+        $this->givenMetadataContainsNothing();
 
-        $this->handler->shouldReceive('handle')->with($event, null)->once();
+        $this->assertHandlerWillHandleEventWithoutContext();
 
-        $listener = new DomainMessageListener($this->handler);
-        $listener->handle($message);
+        $this->serviceUnderTest->handle($this->message);
+    }
+
+    private function givenMetadataContainsContext()
+    {
+        $this->metadata->shouldReceive('serialize')->andReturn([ContextEnricher::CONTEXT => $this->context]);
+    }
+
+    private function givenMetadataContainsNothing()
+    {
+        $this->metadata->shouldReceive('serialize')->andReturn([]);
+    }
+
+    private function assertHandlerWillHandleEventWithContext()
+    {
+        $this->handler->shouldReceive('handle')->with($this->event, $this->context)->once();
+    }
+
+    private function assertHandlerWillHandleEventWithoutContext()
+    {
+        $this->handler->shouldReceive('handle')->with($this->event, null)->once();
     }
 }

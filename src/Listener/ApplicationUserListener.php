@@ -49,7 +49,7 @@ class ApplicationUserListener implements ListenerInterface, LoggerAwareInterface
     {
         $this->logger->info('Message read model received user event');
 
-        $user = $this->finder->find($event->getUserId());
+        $user = $this->finder->find((string) $event->getUserId());
 
         if ($user) {
             $user->setName($event->getUsername());
