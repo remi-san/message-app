@@ -58,7 +58,7 @@ class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
     private $messageSender;
 
     /** @var UserEventHandler */
-    private $listener;
+    private $serviceUnderTest;
 
     /**
      * Init the mocks
@@ -90,7 +90,7 @@ class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
         $this->factory = \Mockery::mock(MessageFactory::class);
         $this->messageSender = \Mockery::mock(MessageSender::class);
 
-        $this->listener = new UserEventHandler(
+        $this->serviceUnderTest = new UserEventHandler(
             $this->userFinder,
             $this->messageFinder,
             $this->factory,
@@ -113,7 +113,7 @@ class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertItWillNotTryToRetrieveUser();
         $this->assertItWillNotSendMessage();
 
-        $this->listener->handle($this->event);
+        $this->serviceUnderTest->handle($this->event);
     }
 
     /**
@@ -126,7 +126,7 @@ class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertItWillNotTryToRetrieveUser();
         $this->assertItWillNotSendMessage();
 
-        $this->listener->handle($this->event);
+        $this->serviceUnderTest->handle($this->event);
     }
 
     /**
@@ -141,7 +141,7 @@ class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertItWillSendMessage();
 
-        $this->listener->handle($this->event, $this->context);
+        $this->serviceUnderTest->handle($this->event, $this->context);
     }
 
     /**
@@ -156,7 +156,7 @@ class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertItWillNotSendMessage();
 
-        $this->listener->handle($this->event, $this->context);
+        $this->serviceUnderTest->handle($this->event, $this->context);
     }
 
     private function assertItWillNotSendMessage()

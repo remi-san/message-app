@@ -5,23 +5,36 @@ namespace MessageApp\Test\Message\Sender;
 use MessageApp\Message;
 use MessageApp\Message\Sender\MessageSender;
 use MessageApp\Message\Sender\TransactionalMessageSender;
+use Mockery\Mock;
 use RemiSan\TransactionManager\Exception\BeginException;
 use RemiSan\TransactionManager\Exception\CommitException;
 use RemiSan\TransactionManager\Exception\NoRunningTransactionException;
 
 class TransactionalMessageSenderTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var MessageSender
-     */
+    /** @var Message */
+    private $message;
+
+    /** @var object */
+    private $context;
+
+    /** @var MessageSender | Mock */
     private $messageSender;
+
+    /** @var TransactionalMessageSender */
+    private $serviceUnderTest;
 
     /**
      * Init the mocks
      */
     public function setUp()
     {
+        $this->message = \Mockery::mock(Message::class);
+        $this->context = new \stdClass();
+
         $this->messageSender = \Mockery::mock(MessageSender::class);
+
+        $this->serviceUnderTest = new TransactionalMessageSender($this->messageSender);
     }
 
     public function tearDown()
@@ -34,8 +47,7 @@ class TransactionalMessageSenderTest extends \PHPUnit_Framework_TestCase
      */
     public function beginTransactionShouldSucceedIfNoTransactionIsRunning()
     {
-        $sender = new TransactionalMessageSender($this->messageSender);
-        $sender->beginTransaction();
+        $this->serviceUnderTest->beginTransaction();
     }
 
     /**
@@ -43,12 +55,11 @@ class TransactionalMessageSenderTest extends \PHPUnit_Framework_TestCase
      */
     public function beginTransactionShouldFailIfATransactionIsRunning()
     {
-        $sender = new TransactionalMessageSender($this->messageSender);
-        $sender->beginTransaction();
+        $this->serviceUnderTest->beginTransaction();
 
         $this->setExpectedException(BeginException::class);
 
-        $sender->beginTransaction();
+        $this->serviceUnderTest->beginTransaction();
     }
 
     /**
@@ -56,16 +67,12 @@ class TransactionalMessageSenderTest extends \PHPUnit_Framework_TestCase
      */
     public function commitShouldSucceedIfATransactionIsRunningAndMessageIsSent()
     {
-        $message = \Mockery::mock(Message::class);
-        $context = [ 'context' ];
+        $this->serviceUnderTest->beginTransaction();
 
-        $sender = new TransactionalMessageSender($this->messageSender);
-        $sender->beginTransaction();
+        $this->assertItWillSendMessage();
 
-        $this->messageSender->shouldReceive('send')->with($message, $context)->once();
-
-        $sender->send($message, $context);
-        $sender->commit();
+        $this->serviceUnderTest->send($this->message, $this->context);
+        $this->serviceUnderTest->commit();
     }
 
     /**
@@ -73,20 +80,14 @@ class TransactionalMessageSenderTest extends \PHPUnit_Framework_TestCase
      */
     public function commitShouldFailIfATransactionIsRunningAndMessageIsNotSent()
     {
-        $message = \Mockery::mock(Message::class);
-        $context = [ 'context' ];
+        $this->serviceUnderTest->beginTransaction();
 
-        $sender = new TransactionalMessageSender($this->messageSender);
-        $sender->beginTransaction();
-
-        $this->messageSender->shouldReceive('send')
-            ->with($message, $context)
-            ->andThrow(\Exception::class);
+        $this->givenMessageWillFailSending();
 
         $this->setExpectedException(CommitException::class);
 
-        $sender->send($message, $context);
-        $sender->commit();
+        $this->serviceUnderTest->send($this->message, $this->context);
+        $this->serviceUnderTest->commit();
     }
 
     /**
@@ -94,11 +95,9 @@ class TransactionalMessageSenderTest extends \PHPUnit_Framework_TestCase
      */
     public function commitShouldFailIfATransactionIsNotRunning()
     {
-        $sender = new TransactionalMessageSender($this->messageSender);
-
         $this->setExpectedException(NoRunningTransactionException::class);
 
-        $sender->commit();
+        $this->serviceUnderTest->commit();
     }
 
     /**
@@ -106,10 +105,9 @@ class TransactionalMessageSenderTest extends \PHPUnit_Framework_TestCase
      */
     public function rollbackShouldSucceedIfATransactionIsRunning()
     {
-        $sender = new TransactionalMessageSender($this->messageSender);
-        $sender->beginTransaction();
+        $this->serviceUnderTest->beginTransaction();
 
-        $sender->rollback();
+        $this->serviceUnderTest->rollback();
     }
 
     /**
@@ -117,10 +115,23 @@ class TransactionalMessageSenderTest extends \PHPUnit_Framework_TestCase
      */
     public function rollbackShouldFailIfATransactionIsNotRunning()
     {
-        $sender = new TransactionalMessageSender($this->messageSender);
-
         $this->setExpectedException(NoRunningTransactionException::class);
 
-        $sender->rollback();
+        $this->serviceUnderTest->rollback();
+    }
+
+    private function assertItWillSendMessage()
+    {
+        $this->messageSender
+            ->shouldReceive('send')
+            ->with($this->message, $this->context)
+            ->once();
+    }
+
+    private function givenMessageWillFailSending()
+    {
+        $this->messageSender->shouldReceive('send')
+            ->with($this->message, $this->context)
+            ->andThrow(\Exception::class);
     }
 }

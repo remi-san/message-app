@@ -2,13 +2,38 @@
 
 namespace MessageApp\Test\Message\TextExtractor;
 
+use Faker\Factory;
 use MessageApp\Message\TextExtractor\CompositeTextExtractor;
 use MessageApp\Message\TextExtractor\MessageTextExtractor;
+use Mockery\Mock;
 
 class CompositeTextExtractorTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var object */
+    private $event;
+
+    /** @var string */
+    private $message;
+
+    /** @var MessageTextExtractor | Mock */
+    private $subExOne;
+
+    /** @var MessageTextExtractor | Mock */
+    private $subExTwo;
+
+    /** @var CompositeTextExtractor */
+    private $serviceUnderTest;
+
     public function setUp()
     {
+        $faker = Factory::create();
+
+        $this->event = new \stdClass();
+        $this->message = $faker->word;
+        $this->subExOne = \Mockery::mock(MessageTextExtractor::class);
+        $this->subExTwo = \Mockery::mock(MessageTextExtractor::class);
+
+        $this->serviceUnderTest = new CompositeTextExtractor();
     }
 
     public function tearDown()
@@ -19,35 +44,40 @@ class CompositeTextExtractorTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function testWithSubExtractorSuccess()
+    public function itShouldExtractTheMessageTheFirstSubExtractorReturns()
     {
-        $event = new \stdClass();
-        $message = 'test-message';
-        $subExOne = \Mockery::mock(MessageTextExtractor::class, function ($extractor) use ($event) {
-            $extractor->shouldReceive('extractMessage')->with($event)->andReturn(null);
-        });
-        $subExTwo = \Mockery::mock(MessageTextExtractor::class, function ($extractor) use ($event, $message) {
-            $extractor->shouldReceive('extractMessage')->with($event)->andReturn($message);
-        });
+        $this->givenItHasSubExtractors();
+        $this->givenFirstSubExtractorCannotExtractMessage();
+        $this->givenSecondSubExtractorCannotExtractMessage();
 
-        $extractor = new CompositeTextExtractor();
-        $extractor->addExtractor($subExOne);
-        $extractor->addExtractor($subExTwo);
+        $extractedMessage = $this->serviceUnderTest->extractMessage($this->event);
 
-        $extractedMessage = $extractor->extractMessage($event);
-
-        $this->assertEquals($message, $extractedMessage);
+        $this->assertEquals($this->message, $extractedMessage);
     }
 
     /**
      * @test
      */
-    public function testWithoutSubExtractorSuccess()
+    public function itShouldReturnNothingIfNoSubExtractorCanExtractTheMessage()
     {
-        $extractor = new CompositeTextExtractor();
-
-        $extractedMessage = $extractor->extractMessage(null);
+        $extractedMessage = $this->serviceUnderTest->extractMessage(null);
 
         $this->assertNull($extractedMessage);
+    }
+
+    private function givenItHasSubExtractors()
+    {
+        $this->serviceUnderTest->addExtractor($this->subExOne);
+        $this->serviceUnderTest->addExtractor($this->subExTwo);
+    }
+
+    private function givenFirstSubExtractorCannotExtractMessage()
+    {
+        $this->subExOne->shouldReceive('extractMessage')->with($this->event)->andReturn(null);
+    }
+
+    private function givenSecondSubExtractorCannotExtractMessage()
+    {
+        $this->subExTwo->shouldReceive('extractMessage')->with($this->event)->andReturn($this->message);
     }
 }

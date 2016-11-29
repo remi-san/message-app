@@ -5,11 +5,29 @@ namespace MessageApp\Test\Message\TextExtractor;
 use MessageApp\Event\UserEvent;
 use MessageApp\Message\TextExtractor\MessageTextExtractor;
 use MessageApp\Message\TextExtractor\UserEventTextExtractor;
+use Mockery\Mock;
 
 class UserEventExceptionTextExtractorTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var string */
+    private $message;
+
+    /** @var UserEvent */
+    private $gameResult;
+
+    /** @var MessageTextExtractor | Mock */
+    private $gameResultExtractor;
+
+    /** @var UserEventTextExtractor */
+    private $extractor;
+
     public function setUp()
     {
+        $this->message = 'test-message';
+        $this->gameResult = \Mockery::mock(UserEvent::class);
+        $this->gameResultExtractor = \Mockery::mock(MessageTextExtractor::class);
+
+        $this->extractor = new UserEventTextExtractor([$this->gameResultExtractor]);
     }
 
     public function tearDown()
@@ -20,34 +38,23 @@ class UserEventExceptionTextExtractorTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function testWithUserEvent()
+    public function itShouldExtractMessageFromEvent()
     {
-        $message = 'test-message';
-        $gameResult = \Mockery::mock(UserEvent::class);
-        $extractor = \Mockery::mock(MessageTextExtractor::class, function ($result) use ($message, $gameResult) {
-            $result->shouldReceive('extractMessage')
-                ->with($gameResult)
-                ->andReturn($message)
-                ->once();
-        });
+        $this->givenGameResultExtractorCanExtractMessage();
 
-        $extractor = new UserEventTextExtractor([$extractor]);
+        $extractedMessage = $this->extractor->extractMessage($this->gameResult);
 
-        $extractedMessage = $extractor->extractMessage($gameResult);
-
-        $this->assertEquals($message, $extractedMessage);
+        $this->assertEquals($this->message, $extractedMessage);
     }
 
     /**
      * @test
      */
-    public function testWithUnmanagedUserEvent()
+    public function itShouldNotExtractMessageWithNoGameResultExtractors()
     {
-        $gameResult = \Mockery::mock(UserEvent::class);
+        $this->givenThereAreNoGameResultExtractors();
 
-        $extractor = new UserEventTextExtractor([]);
-
-        $extractedMessage = $extractor->extractMessage($gameResult);
+        $extractedMessage = $this->extractor->extractMessage($this->gameResult);
 
         $this->assertNull($extractedMessage);
     }
@@ -55,12 +62,23 @@ class UserEventExceptionTextExtractorTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function testWithUnknownObject()
+    public function itShouldNotExtractMessageWithNullEvent()
     {
-        $extractor = new UserEventTextExtractor();
-
-        $extractedMessage = $extractor->extractMessage(null);
+        $extractedMessage = $this->extractor->extractMessage(null);
 
         $this->assertNull($extractedMessage);
+    }
+
+    private function givenGameResultExtractorCanExtractMessage()
+    {
+        $this->gameResultExtractor->shouldReceive('extractMessage')
+            ->with($this->gameResult)
+            ->andReturn($this->message)
+            ->once();
+    }
+
+    private function givenThereAreNoGameResultExtractors()
+    {
+        $this->extractor = new UserEventTextExtractor();
     }
 }

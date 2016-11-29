@@ -2,14 +2,34 @@
 
 namespace MessageApp\Test\Message\TextExtractor;
 
+use Faker\Factory;
 use MessageApp\Message\TextExtractor\MessageParserExceptionTextExtractor;
 use MessageApp\Parser\Exception\MessageParserException;
 use RemiSan\Intl\TranslatableResource;
 
 class MessageParserExceptionTextExtractorTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var string */
+    private $code;
+
+    /** @var string */
+    private $message;
+
+    /** @var MessageParserException */
+    private $exception;
+
+    /** @var MessageParserExceptionTextExtractor */
+    private $serviceUnderTest;
+
     public function setUp()
     {
+        $faker = Factory::create();
+
+        $this->code = $faker->word;
+        $this->message = $faker->sentence;
+        $this->exception = new MessageParserException(null, $this->code, $this->message);
+
+        $this->serviceUnderTest = new MessageParserExceptionTextExtractor();
     }
 
     public function tearDown()
@@ -20,27 +40,19 @@ class MessageParserExceptionTextExtractorTest extends \PHPUnit_Framework_TestCas
     /**
      * @test
      */
-    public function testWithMessageParserException()
+    public function itShouldExtractMessageFromException()
     {
-        $code = 'message.code';
-        $message = 'test-message';
-        $exception = new MessageParserException(null, $code, $message);
+        $extractedMessage = $this->serviceUnderTest->extractMessage($this->exception);
 
-        $extractor = new MessageParserExceptionTextExtractor();
-
-        $extractedMessage = $extractor->extractMessage($exception);
-
-        $this->assertEquals(new TranslatableResource($code), $extractedMessage);
+        $this->assertEquals(new TranslatableResource($this->code), $extractedMessage);
     }
 
     /**
      * @test
      */
-    public function testWithUnknownObject()
+    public function itShouldNotExtractMessage()
     {
-        $extractor = new MessageParserExceptionTextExtractor();
-
-        $extractedMessage = $extractor->extractMessage(null);
+        $extractedMessage = $this->serviceUnderTest->extractMessage(null);
 
         $this->assertNull($extractedMessage);
     }

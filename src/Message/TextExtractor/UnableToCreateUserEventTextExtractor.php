@@ -7,6 +7,8 @@ use RemiSan\Intl\TranslatableResource;
 
 class UnableToCreateUserEventTextExtractor implements MessageTextExtractor
 {
+    const MESSAGE_KEY = 'user.created.failed';
+
     /**
      * Extract the message from the game result.
      *
@@ -19,6 +21,6 @@ class UnableToCreateUserEventTextExtractor implements MessageTextExtractor
             return null;
         }
 
-        return new TranslatableResource('user.created.failed');
+        return new TranslatableResource(self::MESSAGE_KEY);
     }
 }

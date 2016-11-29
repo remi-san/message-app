@@ -49,7 +49,7 @@ class UnableToCreateUserEventHandlerTest extends \PHPUnit_Framework_TestCase
     private $factory;
 
     /** @var UnableToCreateUserEventHandler */
-    private $listener;
+    private $serviceUnderTest;
 
     /**
      * Init the mocks
@@ -79,7 +79,7 @@ class UnableToCreateUserEventHandlerTest extends \PHPUnit_Framework_TestCase
         $this->factory = \Mockery::mock(MessageFactory::class);
         $this->messageSender = \Mockery::mock(MessageSender::class);
 
-        $this->listener = new UnableToCreateUserEventHandler(
+        $this->serviceUnderTest = new UnableToCreateUserEventHandler(
             $this->messageFinder,
             $this->factory,
             $this->messageSender
@@ -100,7 +100,7 @@ class UnableToCreateUserEventHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertItWillNotSendMessage();
 
-        $this->listener->handle($this->event);
+        $this->serviceUnderTest->handle($this->event);
     }
 
     /**
@@ -113,7 +113,7 @@ class UnableToCreateUserEventHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertItWillSendMessage();
 
-        $this->listener->handle($this->event, $this->context);
+        $this->serviceUnderTest->handle($this->event, $this->context);
     }
 
     /**
@@ -126,7 +126,7 @@ class UnableToCreateUserEventHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertItWillNotSendMessage();
 
-        $this->listener->handle($this->event, $this->context);
+        $this->serviceUnderTest->handle($this->event, $this->context);
     }
 
     private function givenMessageMatchingContextExists()

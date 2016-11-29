@@ -8,8 +8,17 @@ use RemiSan\Intl\TranslatableResource;
 
 class MessageTextExtractorTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var UserCreatedEvent */
+    private $gameResult;
+
+    /** @var UserCreatedEventTextExtractor */
+    private $serviceUnderTest;
+
     public function setUp()
     {
+        $this->gameResult = \Mockery::mock(UserCreatedEvent::class);
+
+        $this->serviceUnderTest = new UserCreatedEventTextExtractor();
     }
 
     public function tearDown()
@@ -20,25 +29,22 @@ class MessageTextExtractorTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function testWithUserCreatedEvent()
+    public function itShouldExtractMessageFromEvent()
     {
-        $gameResult = \Mockery::mock(UserCreatedEvent::class);
+        $extractedMessage = $this->serviceUnderTest->extractMessage($this->gameResult);
 
-        $extractor = new UserCreatedEventTextExtractor();
-
-        $extractedMessage = $extractor->extractMessage($gameResult);
-
-        $this->assertEquals(new TranslatableResource('user.created'), $extractedMessage);
+        $this->assertEquals(
+            new TranslatableResource(UserCreatedEventTextExtractor::MESSAGE_KEY),
+            $extractedMessage
+        );
     }
 
     /**
      * @test
      */
-    public function testWithUnknownObject()
+    public function itShouldNotExtractMessage()
     {
-        $extractor = new UserCreatedEventTextExtractor();
-
-        $extractedMessage = $extractor->extractMessage(null);
+        $extractedMessage = $this->serviceUnderTest->extractMessage(null);
 
         $this->assertNull($extractedMessage);
     }

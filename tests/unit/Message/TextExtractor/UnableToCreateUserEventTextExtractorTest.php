@@ -8,8 +8,17 @@ use RemiSan\Intl\TranslatableResource;
 
 class UnableToCreateUserEventExceptionTextExtractorTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var UnableToCreateUserEvent */
+    private $event;
+
+    /** @var UnableToCreateUserEventTextExtractor */
+    private $serviceUnderTest;
+
     public function setUp()
     {
+        $this->event = \Mockery::mock(UnableToCreateUserEvent::class);
+
+        $this->serviceUnderTest = new UnableToCreateUserEventTextExtractor();
     }
 
     public function tearDown()
@@ -20,25 +29,22 @@ class UnableToCreateUserEventExceptionTextExtractorTest extends \PHPUnit_Framewo
     /**
      * @test
      */
-    public function testWithUnableToCreateUserEvent()
+    public function itShouldExtractMessageFromEvent()
     {
-        $event = \Mockery::mock(UnableToCreateUserEvent::class);
+        $extractedMessage = $this->serviceUnderTest->extractMessage($this->event);
 
-        $extractor = new UnableToCreateUserEventTextExtractor();
-
-        $extractedMessage = $extractor->extractMessage($event);
-
-        $this->assertEquals(new TranslatableResource('user.created.failed'), $extractedMessage);
+        $this->assertEquals(
+            new TranslatableResource(UnableToCreateUserEventTextExtractor::MESSAGE_KEY),
+            $extractedMessage
+        );
     }
 
     /**
      * @test
      */
-    public function testWithUnknownObject()
+    public function itShouldNotExtractMessage()
     {
-        $extractor = new UnableToCreateUserEventTextExtractor();
-
-        $extractedMessage = $extractor->extractMessage(null);
+        $extractedMessage = $this->serviceUnderTest->extractMessage(null);
 
         $this->assertNull($extractedMessage);
     }

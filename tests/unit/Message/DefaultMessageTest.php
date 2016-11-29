@@ -1,12 +1,25 @@
 <?php
 namespace MessageApp\Test\Message;
 
+use Faker\Factory;
 use MessageApp\Message\DefaultMessage;
-use MessageApp\Test\Mock\MessageAppMocker;
+use MessageApp\User\ApplicationUser;
 
 class DefaultMessageTest extends \PHPUnit_Framework_TestCase
 {
-    use MessageAppMocker;
+    /** @var string */
+    private $message;
+
+    /** @var ApplicationUser */
+    private $user;
+
+    public function setUp()
+    {
+        $faker = Factory::create();
+
+        $this->message = $faker->sentence;
+        $this->user = \Mockery::mock(ApplicationUser::class);
+    }
 
     public function tearDown()
     {
@@ -18,12 +31,9 @@ class DefaultMessageTest extends \PHPUnit_Framework_TestCase
      */
     public function testSendMessage()
     {
-        $message = 'message';
-        $user = $this->getApplicationUser($this->getApplicationUserId(42), 'adam');
+        $response = new DefaultMessage([$this->user], $this->message);
 
-        $response = new DefaultMessage([$user], $message);
-
-        $this->assertEquals([$user], $response->getUsers());
-        $this->assertEquals($message, $response->getMessage());
+        $this->assertEquals([$this->user], $response->getUsers());
+        $this->assertEquals($this->message, $response->getMessage());
     }
 }
