@@ -160,7 +160,7 @@ class UnableToCreateUserEventHandlerTest extends \PHPUnit_Framework_TestCase
             ->with($this->message, $this->source)
             ->once();
     }
-    
+
     private function assertItWillNotSendMessage()
     {
         $this->messageSender

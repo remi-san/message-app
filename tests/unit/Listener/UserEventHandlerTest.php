@@ -1,64 +1,101 @@
 <?php
 namespace MessageApp\Test\Listener;
 
+use Faker\Factory;
 use League\Event\EventInterface;
 use MessageApp\Event\UserEvent;
 use MessageApp\Finder\MessageFinder;
 use MessageApp\Listener\UserEventHandler;
 use MessageApp\Message;
-use MessageApp\Message\DefaultMessage;
 use MessageApp\Message\MessageFactory;
 use MessageApp\Message\Sender\MessageSender;
 use MessageApp\SourceMessage;
-use MessageApp\Test\Mock\MessageAppMocker;
+use MessageApp\User\ApplicationUser;
 use MessageApp\User\ApplicationUserId;
 use MessageApp\User\Finder\AppUserFinder;
-use Psr\Log\LoggerInterface;
+use Mockery\Mock;
 use RemiSan\Context\Context;
 
 class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
 {
-    use MessageAppMocker;
+    /** @var string */
+    private $source;
 
-    /**
-     * @var AppUserFinder
-     */
+    /** @var string */
+    private $contextValue;
+
+    /** @var ApplicationUserId */
+    private $userId;
+
+    /** @var string */
+    private $userName;
+
+    /** @var ApplicationUser | Mock */
+    private $user;
+
+    /** @var Message */
+    private $message;
+
+    /** @var Context | Mock */
+    private $context;
+
+    /** @var SourceMessage | Mock*/
+    private $sourceMessage;
+
+    /** @var UserEvent | Mock */
+    private $event;
+
+    /** @var AppUserFinder | Mock */
     private $userFinder;
 
-    /**
-     * @var MessageFinder
-     */
+    /** @var MessageFinder | Mock */
     private $messageFinder;
 
-    /**
-     * @var MessageFactory
-     */
+    /** @var MessageFactory | Mock */
     private $factory;
 
-    /**
-     * @var MessageSender
-     */
+    /** @var MessageSender | Mock */
     private $messageSender;
 
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
+    /** @var UserEventHandler */
+    private $listener;
 
     /**
      * Init the mocks
      */
     public function setUp()
     {
+        $faker = Factory::create();
+
+        $this->event = \Mockery::mock(UserEvent::class);
+
+        $this->contextValue = 'contextValue';
+        $this->context = \Mockery::mock(Context::class);
+        $this->context->shouldReceive('getValue')->andReturn($this->contextValue);
+
+        $this->source = 'src';
+        $this->sourceMessage = \Mockery::mock(SourceMessage::class);
+        $this->sourceMessage->shouldReceive('getSource')->andReturn($this->source);
+
+        $this->message = \Mockery::mock(Message::class);
+
+        $this->userId = new ApplicationUserId($faker->uuid);
+        $this->userName = $faker->userName;
+        $this->user = \Mockery::mock(ApplicationUser::class);
+        $this->user->shouldReceive('getId')->andReturn($this->userId);
+        $this->user->shouldReceive('getName')->andReturn($this->userName);
+
         $this->userFinder = \Mockery::mock(AppUserFinder::class);
-
         $this->messageFinder = \Mockery::mock(MessageFinder::class);
-
         $this->factory = \Mockery::mock(MessageFactory::class);
+        $this->messageSender = \Mockery::mock(MessageSender::class);
 
-        $this->messageSender = $this->getMessageSender();
-
-        $this->logger = \Mockery::mock('\\Psr\\Log\\LoggerInterface');
+        $this->listener = new UserEventHandler(
+            $this->userFinder,
+            $this->messageFinder,
+            $this->factory,
+            $this->messageSender
+        );
     }
 
     public function tearDown()
@@ -69,153 +106,124 @@ class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function testUnsupportedEvent()
+    public function itShouldNotHandleUnsupportedEvent()
     {
-        $listener = new UserEventHandler(
-            $this->userFinder,
-            $this->messageFinder,
-            $this->factory,
-            $this->messageSender
-        );
+        $this->givenAnUnsupportedEvent();
 
-        $listener->setLogger($this->logger);
-        $this->logger->shouldReceive('info');
+        $this->assertItWillNotTryToRetrieveUser();
+        $this->assertItWillNotSendMessage();
 
-        $this->userFinder->shouldReceive('find')->never();
-        $this->messageSender->shouldReceive('send')->never();
-
-        $event = \Mockery::mock(EventInterface::class);
-        $listener->handle($event);
+        $this->listener->handle($this->event);
     }
 
     /**
      * @test
      */
-    public function testIncompleteEvent()
+    public function itShouldNotHandleEventWithoutUserId()
     {
-        $listener = new UserEventHandler(
-            $this->userFinder,
-            $this->messageFinder,
-            $this->factory,
-            $this->messageSender
-        );
+        $this->givenEventDoesNotHaveAUserId();
 
-        $listener->setLogger($this->logger);
-        $this->logger->shouldReceive('info');
+        $this->assertItWillNotTryToRetrieveUser();
+        $this->assertItWillNotSendMessage();
 
-        $this->userFinder->shouldReceive('find')->never();
-        $this->messageSender->shouldReceive('send')->never();
-
-        $event = \Mockery::mock(UserEvent::class, function ($event) {
-            $event->shouldReceive('getUserId')->andReturn(null);
-        });
-        $listener->handle($event);
+        $this->listener->handle($this->event);
     }
 
     /**
      * @test
      */
-    public function testCompleteEvent()
+    public function itShouldSendMessage()
     {
-        $userId = $this->getApplicationUserId(42);
-        $user = $this->getApplicationUser($userId, 'Douglas');
-        $messageText = 'test';
-        $source = 'src';
-        $message = \Mockery::mock(Message::class);
+        $this->givenAValidEvent();
+        $this->givenMessageWillBeFoundByContextValue();
+        $this->givenTheUserExists();
+        $this->givenTheMessageCanBeBuilt();
 
-        $context = \Mockery::mock(Context::class, function ($context) {
-            $context->shouldReceive('getValue')->andReturn('contextValue');
-        });
+        $this->assertItWillSendMessage();
 
-        $sourceMessage = \Mockery::mock(SourceMessage::class, function ($sourceMessage) use ($source) {
-            $sourceMessage->shouldReceive('getSource')->andReturn($source);
-        });
+        $this->listener->handle($this->event, $this->context);
+    }
 
-        $this->messageFinder->shouldReceive('findByReference')->with('contextValue')->andReturn($sourceMessage);
+    /**
+     * @test
+     */
+    public function itShouldNotSendMessage()
+    {
+        $this->givenAValidEvent();
+        $this->givenMessageWillBeFoundByContextValue();
+        $this->givenTheUserExists();
+        $this->givenTheMessageCanNotBeBuilt();
 
-        $listener = new UserEventHandler(
-            $this->userFinder,
-            $this->messageFinder,
-            $this->factory,
-            $this->messageSender
-        );
+        $this->assertItWillNotSendMessage();
 
-        $listener->setLogger($this->logger);
-        $this->logger->shouldReceive('info');
+        $this->listener->handle($this->event, $this->context);
+    }
 
+    private function assertItWillNotSendMessage()
+    {
+        $this->messageSender->shouldReceive('send')->never();
+    }
+
+    private function assertItWillNotTryToRetrieveUser()
+    {
+        $this->userFinder->shouldReceive('find')->never();
+    }
+
+    private function givenEventDoesNotHaveAUserId()
+    {
+        $this->event->shouldReceive('getUserId')->andReturn(null);
+    }
+
+    private function givenAnUnsupportedEvent()
+    {
+        $this->event = \Mockery::mock(EventInterface::class);
+    }
+
+    private function givenMessageWillBeFoundByContextValue()
+    {
+        $this->messageFinder
+            ->shouldReceive('findByReference')
+            ->with($this->contextValue)
+            ->andReturn($this->sourceMessage);
+    }
+
+    private function givenTheUserExists()
+    {
         $this->userFinder
             ->shouldReceive('find')
-            ->with($userId)
-            ->andReturn($user)
+            ->with($this->userId)
+            ->andReturn($this->user)
             ->once();
-        $this->messageSender
-            ->shouldReceive('send')
-            ->with($message, $source)
-            ->once();
-
-        $event = \Mockery::mock(UserEvent::class, function ($event) use ($userId, $messageText) {
-            $event->shouldReceive('getUserId')->andReturn($userId);
-            $event->shouldReceive('getName')->andReturn('user.event');
-        });
-
-        $this->factory
-            ->shouldReceive('buildMessage')
-            ->with([$user], $event)
-            ->andReturn($message);
-
-        $listener->handle($event, $context);
     }
 
-    /**
-     * @test
-     */
-    public function testCompleteEventNoMessage()
+    private function assertItWillSendMessage()
     {
-        $userId = $this->getApplicationUserId(42);
-        $user = $this->getApplicationUser($userId, 'Douglas');
-        $messageText = 'test';
-        $source = 'src';
-
-        $context = \Mockery::mock(Context::class, function ($context) {
-            $context->shouldReceive('getValue')->andReturn('contextValue');
-        });
-
-        $sourceMessage = \Mockery::mock(SourceMessage::class, function ($sourceMessage) use ($source) {
-            $sourceMessage->shouldReceive('getSource')->andReturn($source);
-        });
-
-        $this->messageFinder->shouldReceive('findByReference')->with('contextValue')->andReturn($sourceMessage);
-
-        $listener = new UserEventHandler(
-            $this->userFinder,
-            $this->messageFinder,
-            $this->factory,
-            $this->messageSender
-        );
-
-        $listener->setLogger($this->logger);
-        $this->logger->shouldReceive('info');
-        $this->logger->shouldReceive('warning');
-
-        $this->userFinder
-            ->shouldReceive('find')
-            ->with($userId)
-            ->andReturn($user)
-            ->once();
         $this->messageSender
             ->shouldReceive('send')
-            ->never();
+            ->with($this->message, $this->source)
+            ->once();
+    }
 
-        $event = \Mockery::mock(UserEvent::class, function ($event) use ($userId, $messageText) {
-            $event->shouldReceive('getUserId')->andReturn($userId);
-            $event->shouldReceive('getName')->andReturn('user.event');
-        });
+    private function givenAValidEvent()
+    {
+        $this->event = \Mockery::mock(UserEvent::class);
+        $this->event->shouldReceive('getUserId')->andReturn($this->userId);
+        $this->event->shouldReceive('getName')->andReturn('user.event');
+    }
 
+    private function givenTheMessageCanBeBuilt()
+    {
         $this->factory
             ->shouldReceive('buildMessage')
-            ->with([$user], $event)
+            ->with([$this->user], $this->event)
+            ->andReturn($this->message);
+    }
+
+    private function givenTheMessageCanNotBeBuilt()
+    {
+        $this->factory
+            ->shouldReceive('buildMessage')
+            ->with([$this->user], $this->event)
             ->andReturn(null);
-
-        $listener->handle($event, $context);
     }
 }
