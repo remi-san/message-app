@@ -2,29 +2,57 @@
 
 namespace MessageApp\Test\Message;
 
+use Faker\Factory;
 use MessageApp\Message\MessageFactory;
 use MessageApp\Message\TextExtractor\MessageTextExtractor;
 use MessageApp\User\ApplicationUser;
-use MessageApp\User\UndefinedApplicationUser;
+use Mockery\Mock;
 use RemiSan\Intl\ResourceTranslator;
 use RemiSan\Intl\TranslatableResource;
 
 class MessageFactoryTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var MessageTextExtractor
-     */
+    /** @var string */
+    private $language;
+
+    /** @var ApplicationUser | Mock */
+    private $user;
+
+    /** @var object */
+    private $object;
+
+    /** @var string */
+    private $translatedString;
+
+    /** @var TranslatableResource */
+    private $translatedMessage;
+
+    /** @var MessageTextExtractor | Mock */
     private $extractor;
 
-    /**
-     * @var ResourceTranslator
-     */
+    /** @var ResourceTranslator | Mock */
     private $resourceTranslator;
+
+    /** @var MessageFactory */
+    private $serviceUnderTest;
 
     public function setUp()
     {
+        $faker = Factory::create();
+
+        $this->language = $faker->countryISOAlpha3;
+        $this->user = \Mockery::mock(ApplicationUser::class);
+        $this->object = new \stdClass();
+        $this->translatedString = $faker->sentence;
+        $this->translatedMessage = new TranslatableResource(
+            $this->translatedString,
+            [ $faker->word => $faker->word ]
+        );
+
         $this->extractor = \Mockery::mock(MessageTextExtractor::class);
         $this->resourceTranslator = \Mockery::mock(ResourceTranslator::class);
+
+        $this->serviceUnderTest = new MessageFactory($this->extractor, $this->resourceTranslator);
     }
 
     public function tearDown()
@@ -35,97 +63,90 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function withNoUsersItShouldReturnNull()
+    public function itShouldNotBuildMessageWithNoUser()
     {
-        $factory = new MessageFactory($this->extractor, $this->resourceTranslator);
+        $message = $this->serviceUnderTest->buildMessage([], null);
 
-        $this->assertNull($factory->buildMessage([], null));
+        $this->assertNull($message);
     }
 
     /**
      * @test
      */
-    public function withNullUserItShouldReturnNull()
+    public function itShouldNotBuildMessageWithNullUser()
     {
-        $factory = new MessageFactory($this->extractor, $this->resourceTranslator);
+        $message = $this->serviceUnderTest->buildMessage([null], null);
 
-        $this->assertNull($factory->buildMessage([null], null));
+        $this->assertNull($message);
     }
 
     /**
      * @test
      */
-    public function withApplicationUserIfItCannotExtractMessageItShouldReturnNull()
+    public function itShouldNotBuildMessageIfItCannotExtractMessage()
     {
-        $language = 'en';
-        $user = \Mockery::mock(ApplicationUser::class);
-        $object = new \stdClass();
+        $this->givenItCanNotExtractMessage();
 
-        $factory = new MessageFactory($this->extractor, $this->resourceTranslator);
+        $message = $this->serviceUnderTest->buildMessage([$this->user], $this->object, $this->language);
 
+        $this->assertNull($message);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldBuildMessageInRequiredLanguageIfLanguageIsPassed()
+    {
+        $this->givenItCanExtractMessage();
+        $this->givenTranslatorWillTranslate();
+
+        $message = $this->serviceUnderTest->buildMessage([$this->user, null], $this->object, $this->language);
+
+        $this->assertEquals([$this->user], $message->getUsers());
+        $this->assertEquals($this->translatedString, $message->getMessage());
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldBuildMessageInUserLanguageIfLanguageIsNotPassed()
+    {
+        $this->givenUserAsAPreferredLanguage();
+        $this->givenItCanExtractMessage();
+        $this->givenTranslatorWillTranslate();
+
+        $message = $this->serviceUnderTest->buildMessage([null, $this->user], $this->object);
+
+        $this->assertEquals([$this->user], $message->getUsers());
+        $this->assertEquals($this->translatedString, $message->getMessage());
+    }
+
+    private function givenItCanExtractMessage()
+    {
         $this->extractor
             ->shouldReceive('extractMessage')
-            ->with($object)
+            ->with($this->object)
+            ->andReturn($this->translatedMessage);
+    }
+
+    private function givenItCanNotExtractMessage()
+    {
+        $this->extractor
+            ->shouldReceive('extractMessage')
+            ->with($this->object)
             ->andReturn(null);
-
-        $this->assertNull($factory->buildMessage([$user], $object, $language));
     }
 
-    /**
-     * @test
-     */
-    public function withApplicationUserIfLanguageIsPassedMessageItShouldReturnMessageTranslatedInRequiredLanguage()
+    private function givenTranslatorWillTranslate()
     {
-        $language = 'en';
-        $user = \Mockery::mock(ApplicationUser::class);
-        $object = new \stdClass();
-        $translatedString = 'translated';
-        $translatedMessage = new TranslatableResource($translatedString, ['key'=>'value']);
         $this->resourceTranslator
             ->shouldReceive('translate')
-            ->with($language, $translatedMessage)
-            ->andReturn($translatedString);
-
-        $factory = new MessageFactory($this->extractor, $this->resourceTranslator);
-
-        $this->extractor
-            ->shouldReceive('extractMessage')
-            ->with($object)
-            ->andReturn($translatedMessage);
-
-        $message = $factory->buildMessage([$user, null], $object, $language);
-
-        $this->assertEquals([$user], $message->getUsers());
-        $this->assertEquals($translatedString, $message->getMessage());
+            ->with($this->language, $this->translatedMessage)
+            ->andReturn($this->translatedString);
     }
 
-    /**
-     * @test
-     */
-    public function withApplicationUserIfLanguageIsNotPassedMessageItShouldReturnMessageTranslatedInUserLanguage()
+    private function givenUserAsAPreferredLanguage()
     {
-        $language = 'en';
-        $user = \Mockery::mock(ApplicationUser::class, function ($u) use ($language) {
-            $u->shouldReceive('getPreferredLanguage')->andReturn($language);
-        });
-        $object = new \stdClass();
-        $translatedString = 'translated';
-        $translatedMessage = new TranslatableResource($translatedString, ['key'=>'value']);
-        $this->resourceTranslator
-            ->shouldReceive('translate')
-            ->with($language, $translatedMessage)
-            ->andReturn($translatedString);
-
-        $factory = new MessageFactory($this->extractor, $this->resourceTranslator);
-
-        $this->extractor
-            ->shouldReceive('extractMessage')
-            ->with($object)
-            ->andReturn($translatedMessage);
-
-        $message = $factory->buildMessage([null, $user], $object);
-
-        $this->assertEquals([$user], $message->getUsers());
-        $this->assertEquals($translatedString, $message->getMessage());
+        $this->user->shouldReceive('getPreferredLanguage')->andReturn($this->language);
     }
 }
