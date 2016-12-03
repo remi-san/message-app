@@ -22,6 +22,9 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
     private $object;
 
     /** @var string */
+    private $untranslatedString;
+
+    /** @var string */
     private $translatedString;
 
     /** @var TranslatableResource */
@@ -43,9 +46,10 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
         $this->language = $faker->countryISOAlpha3;
         $this->user = \Mockery::mock(ApplicationUser::class);
         $this->object = new \stdClass();
+        $this->untranslatedString = $faker->sentence;
         $this->translatedString = $faker->sentence;
         $this->translatedMessage = new TranslatableResource(
-            $this->translatedString,
+            $this->untranslatedString,
             [ $faker->word => $faker->word ]
         );
 
@@ -90,6 +94,20 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
         $message = $this->serviceUnderTest->buildMessage([$this->user], $this->object, $this->language);
 
         $this->assertNull($message);
+    }
+
+    /**
+     * @test
+     */
+    public function itShouldBuildMessageWithoutTranslationIfTranslationFails()
+    {
+        $this->givenItCanExtractMessage();
+        $this->givenTranslatorWillFailTranslating();
+
+        $message = $this->serviceUnderTest->buildMessage([$this->user, null], $this->object, $this->language);
+
+        $this->assertEquals([$this->user], $message->getUsers());
+        $this->assertEquals($this->untranslatedString, $message->getMessage());
     }
 
     /**
@@ -143,6 +161,14 @@ class MessageFactoryTest extends \PHPUnit_Framework_TestCase
             ->shouldReceive('translate')
             ->with($this->language, $this->translatedMessage)
             ->andReturn($this->translatedString);
+    }
+
+    private function givenTranslatorWillFailTranslating()
+    {
+        $this->resourceTranslator
+            ->shouldReceive('translate')
+            ->with($this->language, $this->translatedMessage)
+            ->andThrow(\IntlException::class);
     }
 
     private function givenUserAsAPreferredLanguage()

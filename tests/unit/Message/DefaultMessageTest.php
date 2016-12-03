@@ -29,7 +29,7 @@ class DefaultMessageTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function testSendMessage()
+    public function itShouldSendMessage()
     {
         $response = new DefaultMessage([$this->user], $this->message);
 
