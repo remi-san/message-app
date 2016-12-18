@@ -14,7 +14,7 @@ class UserIdTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function testGenerateId()
+    public function itShouldGenerateAnId()
     {
         $id = new ApplicationUserId();
 
@@ -22,7 +22,10 @@ class UserIdTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(Uuid::isValid($id->__toString()));
     }
 
-    public function testGivenId()
+    /**
+     * @test
+     */
+    public function itShouldBeAbleToSetAnId()
     {
         $vId = 42;
         $id = new ApplicationUserId($vId);

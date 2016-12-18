@@ -32,7 +32,7 @@ class DefaultMessage implements Message
     /**
      * Returns the user the message must be sent to
      *
-     * @return ApplicationUser
+     * @return ApplicationUser[]
      */
     public function getUsers()
     {

@@ -13,8 +13,10 @@ class UnsupportedUserExceptionTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function testUnsupportedUserConstructor()
+    public function itShouldBeBuildable()
     {
-        new UnsupportedUserException();
+        $exception = new UnsupportedUserException();
+
+        $this->assertInstanceOf(\Exception::class, $exception);
     }
 }

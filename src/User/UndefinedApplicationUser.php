@@ -2,7 +2,6 @@
 
 namespace MessageApp\User;
 
-use MessageApp\Parser\ParsingUser;
 use MessageApp\User\ThirdParty\Account;
 use MessageApp\User\ThirdParty\Source;
 
@@ -60,7 +59,11 @@ class UndefinedApplicationUser implements ApplicationUser
      */
     public function getThirdPartyAccount(Source $source)
     {
-        return $this->account; // TODO check source
+        if ($source != $this->account->getSource()) {
+            return null;
+        }
+
+        return $this->account;
     }
 
     /**

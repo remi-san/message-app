@@ -134,7 +134,7 @@ class MessageApplicationTest extends \PHPUnit_Framework_TestCase
         $this->givenAMessageCanNotBeGeneratedFromError();
 
         $this->assertNoMessageWillBeSent();
-        
+
         $this->serviceUnderTest->handle($this->contextMessage);
 
         $this->assertNoCommandHasBeenHandled();

@@ -14,8 +14,8 @@ interface UserFactory
      * @param  object            $object
      * @param  string            $language
      *
-     * @return SourcedUser
      * @throws MessageAppException
+     * @return SourcedUser
      */
     public function create(ApplicationUserId $userId, $object, $language);
 }

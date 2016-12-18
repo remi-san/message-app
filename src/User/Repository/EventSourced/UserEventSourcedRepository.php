@@ -2,7 +2,6 @@
 
 namespace MessageApp\User\Repository\EventSourced;
 
-use Broadway\Domain\AggregateRoot;
 use Broadway\EventSourcing\EventSourcingRepository;
 use MessageApp\Exception\MessageAppException;
 use MessageApp\User\ApplicationUserId;
@@ -35,10 +34,6 @@ class UserEventSourcedRepository implements UserRepository
      */
     public function save(SourcedUser $user)
     {
-        if (!$user instanceof AggregateRoot) {
-            throw new \InvalidArgumentException();
-        }
-
         $this->repository->save($user);
     }
 

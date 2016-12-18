@@ -1,4 +1,5 @@
 <?php
+
 namespace MessageApp\Parser;
 
 use MessageApp\User\ApplicationUserId;
