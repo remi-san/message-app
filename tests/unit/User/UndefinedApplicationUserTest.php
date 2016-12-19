@@ -1,12 +1,10 @@
 <?php
 namespace MessageApp\Test\User;
 
-use MessageApp\User\ApplicationUserId;
 use MessageApp\User\ThirdParty\Account;
 use MessageApp\User\ThirdParty\Source;
 use MessageApp\User\UndefinedApplicationUser;
 use Mockery\Mock;
-use TwitterMessageApp\Account\TwitterSource;
 
 class UndefinedApplicationUserTest extends \PHPUnit_Framework_TestCase
 {
