@@ -60,25 +60,6 @@ class UndefinedApplicationUserTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($user->getThirdPartyAccount($this->otherSource));
     }
 
-    /**
-     * @test
-     */
-    public function itShouldNotBeAbleToModifyTheUser()
-    {
-        $this->givenAccountHasAGivenSource();
-
-        $user = new UndefinedApplicationUser($this->account);
-
-        $user->setName('name');
-        $this->assertNull($user->getName());
-
-        $user->setPreferredLanguage('fr');
-        $this->assertEquals('en', $user->getPreferredLanguage());
-
-        $user->setThirdPartyAccount($this->otherAccount);
-        $this->assertEquals($this->account, $user->getThirdPartyAccount($this->source));
-    }
-
     private function givenAccountHasAGivenSource()
     {
         $this->source->shouldReceive('__toString')->andReturn('source');

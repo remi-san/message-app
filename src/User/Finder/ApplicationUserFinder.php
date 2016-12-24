@@ -4,7 +4,7 @@ namespace MessageApp\User\Finder;
 
 use MessageApp\User\ApplicationUser;
 
-interface AppUserFinder
+interface ApplicationUserFinder
 {
     /**
      * Finds an user by its primary key / identifier.
@@ -14,10 +14,4 @@ interface AppUserFinder
      * @return ApplicationUser The user.
      */
     public function find($id);
-
-    /**
-     * @param  ApplicationUser $user
-     * @return void
-     */
-    public function save(ApplicationUser $user);
 }

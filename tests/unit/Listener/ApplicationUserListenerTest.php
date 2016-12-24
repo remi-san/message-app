@@ -9,9 +9,9 @@ use MessageApp\Event\ThirdPartyAccountReplacedEvent;
 use MessageApp\Event\UserCreatedEvent;
 use MessageApp\Listener\ApplicationUserFactory;
 use MessageApp\Listener\ApplicationUserListener;
-use MessageApp\User\ApplicationUser;
 use MessageApp\User\ApplicationUserId;
-use MessageApp\User\Finder\AppUserFinder;
+use MessageApp\User\PersistableUser;
+use MessageApp\User\Store\ApplicationUserStore;
 use MessageApp\User\ThirdParty\Account;
 use Mockery\Mock;
 
@@ -26,7 +26,7 @@ class ApplicationUserListenerTest extends \PHPUnit_Framework_TestCase
     /** @var string */
     private $preferredLanguage;
 
-    /** @var ApplicationUser | Mock */
+    /** @var PersistableUser | Mock */
     private $user;
 
     /** @var Account */
@@ -38,8 +38,8 @@ class ApplicationUserListenerTest extends \PHPUnit_Framework_TestCase
     /** @var ApplicationUserFactory | Mock */
     private $applicationUserFactory;
 
-    /** @var AppUserFinder | Mock */
-    private $appUserFinder;
+    /** @var ApplicationUserStore | Mock */
+    private $appUserStore;
 
     /** @var ApplicationUserListener */
     private $serviceUnderTest;
@@ -55,15 +55,15 @@ class ApplicationUserListenerTest extends \PHPUnit_Framework_TestCase
         $this->username = $faker->userName;
         $this->preferredLanguage = $faker->countryISOAlpha3;
 
-        $this->user = \Mockery::mock(ApplicationUser::class);
+        $this->user = \Mockery::mock(PersistableUser::class);
         $this->thirdPartyAccount = \Mockery::mock(Account::class);
 
         $this->applicationUserFactory = \Mockery::mock(ApplicationUserFactory::class);
-        $this->appUserFinder = \Mockery::mock(AppUserFinder::class);
+        $this->appUserStore = \Mockery::mock(ApplicationUserStore::class);
 
         $this->serviceUnderTest = new ApplicationUserListener(
             $this->applicationUserFactory,
-            $this->appUserFinder
+            $this->appUserStore
         );
     }
 
@@ -171,7 +171,7 @@ class ApplicationUserListenerTest extends \PHPUnit_Framework_TestCase
 
     private function givenTheUserDoesNotExist()
     {
-        $this->appUserFinder
+        $this->appUserStore
             ->shouldReceive('find')
             ->with((string) $this->applicationUserId)
             ->andReturnNull();
@@ -179,7 +179,7 @@ class ApplicationUserListenerTest extends \PHPUnit_Framework_TestCase
 
     private function givenTheUserExists()
     {
-        $this->appUserFinder
+        $this->appUserStore
             ->shouldReceive('find')
             ->with((string) $this->applicationUserId)
             ->andReturn($this->user);
@@ -219,7 +219,7 @@ class ApplicationUserListenerTest extends \PHPUnit_Framework_TestCase
 
     private function assertUserWillBeSaved()
     {
-        $this->appUserFinder
+        $this->appUserStore
             ->shouldReceive('save')
             ->with($this->user)
             ->once();
@@ -227,7 +227,7 @@ class ApplicationUserListenerTest extends \PHPUnit_Framework_TestCase
 
     private function assertUserWillNotBeSaved()
     {
-        $this->appUserFinder
+        $this->appUserStore
             ->shouldReceive('save')
             ->with($this->user)
             ->never();

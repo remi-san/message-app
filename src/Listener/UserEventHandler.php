@@ -7,7 +7,7 @@ use MessageApp\Event\UserEvent;
 use MessageApp\Finder\MessageFinder;
 use MessageApp\Message\MessageFactory;
 use MessageApp\Message\Sender\MessageSender;
-use MessageApp\User\Finder\AppUserFinder;
+use MessageApp\User\Finder\ApplicationUserFinder;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
@@ -18,7 +18,7 @@ class UserEventHandler implements MessageEventHandler, LoggerAwareInterface
     use LoggerAwareTrait;
 
     /**
-     * @var AppUserFinder
+     * @var ApplicationUserFinder
      */
     private $userFinder;
 
@@ -40,13 +40,13 @@ class UserEventHandler implements MessageEventHandler, LoggerAwareInterface
     /**
      * Constructor
      *
-     * @param AppUserFinder $userFinder
-     * @param MessageFinder $messageFinder
-     * @param MessageFactory $messageFactory
-     * @param MessageSender $messageSender
+     * @param ApplicationUserFinder $userFinder
+     * @param MessageFinder         $messageFinder
+     * @param MessageFactory        $messageFactory
+     * @param MessageSender         $messageSender
      */
     public function __construct(
-        AppUserFinder $userFinder,
+        ApplicationUserFinder $userFinder,
         MessageFinder $messageFinder,
         MessageFactory $messageFactory,
         MessageSender $messageSender

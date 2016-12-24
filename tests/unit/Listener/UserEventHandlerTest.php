@@ -12,7 +12,7 @@ use MessageApp\Message\Sender\MessageSender;
 use MessageApp\SourceMessage;
 use MessageApp\User\ApplicationUser;
 use MessageApp\User\ApplicationUserId;
-use MessageApp\User\Finder\AppUserFinder;
+use MessageApp\User\Finder\ApplicationUserFinder;
 use Mockery\Mock;
 use RemiSan\Context\Context;
 
@@ -45,7 +45,7 @@ class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
     /** @var UserEvent | Mock */
     private $event;
 
-    /** @var AppUserFinder | Mock */
+    /** @var ApplicationUserFinder | Mock */
     private $userFinder;
 
     /** @var MessageFinder | Mock */
@@ -85,7 +85,7 @@ class UserEventHandlerTest extends \PHPUnit_Framework_TestCase
         $this->user->shouldReceive('getId')->andReturn($this->userId);
         $this->user->shouldReceive('getName')->andReturn($this->userName);
 
-        $this->userFinder = \Mockery::mock(AppUserFinder::class);
+        $this->userFinder = \Mockery::mock(ApplicationUserFinder::class);
         $this->messageFinder = \Mockery::mock(MessageFinder::class);
         $this->factory = \Mockery::mock(MessageFactory::class);
         $this->messageSender = \Mockery::mock(MessageSender::class);

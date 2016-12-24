@@ -7,7 +7,7 @@ use MessageApp\Event\ThirdPartyAccountLinkedEvent;
 use MessageApp\Event\ThirdPartyAccountReplacedEvent;
 use MessageApp\Event\UserCreatedEvent;
 use MessageApp\User\ApplicationUserId;
-use MessageApp\User\Finder\AppUserFinder;
+use MessageApp\User\Store\ApplicationUserStore;
 use MessageApp\User\ThirdParty\Account;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -23,22 +23,22 @@ class ApplicationUserListener implements ListenerInterface, LoggerAwareInterface
     private $appUserFactory;
 
     /**
-     * @var AppUserFinder
+     * @var ApplicationUserStore
      */
-    private $finder;
+    private $store;
 
     /**
      * Constructor
      *
      * @param ApplicationUserFactory $appUserFactory
-     * @param AppUserFinder          $finder
+     * @param ApplicationUserStore   $finder
      */
     public function __construct(
         ApplicationUserFactory $appUserFactory,
-        AppUserFinder $finder
+        ApplicationUserStore $finder
     ) {
         $this->appUserFactory = $appUserFactory;
-        $this->finder = $finder;
+        $this->store = $finder;
         $this->logger = new NullLogger();
     }
 
@@ -49,7 +49,7 @@ class ApplicationUserListener implements ListenerInterface, LoggerAwareInterface
     {
         $this->logger->info('Message read model received user event');
 
-        $user = $this->finder->find((string) $event->getUserId());
+        $user = $this->store->find((string) $event->getUserId());
 
         if ($user) {
             $user->setName($event->getUsername());
@@ -62,7 +62,7 @@ class ApplicationUserListener implements ListenerInterface, LoggerAwareInterface
             );
         }
 
-        $this->finder->save($user);
+        $this->store->save($user);
     }
 
     /**
@@ -91,7 +91,7 @@ class ApplicationUserListener implements ListenerInterface, LoggerAwareInterface
      */
     private function updateUserThirdPartyAccount(ApplicationUserId $userId, Account $account)
     {
-        $user = $this->finder->find((string) $userId);
+        $user = $this->store->find((string) $userId);
 
         if (!$user) {
             return;
@@ -99,6 +99,6 @@ class ApplicationUserListener implements ListenerInterface, LoggerAwareInterface
 
         $user->setThirdPartyAccount($account);
 
-        $this->finder->save($user);
+        $this->store->save($user);
     }
 }
