@@ -51,6 +51,7 @@ class SourcedUserTest extends \PHPUnit_Framework_TestCase
         $user = SourcedUser::createUser($this->userId, $this->name, $this->language);
 
         $this->assertEquals($this->userId, $user->getId());
+        $this->assertEquals((string) $this->userId, $user->getAggregateRootId());
         $this->assertEquals($this->name, $user->getName());
         $this->assertEquals($this->language, $user->getPreferredLanguage());
     }

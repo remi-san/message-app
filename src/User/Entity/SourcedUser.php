@@ -91,7 +91,7 @@ class SourcedUser extends EventSourcedAggregateRoot
      */
     public function getAggregateRootId()
     {
-        return $this->id;
+        return (string) $this->id;
     }
 
     /**
