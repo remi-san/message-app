@@ -3,10 +3,10 @@
 namespace MessageApp\Listener;
 
 use Broadway\Domain\DomainMessage;
-use Broadway\EventHandling\EventListenerInterface;
+use Broadway\EventHandling\EventListener;
 use Broadway\Tools\Metadata\Context\ContextEnricher;
 
-class DomainMessageListener implements EventListenerInterface
+class DomainMessageListener implements EventListener
 {
     /**
      * @var MessageEventHandler
